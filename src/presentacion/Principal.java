@@ -18,7 +18,6 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
-import javax.swing.JViewport;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.AbstractListModel;
@@ -32,9 +31,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollBar;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Component;
+import java.awt.Dialog.ModalExclusionType;
+import java.awt.Window.Type;
 
-public class Principal {
+public class Principal extends JFrame{
 
+	/**
+	 * 
+	 */
 	private JFrame frame;
 	private JTabbedPane tabPrincipales;
 	private JPanel pnlInicio;
@@ -46,32 +50,32 @@ public class Principal {
 	private JPanel pnlBebidas;
 	private JPanel pnlOfertas;
 	private JTabbedPane tabComidas;
+	private JPanel pnlPescado;
+	private JPanel pnlCarneBase;
+	private JPanel pnlPlatosPescado;
+	private JButton btnNewButton;
+	private JPanel pnlBocadillos;
+	private JPanel pnlArroz;
+	private JPanel pnlPasta;
 	private JLabel lblAquiVamosA;
 	private JScrollPane scrlpnlTescripcion;
 	private JTable table;
 	private JScrollPane scrlpnlticket;
 	private JPanel pnlBilletes;
 	private JPanel panel;
-	private JButton btnNewButton_1;
-	private JButton btnNewButton_2;
+	private JButton btnCompra;
+	private JButton btnBorrar;
 	private JPanel pnlCambiosProductos;
 	private JButton btnAñadirProducto;
 	private JButton btnEliminrroducto;
 	private JButton btnModificarProducto;
-	private JScrollPane scrollPaneBocadillos;
+	private JScrollPane scrollPane_2;
+	private JPanel pnlCarne2;
+	private JPanel pnlCarne;
 	private JPanel panel_1;
 	private JTextArea textAreaEsc;
+	private JScrollBar scrollBar;
 	private JScrollPane scrollPanePostre;
-	private JPanel pnlPlatosostre;
-	private JScrollPane scrollPaneCarnes;
-	private JScrollPane scrollPanePescado;
-	private JScrollPane scrollPanePasta;
-	private JScrollPane scrollPaneArroz;
-	private JPanel pnlPlatosBocadillos;
-	private JPanel pnlPlatosCarne;
-	private JPanel pnlPlatosPescado;
-	private JPanel pnlPlatosPasta;
-	private JPanel pnlPlatosArroz;
 
 	/**
 	 * Launch the application.
@@ -81,7 +85,7 @@ public class Principal {
 			public void run() {
 				try {
 					Principal window = new Principal();
-					window.frame.setVisible(true);
+					window.getFrame().setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -100,13 +104,13 @@ public class Principal {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 912, 607);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setFrame(new JFrame());
+		getFrame().setBounds(100, 100, 939, 693);
+		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		tabPrincipales = new JTabbedPane(JTabbedPane.TOP);
 		tabPrincipales.setToolTipText("Soy penstañas\r\n");
-		frame.getContentPane().add(tabPrincipales, BorderLayout.CENTER);
+		getFrame().getContentPane().add(tabPrincipales, BorderLayout.CENTER);
 
 		pnlInicio = new JPanel();
 		pnlInicio.setName("");
@@ -137,48 +141,55 @@ public class Principal {
 		tabComidas.setOpaque(true);
 		tabComidas.setBackground(Color.WHITE);
 		pnlComida.add(tabComidas);
-		
-		scrollPaneCarnes = new JScrollPane();
-		tabComidas.addTab("Carne", null, scrollPaneCarnes, null);
-		
-		pnlPlatosCarne = new JPanel();
-		scrollPaneCarnes.setViewportView(pnlPlatosCarne);
-		pnlPlatosCarne.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		scrollPanePescado = new JScrollPane();
-		tabComidas.addTab("Pescado", null, scrollPanePescado, null);
-		
-		pnlPlatosPescado = new JPanel();
-		scrollPanePescado.setViewportView(pnlPlatosPescado);
-		pnlPlatosPescado.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		scrollPanePasta = new JScrollPane();
-		tabComidas.addTab("Pasta", null, scrollPanePasta, null);
-		
-		pnlPlatosPasta = new JPanel();
-		scrollPanePasta.setViewportView(pnlPlatosPasta);
-		pnlPlatosPasta.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		scrollPaneArroz = new JScrollPane();
-		tabComidas.addTab("Arroz", null, scrollPaneArroz, null);
-		
-		pnlPlatosArroz = new JPanel();
-		scrollPaneArroz.setViewportView(pnlPlatosArroz);
-		pnlPlatosArroz.setLayout(new GridLayout(0, 1, 0, 0));
 
-		scrollPaneBocadillos = new JScrollPane();
-		tabComidas.addTab("Bocadillos", null, scrollPaneBocadillos, null);
+		pnlCarneBase = new JPanel();
+		tabComidas.addTab("Carne", null, pnlCarneBase, null);
+		pnlCarneBase.setLayout(new BorderLayout(0, 0));
+
+		pnlCarne2 = new JPanel();
+		pnlCarneBase.add(pnlCarne2, BorderLayout.CENTER);
+		pnlCarne2.setLayout(new BorderLayout(0, 0));
+
+		pnlPasta = new JPanel();
+		tabComidas.addTab("Pasta", null, pnlPasta, null);
+		pnlPasta.setLayout(new BorderLayout(0, 0));
 		
-		pnlPlatosBocadillos = new JPanel();
-		scrollPaneBocadillos.setViewportView(pnlPlatosBocadillos);
-		pnlPlatosBocadillos.setLayout(new GridLayout(0, 1, 0, 0));
+		scrollBar = new JScrollBar();
+		pnlPasta.add(scrollBar, BorderLayout.EAST);
+
+		pnlArroz = new JPanel();
+		tabComidas.addTab("Arroz", null, pnlArroz, null);
+		pnlArroz.setLayout(new GridLayout(0, 2, 0, 0));
+
+		pnlBocadillos = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) pnlBocadillos.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEADING);
+		tabComidas.addTab("Bocadillos", null, pnlBocadillos, null);
 		
 		scrollPanePostre = new JScrollPane();
-		tabComidas.addTab("Postres", null, scrollPanePostre, null);
-		
-		pnlPlatosostre = new JPanel();
-		scrollPanePostre.setViewportView(pnlPlatosostre);
-		pnlPlatosostre.setLayout(new GridLayout(0, 1, 0, 0));
+		tabComidas.addTab("postre", null, scrollPanePostre, null);
+
+		pnlPescado = new JPanel();
+		pnlPescado.setMinimumSize(new Dimension(500, 500));
+		tabComidas.addTab("Pescado", null, pnlPescado, null);
+
+		lblAquiVamosA = new JLabel(
+				"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tamaño.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n");
+		pnlPescado.add(lblAquiVamosA);
+
+		pnlPlatosPescado = new JPanel();
+		pnlPlatosPescado.setMinimumSize(new Dimension(500, 500));
+		pnlPescado.add(pnlPlatosPescado);
+
+		btnNewButton = new JButton("New button");
+		pnlPlatosPescado.add(btnNewButton);
+
+		scrollPane_2 = new JScrollPane();
+		tabComidas.addTab("New tab", null, scrollPane_2, null);
+
+		pnlCarne = new JPanel();
+		scrollPane_2.setViewportView(pnlCarne);
+		pnlCarne.setLayout(new GridLayout(0, 1, 0, 0));
 
 		pnlBebidas = new JPanel();
 		tabInicio.addTab("Bebidas", null, pnlBebidas, null);
@@ -231,10 +242,6 @@ public class Principal {
 		panel_1.setMaximumSize(new Dimension(500, 500));
 		panel_1.setPreferredSize(new Dimension(200, 200));
 		scrlpnlTescripcion.setViewportView(panel_1);
-		
-				lblAquiVamosA = new JLabel(
-						"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tamaño.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n");
-				panel_1.add(lblAquiVamosA);
 
 		textAreaEsc = new JTextArea();
 		textAreaEsc.setText("Soy la escricion\r\ne\r\nsas\r\nsacosas\r\ngh\r\n\r\nh\r\njh\r\nj");
@@ -278,11 +285,11 @@ public class Principal {
 		gbc_panel.gridy = 2;
 		pnlInicio.add(panel, gbc_panel);
 
-		btnNewButton_1 = new JButton("comprar");
-		panel.add(btnNewButton_1);
+		btnCompra = new JButton("Comprar");
+		panel.add(btnCompra);
 
-		btnNewButton_2 = new JButton("O no");
-		panel.add(btnNewButton_2);
+		btnBorrar = new JButton("Borrar");
+		panel.add(btnBorrar);
 
 		pnlPedidos = new JPanel();
 		tabPrincipales.addTab("Pedidos", null, pnlPedidos, null);
@@ -297,19 +304,17 @@ public class Principal {
 	private class BtnAñadirProductoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 
-			JScrollPane pestana;
-		
-			JPanel tabla;
-		
-			pestana = (JScrollPane) tabComidas.getSelectedComponent();
-		
-			tabla=(JPanel) pestana.getViewport().getView();
+			JPanel pestana;
+			JPanel pestanaPanel;
+		//	Component hijos[1];
+			pestana = (JPanel) tabComidas.getSelectedComponent();
+		//	hijos[]= pestana.getComponents();
 			
-		
+			textAreaEsc.setText(String.valueOf(pestana));
 
-			tabla.add(new Producto());
-			tabla.repaint();
-			tabla.revalidate();
+			pestana.add(new Producto());
+			pestana.repaint();
+			pestana.revalidate();
 
 		}
 	}
@@ -317,20 +322,26 @@ public class Principal {
 	private class BtnEliminrroductoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			JScrollPane pestana;
-		
-			JPanel tabla;
-		
-			pestana = (JScrollPane) tabComidas.getSelectedComponent();
-		
-			tabla=(JPanel) pestana.getViewport().getView();
-			
-			if (tabla.getComponents().length >= 1) {
-				tabla.remove(tabla.getComponents().length - 1);
-				tabla.repaint();
-				tabla.revalidate();
+			JPanel pestana;
+			pestana = (JPanel) tabComidas.getSelectedComponent();
+			if (pestana.getComponents().length >= 1) {
+				pestana.remove(pestana.getComponents().length - 1);
+				pestana.repaint();
+				pestana.revalidate();
 			}
 
 		}
+	}
+
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
 	}
 }
