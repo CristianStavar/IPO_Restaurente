@@ -297,15 +297,12 @@ public class Principal {
 	private class BtnAñadirProductoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 
-			JScrollPane pestana;
-		
+			JScrollPane pestana;		
 			JPanel tabla;
 		
-			pestana = (JScrollPane) tabComidas.getSelectedComponent();
-		
+			pestana = (JScrollPane) tabComidas.getSelectedComponent();		
 			tabla=(JPanel) pestana.getViewport().getView();
 			
-		
 
 			tabla.add(new Producto());
 			tabla.repaint();
@@ -318,11 +315,8 @@ public class Principal {
 		public void actionPerformed(ActionEvent e) {
 
 			JScrollPane pestana;
-		
-			JPanel tabla;
-		
-			pestana = (JScrollPane) tabComidas.getSelectedComponent();
-		
+			JPanel tabla;		
+			pestana = (JScrollPane) tabComidas.getSelectedComponent();		
 			tabla=(JPanel) pestana.getViewport().getView();
 			
 			if (tabla.getComponents().length >= 1) {
