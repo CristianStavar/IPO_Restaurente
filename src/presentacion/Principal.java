@@ -32,9 +32,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollBar;
 import javax.swing.ScrollPaneConstants;
 import java.awt.Component;
+import java.awt.Dialog.ModalExclusionType;
+import java.awt.Window.Type;
 
-public class Principal {
+public class Principal extends JFrame{
 
+	/**
+	 * 
+	 */
 	private JFrame frame;
 	private JTabbedPane tabPrincipales;
 	private JPanel pnlInicio;
@@ -52,8 +57,8 @@ public class Principal {
 	private JScrollPane scrlpnlticket;
 	private JPanel pnlBilletes;
 	private JPanel panel;
-	private JButton btnNewButton_1;
-	private JButton btnNewButton_2;
+	private JButton btnCompra;
+	private JButton btnBorrar;
 	private JPanel pnlCambiosProductos;
 	private JButton btnAñadirProducto;
 	private JButton btnEliminrroducto;
@@ -81,7 +86,7 @@ public class Principal {
 			public void run() {
 				try {
 					Principal window = new Principal();
-					window.frame.setVisible(true);
+					window.getFrame().setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -100,13 +105,13 @@ public class Principal {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 912, 607);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setFrame(new JFrame());
+		getFrame().setBounds(100, 100, 939, 693);
+		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		tabPrincipales = new JTabbedPane(JTabbedPane.TOP);
 		tabPrincipales.setToolTipText("Soy penstañas\r\n");
-		frame.getContentPane().add(tabPrincipales, BorderLayout.CENTER);
+		getFrame().getContentPane().add(tabPrincipales, BorderLayout.CENTER);
 
 		pnlInicio = new JPanel();
 		pnlInicio.setName("");
@@ -278,11 +283,11 @@ public class Principal {
 		gbc_panel.gridy = 2;
 		pnlInicio.add(panel, gbc_panel);
 
-		btnNewButton_1 = new JButton("comprar");
-		panel.add(btnNewButton_1);
+		btnCompra = new JButton("Comprar");
+		panel.add(btnCompra);
 
-		btnNewButton_2 = new JButton("O no");
-		panel.add(btnNewButton_2);
+		btnBorrar = new JButton("Borrar");
+		panel.add(btnBorrar);
 
 		pnlPedidos = new JPanel();
 		tabPrincipales.addTab("Pedidos", null, pnlPedidos, null);
@@ -327,7 +332,7 @@ public class Principal {
 
 		}
 	}
-	
+
 	public JFrame getFrame() {
 		return frame;
 	}
