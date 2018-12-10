@@ -72,13 +72,6 @@ public class Principal extends JFrame {
 	private JPanel pnlBebidas;
 	private JPanel pnlOfertas;
 	private JTabbedPane tabComidas;
-	private JPanel pnlPescado;
-	private JPanel pnlCarneBase;
-	private JPanel pnlPlatosPescado;
-	private JButton btnNewButton;
-	private JPanel pnlBocadillos;
-	private JPanel pnlArroz;
-	private JPanel pnlPasta;
 	private JLabel lblAquiVamosA;
 	private JScrollPane scrlpnlTescripcion;
 	private JTable table;
@@ -91,12 +84,9 @@ public class Principal extends JFrame {
 	private JButton btnAñadirProducto;
 	private JButton btnEliminrroducto;
 	private JButton btnModificarProducto;
-	private JScrollPane scrollPane_2;
-	private JPanel pnlCarne2;
-	private JPanel pnlCarne;
+	private JScrollPane scrollPaneBocadillos;
 	private JPanel panel_1;
 	private JTextArea textAreaEsc;
-	private JScrollBar scrollBar;
 	private JScrollPane scrollPanePostre;
 	private JPanel pnlPlatosostre;
 	private JScrollPane scrollPaneCarnes;
@@ -104,10 +94,10 @@ public class Principal extends JFrame {
 	private JScrollPane scrollPanePasta;
 	private JScrollPane scrollPaneArroz;
 	private JPanel pnlPlatosBocadillos;
-	private JPanel pnlPlatosCarne;
 	private JPanel pnlPlatosPescado;
 	private JPanel pnlPlatosPasta;
 	private JPanel pnlPlatosArroz;
+	private JTable table_1;
 	private JLabel lblNombre;
 	private JTextField txtNombre;
 	private JLabel lblApellidos;
@@ -153,6 +143,7 @@ public class Principal extends JFrame {
 	private JLabel lblFechaRecogida;
 	private JFormattedTextField frmtFechaRecogida;
 
+
 	/**
 	 * Launch the application.
 	 */
@@ -165,7 +156,9 @@ public class Principal extends JFrame {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+
 			}
+
 		});
 	}
 
@@ -182,7 +175,7 @@ public class Principal extends JFrame {
 	 */
 	private void initialize() {
 		setFrame(new JFrame());
-		getFrame().setBounds(100, 100, 997, 770);
+		getFrame().setBounds(100, 100, 939, 693);
 		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		tabPrincipales = new JTabbedPane(JTabbedPane.TOP);
@@ -194,7 +187,7 @@ public class Principal extends JFrame {
 		tabPrincipales.addTab("Inicio", null, pnlInicio, null);
 		GridBagLayout gbl_pnlInicio = new GridBagLayout();
 		gbl_pnlInicio.columnWidths = new int[] { 1010, 0, 642, 0 };
-		gbl_pnlInicio.rowHeights = new int[] { 335, 284, 65, 0 };
+		gbl_pnlInicio.rowHeights = new int[] { 195, 205, 65, 0 };
 		gbl_pnlInicio.columnWeights = new double[] { 1.0, 0.0, 1.0, Double.MIN_VALUE };
 		gbl_pnlInicio.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		pnlInicio.setLayout(gbl_pnlInicio);
@@ -219,54 +212,63 @@ public class Principal extends JFrame {
 		tabComidas.setBackground(Color.WHITE);
 		pnlComida.add(tabComidas);
 
-		pnlCarneBase = new JPanel();
-		tabComidas.addTab("Carne", null, pnlCarneBase, null);
-		pnlCarneBase.setLayout(new BorderLayout(0, 0));
-
-		pnlCarne2 = new JPanel();
-		pnlCarneBase.add(pnlCarne2, BorderLayout.CENTER);
-		pnlCarne2.setLayout(new BorderLayout(0, 0));
-
-		pnlPasta = new JPanel();
-		tabComidas.addTab("Pasta", null, pnlPasta, null);
-		pnlPasta.setLayout(new BorderLayout(0, 0));
+		scrollPaneCarnes = new JScrollPane();
+		tabComidas.addTab("Carne", null, scrollPaneCarnes, null);
 		
-		scrollBar = new JScrollBar();
-		pnlPasta.add(scrollBar, BorderLayout.EAST);
+		table_1 = new JTable();
+		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table_1.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, "Guiso", new Double(13.2)},
+				{"", "Pollo", new Double(8.0)},
+			},
+			new String[] {
+				"Foto", "Protucto", "Precio"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Object.class, String.class, Double.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		scrollPaneCarnes.setViewportView(table_1);
 
-		pnlArroz = new JPanel();
-		tabComidas.addTab("Arroz", null, pnlArroz, null);
-		pnlArroz.setLayout(new GridLayout(0, 2, 0, 0));
-
-		pnlBocadillos = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) pnlBocadillos.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEADING);
-		tabComidas.addTab("Bocadillos", null, pnlBocadillos, null);
-		
-		scrollPanePostre = new JScrollPane();
-		tabComidas.addTab("postre", null, scrollPanePostre, null);
-
-		pnlPescado = new JPanel();
-		pnlPescado.setMinimumSize(new Dimension(500, 500));
-		tabComidas.addTab("Pescado", null, pnlPescado, null);
-
-		lblAquiVamosA = new JLabel(
-				"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tamaño.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n");
-		pnlPescado.add(lblAquiVamosA);
+		scrollPanePescado = new JScrollPane();
+		tabComidas.addTab("Pescado", null, scrollPanePescado, null);
 
 		pnlPlatosPescado = new JPanel();
-		pnlPlatosPescado.setMinimumSize(new Dimension(500, 500));
-		pnlPescado.add(pnlPlatosPescado);
+		scrollPanePescado.setViewportView(pnlPlatosPescado);
+		pnlPlatosPescado.setLayout(new GridLayout(0, 1, 0, 0));
 
-		btnNewButton = new JButton("New button");
-		pnlPlatosPescado.add(btnNewButton);
+		scrollPanePasta = new JScrollPane();
+		tabComidas.addTab("Pasta", null, scrollPanePasta, null);
 
-		scrollPane_2 = new JScrollPane();
-		tabComidas.addTab("New tab", null, scrollPane_2, null);
+		pnlPlatosPasta = new JPanel();
+		scrollPanePasta.setViewportView(pnlPlatosPasta);
+		pnlPlatosPasta.setLayout(new GridLayout(0, 1, 0, 0));
 
-		pnlCarne = new JPanel();
-		scrollPane_2.setViewportView(pnlCarne);
-		pnlCarne.setLayout(new GridLayout(0, 1, 0, 0));
+		scrollPaneArroz = new JScrollPane();
+		tabComidas.addTab("Arroz", null, scrollPaneArroz, null);
+
+		pnlPlatosArroz = new JPanel();
+		scrollPaneArroz.setViewportView(pnlPlatosArroz);
+		pnlPlatosArroz.setLayout(new GridLayout(0, 1, 0, 0));
+
+		scrollPaneBocadillos = new JScrollPane();
+		tabComidas.addTab("Bocadillos", null, scrollPaneBocadillos, null);
+
+		pnlPlatosBocadillos = new JPanel();
+		scrollPaneBocadillos.setViewportView(pnlPlatosBocadillos);
+		pnlPlatosBocadillos.setLayout(new GridLayout(0, 1, 0, 0));
+
+		scrollPanePostre = new JScrollPane();
+		tabComidas.addTab("Postres", null, scrollPanePostre, null);
+
+		pnlPlatosostre = new JPanel();
+		scrollPanePostre.setViewportView(pnlPlatosostre);
+		pnlPlatosostre.setLayout(new GridLayout(0, 1, 0, 0));
 
 		pnlBebidas = new JPanel();
 		tabInicio.addTab("Bebidas", null, pnlBebidas, null);
@@ -320,14 +322,18 @@ public class Principal extends JFrame {
 		panel_1.setPreferredSize(new Dimension(200, 200));
 		scrlpnlTescripcion.setViewportView(panel_1);
 
+		lblAquiVamosA = new JLabel(
+				"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tamaño.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n");
+		panel_1.add(lblAquiVamosA);
+
 		textAreaEsc = new JTextArea();
 		textAreaEsc.setText("Soy la escricion\r\ne\r\nsas\r\nsacosas\r\ngh\r\n\r\nh\r\njh\r\nj");
 		panel_1.add(textAreaEsc);
 
 		pnlBilletes = new PanelCalculadora();
-		pnlBilletes.setMaximumSize(new Dimension(350, 250));
-		pnlBilletes.setPreferredSize(new Dimension(350, 250));
-		pnlBilletes.setSize(new Dimension(300, 250));
+		pnlBilletes.setMaximumSize(new Dimension(500, 350));
+		pnlBilletes.setPreferredSize(new Dimension(400, 300));
+		pnlBilletes.setSize(new Dimension(400, 300));
 		GridBagConstraints gbc_pnlBilletes = new GridBagConstraints();
 		gbc_pnlBilletes.fill = GridBagConstraints.BOTH;
 		gbc_pnlBilletes.insets = new Insets(0, 0, 5, 0);
@@ -338,9 +344,8 @@ public class Principal extends JFrame {
 
 		pnlCambiosProductos = new JPanel();
 		GridBagConstraints gbc_pnlCambiosProductos = new GridBagConstraints();
-		gbc_pnlCambiosProductos.anchor = GridBagConstraints.NORTH;
 		gbc_pnlCambiosProductos.insets = new Insets(0, 0, 0, 5);
-		gbc_pnlCambiosProductos.fill = GridBagConstraints.HORIZONTAL;
+		gbc_pnlCambiosProductos.fill = GridBagConstraints.BOTH;
 		gbc_pnlCambiosProductos.gridx = 0;
 		gbc_pnlCambiosProductos.gridy = 2;
 		pnlInicio.add(pnlCambiosProductos, gbc_pnlCambiosProductos);
@@ -350,7 +355,6 @@ public class Principal extends JFrame {
 		pnlCambiosProductos.add(btnAñadirProducto);
 
 		btnModificarProducto = new JButton("Modificar");
-		btnModificarProducto.setIcon(null);
 		pnlCambiosProductos.add(btnModificarProducto);
 
 		btnEliminrroducto = new JButton("Eliminar");
@@ -359,8 +363,7 @@ public class Principal extends JFrame {
 
 		panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.anchor = GridBagConstraints.NORTH;
-		gbc_panel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 2;
 		gbc_panel.gridy = 2;
 		pnlInicio.add(panel, gbc_panel);
@@ -776,17 +779,23 @@ public class Principal extends JFrame {
 	private class BtnAñadirProductoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 
-			JPanel pestana;
-			JPanel pestanaPanel;
-		//	Component hijos[1];
-			pestana = (JPanel) tabComidas.getSelectedComponent();
-		//	hijos[]= pestana.getComponents();
-			
-			textAreaEsc.setText(String.valueOf(pestana));
+			JScrollPane pestana;
+			JPanel tabla;
+			Producto plato = new Producto();
+			pestana = (JScrollPane) tabComidas.getSelectedComponent();
+			tabla = (JPanel) pestana.getViewport().getView();
+			try {
+				File file = new File("saveFile.sav");
+				FileOutputStream saveFile = new FileOutputStream(file);
+				ObjectOutputStream save = new ObjectOutputStream(saveFile);
+				save.writeObject(plato);
+				save.close();
+			} catch (Exception exc) {
+			}
 
-			pestana.add(new Producto());
-			pestana.repaint();
-			pestana.revalidate();
+			tabla.add(plato);
+			tabla.repaint();
+			tabla.revalidate();
 
 		}
 	}
@@ -794,19 +803,18 @@ public class Principal extends JFrame {
 	private class BtnEliminrroductoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			JPanel pestana;
-			pestana = (JPanel) tabComidas.getSelectedComponent();
-			if (pestana.getComponents().length >= 1) {
-				pestana.remove(pestana.getComponents().length - 1);
-				pestana.repaint();
-				pestana.revalidate();
+			JScrollPane pestana;
+			JPanel tabla;
+			pestana = (JScrollPane) tabComidas.getSelectedComponent();
+			tabla = (JPanel) pestana.getViewport().getView();
+
+			if (tabla.getComponents().length >= 1) {
+				tabla.remove(tabla.getComponents().length - 1);
+				tabla.repaint();
+				tabla.revalidate();
 			}
 
 		}
-	}
-
-	public void setVisible(boolean b) {
-		// TODO Auto-generated method stub
 	}
 
 	public JFrame getFrame() {
@@ -816,4 +824,28 @@ public class Principal extends JFrame {
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
 	}
+
+	/*public void lectura() {
+		//JScrollPane pestana;
+		JPanel tabla;
+
+		// pestana = tabComidas;
+		tabla = pnlPlatosCarne;
+		try (FileInputStream saveFile = new FileInputStream("saveFile.sav");
+				ObjectInputStream objectInput = new ObjectInputStream(saveFile);) {
+
+			while (objectInput.readObject() != null) {
+				Producto leerPlato = (Producto) objectInput.readObject();
+				tabla.add(leerPlato);
+				tabla.repaint();
+				tabla.revalidate();
+			}
+
+		} catch (IOException eof) {
+			System.out.println("Reached end of file");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}*/
 }
