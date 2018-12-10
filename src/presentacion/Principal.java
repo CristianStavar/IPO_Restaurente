@@ -17,17 +17,18 @@ import java.awt.Insets;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JFormattedTextField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
-import javax.swing.JViewport;
+import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.AbstractListModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.GridLayout;
 import java.awt.CardLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.io.EOFException;
 import java.io.File;
@@ -55,7 +56,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JEditorPane;
 import javax.swing.ImageIcon;
 
-public class Principal extends JFrame{
+public class Principal extends JFrame {
 
 	/**
 	 * 
