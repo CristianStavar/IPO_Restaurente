@@ -16,6 +16,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JViewport;
@@ -42,7 +43,8 @@ import javax.swing.ScrollPaneConstants;
 import java.awt.Component;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.Window.Type;
-
+import javax.swing.JInternalFrame;
+import javax.swing.ListSelectionModel;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
