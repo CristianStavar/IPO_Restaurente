@@ -28,6 +28,14 @@ import java.awt.GridLayout;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollBar;
 import javax.swing.ScrollPaneConstants;
@@ -35,7 +43,7 @@ import java.awt.Component;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.Window.Type;
 
-public class Principal extends JFrame{
+public class Principal extends JFrame {
 
 	/**
 	 * 
@@ -90,7 +98,9 @@ public class Principal extends JFrame{
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+
 			}
+
 		});
 	}
 
@@ -99,6 +109,7 @@ public class Principal extends JFrame{
 	 */
 	public Principal() {
 		initialize();
+	//	lectura();
 	}
 
 	/**
@@ -142,45 +153,45 @@ public class Principal extends JFrame{
 		tabComidas.setOpaque(true);
 		tabComidas.setBackground(Color.WHITE);
 		pnlComida.add(tabComidas);
-		
+
 		scrollPaneCarnes = new JScrollPane();
 		tabComidas.addTab("Carne", null, scrollPaneCarnes, null);
-		
+
 		pnlPlatosCarne = new JPanel();
 		scrollPaneCarnes.setViewportView(pnlPlatosCarne);
 		pnlPlatosCarne.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		scrollPanePescado = new JScrollPane();
 		tabComidas.addTab("Pescado", null, scrollPanePescado, null);
-		
+
 		pnlPlatosPescado = new JPanel();
 		scrollPanePescado.setViewportView(pnlPlatosPescado);
 		pnlPlatosPescado.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		scrollPanePasta = new JScrollPane();
 		tabComidas.addTab("Pasta", null, scrollPanePasta, null);
-		
+
 		pnlPlatosPasta = new JPanel();
 		scrollPanePasta.setViewportView(pnlPlatosPasta);
 		pnlPlatosPasta.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		scrollPaneArroz = new JScrollPane();
 		tabComidas.addTab("Arroz", null, scrollPaneArroz, null);
-		
+
 		pnlPlatosArroz = new JPanel();
 		scrollPaneArroz.setViewportView(pnlPlatosArroz);
 		pnlPlatosArroz.setLayout(new GridLayout(0, 1, 0, 0));
 
 		scrollPaneBocadillos = new JScrollPane();
 		tabComidas.addTab("Bocadillos", null, scrollPaneBocadillos, null);
-		
+
 		pnlPlatosBocadillos = new JPanel();
 		scrollPaneBocadillos.setViewportView(pnlPlatosBocadillos);
 		pnlPlatosBocadillos.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		scrollPanePostre = new JScrollPane();
 		tabComidas.addTab("Postres", null, scrollPanePostre, null);
-		
+
 		pnlPlatosostre = new JPanel();
 		scrollPanePostre.setViewportView(pnlPlatosostre);
 		pnlPlatosostre.setLayout(new GridLayout(0, 1, 0, 0));
@@ -236,10 +247,10 @@ public class Principal extends JFrame{
 		panel_1.setMaximumSize(new Dimension(500, 500));
 		panel_1.setPreferredSize(new Dimension(200, 200));
 		scrlpnlTescripcion.setViewportView(panel_1);
-		
-				lblAquiVamosA = new JLabel(
-						"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tamaño.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n");
-				panel_1.add(lblAquiVamosA);
+
+		lblAquiVamosA = new JLabel(
+				"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tamaño.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n");
+		panel_1.add(lblAquiVamosA);
 
 		textAreaEsc = new JTextArea();
 		textAreaEsc.setText("Soy la escricion\r\ne\r\nsas\r\nsacosas\r\ngh\r\n\r\nh\r\njh\r\nj");
@@ -302,14 +313,21 @@ public class Principal extends JFrame{
 	private class BtnAñadirProductoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 
-			JScrollPane pestana;		
+			JScrollPane pestana;
 			JPanel tabla;
-		
-			pestana = (JScrollPane) tabComidas.getSelectedComponent();		
-			tabla=(JPanel) pestana.getViewport().getView();
-			
+			Producto plato = new Producto();
+			pestana = (JScrollPane) tabComidas.getSelectedComponent();
+			tabla = (JPanel) pestana.getViewport().getView();
+			try {
+				File file = new File("saveFile.sav");
+				FileOutputStream saveFile = new FileOutputStream(file);
+				ObjectOutputStream save = new ObjectOutputStream(saveFile);
+				save.writeObject(plato);
+				save.close();
+			} catch (Exception exc) {
+			}
 
-			tabla.add(new Producto());
+			tabla.add(plato);
 			tabla.repaint();
 			tabla.revalidate();
 
@@ -320,10 +338,10 @@ public class Principal extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 
 			JScrollPane pestana;
-			JPanel tabla;		
-			pestana = (JScrollPane) tabComidas.getSelectedComponent();		
-			tabla=(JPanel) pestana.getViewport().getView();
-			
+			JPanel tabla;
+			pestana = (JScrollPane) tabComidas.getSelectedComponent();
+			tabla = (JPanel) pestana.getViewport().getView();
+
 			if (tabla.getComponents().length >= 1) {
 				tabla.remove(tabla.getComponents().length - 1);
 				tabla.repaint();
@@ -339,5 +357,29 @@ public class Principal extends JFrame{
 
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
+	}
+
+	public void lectura() {
+		//JScrollPane pestana;
+		JPanel tabla;
+
+		// pestana = tabComidas;
+		tabla = pnlPlatosCarne;
+		try (FileInputStream saveFile = new FileInputStream("saveFile.sav");
+				ObjectInputStream objectInput = new ObjectInputStream(saveFile);) {
+
+			while (objectInput.readObject() != null) {
+				Producto leerPlato = (Producto) objectInput.readObject();
+				tabla.add(leerPlato);
+				tabla.repaint();
+				tabla.revalidate();
+			}
+
+		} catch (IOException eof) {
+			System.out.println("Reached end of file");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -73,89 +73,88 @@ public class LoginRest {
 		frmRestaurante.setBounds(100, 100, 431, 257);
 		frmRestaurante.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmRestaurante.getContentPane().setLayout(null);
-		
+
 		panel = new JPanel();
 		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel.setBounds(10, 11, 405, 205);
 		frmRestaurante.getContentPane().add(panel);
 		panel.setLayout(null);
-		
+
 		lblUsuario = new JLabel("Nombre:");
 		lblUsuario.setBounds(104, 67, 59, 14);
 		panel.add(lblUsuario);
-		
+
 		lblPassword = new JLabel("Contraseña:");
 		lblPassword.setEnabled(false);
 		lblPassword.setBounds(95, 104, 86, 14);
 		panel.add(lblPassword);
-		
+
 		tfUsuario = new JTextField();
 		tfUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//Activamos los de la contraseñalblPassword.
+				// Activamos los de la contraseñalblPassword.
 				lblPassword.setEnabled(true);
 				pwdfPassword.setEnabled(true);
-				//Pasamos el foco (el cursor) al campo de la contraseña
+				// Pasamos el foco (el cursor) al campo de la contraseña
 				pwdfPassword.requestFocus();
 			}
 		});
 		tfUsuario.setBounds(191, 64, 134, 20);
 		panel.add(tfUsuario);
 		tfUsuario.setColumns(10);
-		
+
 		pwdfPassword = new JPasswordField();
 		pwdfPassword.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				//mostramos el carácter de la tecla pulsada
+				// mostramos el carácter de la tecla pulsada
 			}
 		});
 		pwdfPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					//obtenemos la contraseña introducida
-					if (String.valueOf(pwdfPassword.getPassword()).equals(password)){
-						btnEntrar.setEnabled(true);
-						lblAviso.setBackground(Color.GREEN);
-						lblAviso.setText("Contraseña correcta. Puede entrar");
-						lblAviso.setVisible(true);
-						lblPassword.setEnabled(false);
-						pwdfPassword.setEnabled(false);
-					}
-					else {
-						lblAviso.setBackground(Color.RED);
-						lblAviso.setText("Contraseña incorrecta. Vuelva a intentarlo");
-						lblAviso.setVisible(true);
-						pwdfPassword.setText(null);
-					}
+				// obtenemos la contraseña introducida
+				if (String.valueOf(pwdfPassword.getPassword()).equals(password)) {
+					btnEntrar.setEnabled(true);
+					lblAviso.setBackground(Color.GREEN);
+					lblAviso.setText("Contraseña correcta. Puede entrar");
+					lblAviso.setVisible(true);
+					lblPassword.setEnabled(false);
+					pwdfPassword.setEnabled(false);
+				} else {
+					lblAviso.setBackground(Color.RED);
+					lblAviso.setText("Contraseña incorrecta. Vuelva a intentarlo");
+					lblAviso.setVisible(true);
+					pwdfPassword.setText(null);
+				}
 			}
 		});
 		pwdfPassword.setEnabled(false);
 		pwdfPassword.setBounds(191, 101, 134, 20);
 		panel.add(pwdfPassword);
-		
+
 		lblAviso = new JLabel("");
 		lblAviso.setOpaque(true);
 		lblAviso.setBounds(115, 129, 224, 33);
 		panel.add(lblAviso);
-		
+
 		btnEntrar = new JButton("Entrar");
 		btnEntrar.setEnabled(false);
 		btnEntrar.addActionListener(new BtnEntrarActionListener());
 		btnEntrar.setBounds(171, 173, 89, 23);
 		panel.add(btnEntrar);
-		
+
 		cmbBoxIdioma = new JComboBox();
 		cmbBoxIdioma.setName("Idioma");
 		cmbBoxIdioma.setToolTipText("Idioma\r\n");
-		cmbBoxIdioma.setModel(new DefaultComboBoxModel(new String[] {"Español", "Ingles"}));
+		cmbBoxIdioma.setModel(new DefaultComboBoxModel(new String[] { "Español", "Ingles" }));
 		cmbBoxIdioma.setBounds(311, 11, 77, 20);
 		panel.add(cmbBoxIdioma);
 	}
 
 	private class BtnEntrarActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (String.valueOf(pwdfPassword.getPassword()).equals(password)){
-				Principal ventana= new Principal();
+			if (String.valueOf(pwdfPassword.getPassword()).equals(password)) {
+				Principal ventana = new Principal();
 				ventana.getFrame().setVisible(true);
 				LoginRest.dispose();
 			}
@@ -164,6 +163,6 @@ public class LoginRest {
 
 	protected static void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
