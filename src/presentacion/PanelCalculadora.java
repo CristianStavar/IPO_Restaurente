@@ -22,11 +22,12 @@ public class PanelCalculadora extends JPanel {
 		for (int i = 0; i < 11; i++) {
 			JButton button = new JButton();
 			button.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagen" + String.valueOf(i) + ".jpg")));
-			button.setSize(50,200);
+			button.setSize(40,200);
 			button.setFont(fuente);
 			
 			this.add(button); // añadir cada componente al contenedor (JPanel)
 			JTextField texto = new JTextField(String.valueOf(1));
+			texto.setSize(50, 40);
 			this.add(texto);
 			
 			

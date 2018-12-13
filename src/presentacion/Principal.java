@@ -55,6 +55,8 @@ import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
 import javax.swing.JEditorPane;
 import javax.swing.ImageIcon;
+import javax.swing.JMenuBar;
+import javax.swing.DefaultComboBoxModel;
 
 public class Principal extends JFrame {
 
@@ -117,17 +119,12 @@ public class Principal extends JFrame {
 	private JButton btnModificar;
 	private JButton btnEliminar;
 	private JTextArea textArea;
-	private JToggleButton tglbtnBuscar;
 	private JEditorPane edpnlMapa;
 	private JList lstPedidos;
 	private JList lstRepartidores;
 	private JButton btnIdioma;
 	private JButton btnIdioma_1;
-	private JButton button;
-	private JTabbedPane TbblPedidos;
-	private JPanel pnldePedidosç;
-	private JButton btnModificar_1;
-	private JButton btnEliminar_1;
+	private JPanel pnldePedidos;
 	private JPanel panel_2;
 	private JLabel lblNombre_1;
 	private JLabel lblDireccion_1;
@@ -142,6 +139,14 @@ public class Principal extends JFrame {
 	private JPanel panel_3;
 	private JLabel lblFechaRecogida;
 	private JFormattedTextField frmtFechaRecogida;
+	private JMenuBar menuBar;
+	private JComboBox comboBox;
+	private JComboBox comboBox_1;
+	private JComboBox comboBox_2;
+	private JButton btnMenuPerfilUsuario;
+	private JLabel lblPetito;
+	private JPanel panel_4;
+	private JPanel panel_5;
 
 
 	/**
@@ -187,9 +192,9 @@ public class Principal extends JFrame {
 		tabPrincipales.addTab("Inicio", null, pnlInicio, null);
 		GridBagLayout gbl_pnlInicio = new GridBagLayout();
 		gbl_pnlInicio.columnWidths = new int[] { 1010, 0, 642, 0 };
-		gbl_pnlInicio.rowHeights = new int[] { 195, 205, 65, 0 };
+		gbl_pnlInicio.rowHeights = new int[] { 363, 167, 39, 0 };
 		gbl_pnlInicio.columnWeights = new double[] { 1.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_pnlInicio.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_pnlInicio.rowWeights = new double[] { 1.0, 1.0, 0.0, Double.MIN_VALUE };
 		pnlInicio.setLayout(gbl_pnlInicio);
 
 		tabInicio = new JTabbedPane(JTabbedPane.TOP);
@@ -203,6 +208,7 @@ public class Principal extends JFrame {
 		pnlComida = new JPanel();
 		pnlComida.setMinimumSize(new Dimension(500, 350));
 		tabInicio.addTab("Platos", null, pnlComida, null);
+		pnlComida.setLayout(new BorderLayout(0, 0));
 
 		tabComidas = new JTabbedPane(JTabbedPane.LEFT);
 		tabComidas.setName("");
@@ -275,6 +281,13 @@ public class Principal extends JFrame {
 
 		pnlOfertas = new JPanel();
 		tabInicio.addTab("Ofertas", null, pnlOfertas, null);
+		
+		lblPetito = new JLabel("petito");
+		GridBagConstraints gbc_lblPetito = new GridBagConstraints();
+		gbc_lblPetito.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPetito.gridx = 1;
+		gbc_lblPetito.gridy = 0;
+		pnlInicio.add(lblPetito, gbc_lblPetito);
 
 		scrlpnlticket = new JScrollPane();
 		scrlpnlticket.setMinimumSize(new Dimension(200, 200));
@@ -286,23 +299,48 @@ public class Principal extends JFrame {
 		gbc_scrlpnlticket.gridx = 2;
 		gbc_scrlpnlticket.gridy = 0;
 		pnlInicio.add(scrlpnlticket, gbc_scrlpnlticket);
-
-		table = new JTable();
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		scrlpnlticket.setViewportView(table);
-		table.setModel(new DefaultTableModel(
-				new Object[][] { { "ProPatatas", "x6", "34" }, { "fritas", "x4", "12" }, { "postre", "5", "5" },
-						{ null, null, null }, { "gf", null, null }, { null, null, null }, { null, null, null }, },
-				new String[] { "Product", "Cantidad", "Precio" }) {
-			boolean[] columnEditables = new boolean[] { false, false, false };
-
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
-		table.getColumnModel().getColumn(0).setMaxWidth(100);
-		table.getColumnModel().getColumn(1).setMaxWidth(100);
-		table.getColumnModel().getColumn(2).setMaxWidth(100);
+		
+		panel_4 = new JPanel();
+		scrlpnlticket.setViewportView(panel_4);
+		panel_4.setLayout(new BorderLayout(0, 0));
+		
+				table = new JTable();
+				panel_4.add(table, BorderLayout.NORTH);
+				table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+				table.setModel(new DefaultTableModel(
+					new Object[][] {
+						{"ProPatatas", "x6", "34"},
+						{"fritas", "x4", "12"},
+						{"postre", "5", "5"},
+						{"Bacalao rebozato con patatas", null, null},
+						{"gf", null, null},
+						{null, null, null},
+						{null, null, null},
+						{null, null, null},
+						{null, null, null},
+						{null, null, null},
+						{null, null, null},
+						{null, null, null},
+						{null, null, null},
+						{null, null, null},
+						{null, null, null},
+					},
+					new String[] {
+						"Product", "Cantidad", "Precio"
+					}
+				) {
+					boolean[] columnEditables = new boolean[] {
+						false, false, false
+					};
+					public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
+					}
+				});
+				table.getColumnModel().getColumn(0).setPreferredWidth(200);
+				table.getColumnModel().getColumn(0).setMinWidth(20);
+				table.getColumnModel().getColumn(0).setMaxWidth(200);
+				table.getColumnModel().getColumn(1).setMaxWidth(100);
+				table.getColumnModel().getColumn(2).setMaxWidth(100);
 
 		scrlpnlTescripcion = new JScrollPane();
 		scrlpnlTescripcion.setPreferredSize(new Dimension(200, 200));
@@ -321,12 +359,15 @@ public class Principal extends JFrame {
 		panel_1.setMaximumSize(new Dimension(500, 500));
 		panel_1.setPreferredSize(new Dimension(200, 200));
 		scrlpnlTescripcion.setViewportView(panel_1);
+		panel_1.setLayout(new BorderLayout(0, 0));
 
 		lblAquiVamosA = new JLabel(
 				"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tamaño.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n");
+		lblAquiVamosA.setOpaque(true);
 		panel_1.add(lblAquiVamosA);
 
 		textAreaEsc = new JTextArea();
+		textAreaEsc.setMaximumSize(new Dimension(500, 300));
 		textAreaEsc.setText("Soy la escricion\r\ne\r\nsas\r\nsacosas\r\ngh\r\n\r\nh\r\njh\r\nj");
 		panel_1.add(textAreaEsc);
 
@@ -377,55 +418,24 @@ public class Principal extends JFrame {
 		pnlPedidos = new JPanel();
 		tabPrincipales.addTab("Pedidos", null, pnlPedidos, null);
 		GridBagLayout gbl_pnlPedidos = new GridBagLayout();
-		gbl_pnlPedidos.columnWidths = new int[]{532, 79, 770, 0};
-		gbl_pnlPedidos.rowHeights = new int[]{40, 0, 0};
-		gbl_pnlPedidos.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_pnlPedidos.columnWidths = new int[]{918, 0};
+		gbl_pnlPedidos.rowHeights = new int[]{514, 277, 0};
+		gbl_pnlPedidos.columnWeights = new double[]{0.0, Double.MIN_VALUE};
 		gbl_pnlPedidos.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		pnlPedidos.setLayout(gbl_pnlPedidos);
 		
-		button = new JButton("Añadir");
-		GridBagConstraints gbc_button = new GridBagConstraints();
-		gbc_button.anchor = GridBagConstraints.EAST;
-		gbc_button.insets = new Insets(0, 0, 5, 5);
-		gbc_button.gridx = 0;
-		gbc_button.gridy = 0;
-		pnlPedidos.add(button, gbc_button);
-		
-		btnModificar_1 = new JButton("Modificar");
-		GridBagConstraints gbc_btnModificar_1 = new GridBagConstraints();
-		gbc_btnModificar_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnModificar_1.gridx = 1;
-		gbc_btnModificar_1.gridy = 0;
-		pnlPedidos.add(btnModificar_1, gbc_btnModificar_1);
-		
-		btnEliminar_1 = new JButton("Eliminar");
-		GridBagConstraints gbc_btnEliminar_1 = new GridBagConstraints();
-		gbc_btnEliminar_1.anchor = GridBagConstraints.WEST;
-		gbc_btnEliminar_1.insets = new Insets(0, 0, 5, 0);
-		gbc_btnEliminar_1.gridx = 2;
-		gbc_btnEliminar_1.gridy = 0;
-		pnlPedidos.add(btnEliminar_1, gbc_btnEliminar_1);
-		
-		TbblPedidos = new JTabbedPane(JTabbedPane.LEFT);
-		TbblPedidos.setPreferredSize(new Dimension(600, 350));
-		TbblPedidos.setOpaque(true);
-		TbblPedidos.setName("");
-		TbblPedidos.setMinimumSize(new Dimension(500, 350));
-		TbblPedidos.setBackground(Color.WHITE);
-		GridBagConstraints gbc_TbblPedidos = new GridBagConstraints();
-		gbc_TbblPedidos.gridwidth = 3;
-		gbc_TbblPedidos.fill = GridBagConstraints.BOTH;
-		gbc_TbblPedidos.gridx = 0;
-		gbc_TbblPedidos.gridy = 1;
-		pnlPedidos.add(TbblPedidos, gbc_TbblPedidos);
-		
-		pnldePedidosç = new JPanel();
-		TbblPedidos.addTab("Pedidos", null, pnldePedidosç, null);
-		pnldePedidosç.setLayout(new GridLayout(0, 1, 0, 0));
+		pnldePedidos = new JPanel();
+		GridBagConstraints gbc_pnldePedidos = new GridBagConstraints();
+		gbc_pnldePedidos.anchor = GridBagConstraints.NORTH;
+		gbc_pnldePedidos.fill = GridBagConstraints.HORIZONTAL;
+		gbc_pnldePedidos.gridx = 0;
+		gbc_pnldePedidos.gridy = 1;
+		pnlPedidos.add(pnldePedidos, gbc_pnldePedidos);
+		pnldePedidos.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		panel_2 = new JPanel();
 		panel_2.setMaximumSize(new Dimension(327, 327));
-		pnldePedidosç.add(panel_2);
+		pnldePedidos.add(panel_2);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[]{108, 167, 125, 172, 204, 0};
 		gbl_panel_2.rowHeights = new int[]{461, 0, 0, 0, 0, 0};
@@ -586,16 +596,25 @@ public class Principal extends JFrame {
 		tabPrincipales.addTab("Clientes", null, pnlClientes, null);
 		GridBagLayout gbl_pnlClientes = new GridBagLayout();
 		gbl_pnlClientes.columnWidths = new int[]{112, 246, 110, 223, 251, 0};
-		gbl_pnlClientes.rowHeights = new int[]{30, 20, 20, 20, 43, 43, 47, 50, 0};
+		gbl_pnlClientes.rowHeights = new int[]{47, 30, 20, 20, 20, 43, 0};
 		gbl_pnlClientes.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_pnlClientes.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_pnlClientes.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		pnlClientes.setLayout(gbl_pnlClientes);
+		
+		textArea = new JTextArea();
+		GridBagConstraints gbc_textArea = new GridBagConstraints();
+		gbc_textArea.gridwidth = 5;
+		gbc_textArea.insets = new Insets(0, 0, 5, 0);
+		gbc_textArea.fill = GridBagConstraints.BOTH;
+		gbc_textArea.gridx = 0;
+		gbc_textArea.gridy = 0;
+		pnlClientes.add(textArea, gbc_textArea);
 		
 		btnIdioma_1 = new JButton("Idioma");
 		GridBagConstraints gbc_btnIdioma_1 = new GridBagConstraints();
 		gbc_btnIdioma_1.insets = new Insets(0, 0, 5, 0);
 		gbc_btnIdioma_1.gridx = 4;
-		gbc_btnIdioma_1.gridy = 0;
+		gbc_btnIdioma_1.gridy = 1;
 		pnlClientes.add(btnIdioma_1, gbc_btnIdioma_1);
 		
 		lblNombre = new JLabel("Nombre:  ");
@@ -603,7 +622,7 @@ public class Principal extends JFrame {
 		gbc_lblNombre.anchor = GridBagConstraints.EAST;
 		gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNombre.gridx = 0;
-		gbc_lblNombre.gridy = 1;
+		gbc_lblNombre.gridy = 2;
 		pnlClientes.add(lblNombre, gbc_lblNombre);
 		
 		txtNombre = new JTextField();
@@ -613,7 +632,7 @@ public class Principal extends JFrame {
 		gbc_txtNombre.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtNombre.insets = new Insets(0, 0, 5, 5);
 		gbc_txtNombre.gridx = 1;
-		gbc_txtNombre.gridy = 1;
+		gbc_txtNombre.gridy = 2;
 		pnlClientes.add(txtNombre, gbc_txtNombre);
 		
 		lblTelf = new JLabel("Telefono:  ");
@@ -621,7 +640,7 @@ public class Principal extends JFrame {
 		gbc_lblTelf.anchor = GridBagConstraints.EAST;
 		gbc_lblTelf.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTelf.gridx = 2;
-		gbc_lblTelf.gridy = 1;
+		gbc_lblTelf.gridy = 2;
 		pnlClientes.add(lblTelf, gbc_lblTelf);
 		
 		fTxtTelefono = new JFormattedTextField();
@@ -630,7 +649,7 @@ public class Principal extends JFrame {
 		gbc_fTxtTelefono.fill = GridBagConstraints.HORIZONTAL;
 		gbc_fTxtTelefono.insets = new Insets(0, 0, 5, 5);
 		gbc_fTxtTelefono.gridx = 3;
-		gbc_fTxtTelefono.gridy = 1;
+		gbc_fTxtTelefono.gridy = 2;
 		pnlClientes.add(fTxtTelefono, gbc_fTxtTelefono);
 		
 		cmbBIntolerancias = new JComboBox();
@@ -640,7 +659,7 @@ public class Principal extends JFrame {
 		gbc_cmbBIntolerancias.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cmbBIntolerancias.insets = new Insets(0, 0, 5, 0);
 		gbc_cmbBIntolerancias.gridx = 4;
-		gbc_cmbBIntolerancias.gridy = 1;
+		gbc_cmbBIntolerancias.gridy = 2;
 		pnlClientes.add(cmbBIntolerancias, gbc_cmbBIntolerancias);
 		
 		lblApellidos = new JLabel("Apellidos:  ");
@@ -648,7 +667,7 @@ public class Principal extends JFrame {
 		gbc_lblApellidos.anchor = GridBagConstraints.EAST;
 		gbc_lblApellidos.insets = new Insets(0, 0, 5, 5);
 		gbc_lblApellidos.gridx = 0;
-		gbc_lblApellidos.gridy = 2;
+		gbc_lblApellidos.gridy = 3;
 		pnlClientes.add(lblApellidos, gbc_lblApellidos);
 		
 		txtApellidos = new JTextField();
@@ -658,7 +677,7 @@ public class Principal extends JFrame {
 		gbc_txtApellidos.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtApellidos.insets = new Insets(0, 0, 5, 5);
 		gbc_txtApellidos.gridx = 1;
-		gbc_txtApellidos.gridy = 2;
+		gbc_txtApellidos.gridy = 3;
 		pnlClientes.add(txtApellidos, gbc_txtApellidos);
 		
 		lblDireccion = new JLabel("Direccion:  ");
@@ -666,7 +685,7 @@ public class Principal extends JFrame {
 		gbc_lblDireccion.anchor = GridBagConstraints.EAST;
 		gbc_lblDireccion.insets = new Insets(0, 0, 5, 5);
 		gbc_lblDireccion.gridx = 2;
-		gbc_lblDireccion.gridy = 2;
+		gbc_lblDireccion.gridy = 3;
 		pnlClientes.add(lblDireccion, gbc_lblDireccion);
 		
 		txtDireccion = new JTextField();
@@ -676,7 +695,7 @@ public class Principal extends JFrame {
 		gbc_txtDireccion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtDireccion.insets = new Insets(0, 0, 5, 5);
 		gbc_txtDireccion.gridx = 3;
-		gbc_txtDireccion.gridy = 2;
+		gbc_txtDireccion.gridy = 3;
 		pnlClientes.add(txtDireccion, gbc_txtDireccion);
 		
 		cmbBHistorial = new JComboBox();
@@ -686,7 +705,7 @@ public class Principal extends JFrame {
 		gbc_cmbBHistorial.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cmbBHistorial.insets = new Insets(0, 0, 5, 0);
 		gbc_cmbBHistorial.gridx = 4;
-		gbc_cmbBHistorial.gridy = 2;
+		gbc_cmbBHistorial.gridy = 3;
 		pnlClientes.add(cmbBHistorial, gbc_cmbBHistorial);
 		
 		lblId = new JLabel("Id:  ");
@@ -694,7 +713,7 @@ public class Principal extends JFrame {
 		gbc_lblId.anchor = GridBagConstraints.EAST;
 		gbc_lblId.insets = new Insets(0, 0, 5, 5);
 		gbc_lblId.gridx = 0;
-		gbc_lblId.gridy = 3;
+		gbc_lblId.gridy = 4;
 		pnlClientes.add(lblId, gbc_lblId);
 		
 		txtInd = new JTextField();
@@ -704,7 +723,7 @@ public class Principal extends JFrame {
 		gbc_txtInd.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtInd.insets = new Insets(0, 0, 5, 5);
 		gbc_txtInd.gridx = 1;
-		gbc_txtInd.gridy = 3;
+		gbc_txtInd.gridy = 4;
 		pnlClientes.add(txtInd, gbc_txtInd);
 		
 		lblPuntos = new JLabel("Puntos:  ");
@@ -712,7 +731,7 @@ public class Principal extends JFrame {
 		gbc_lblPuntos.anchor = GridBagConstraints.EAST;
 		gbc_lblPuntos.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPuntos.gridx = 2;
-		gbc_lblPuntos.gridy = 3;
+		gbc_lblPuntos.gridy = 4;
 		pnlClientes.add(lblPuntos, gbc_lblPuntos);
 		
 		txtPuntos = new JTextField();
@@ -722,7 +741,7 @@ public class Principal extends JFrame {
 		gbc_txtPuntos.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtPuntos.insets = new Insets(0, 0, 5, 5);
 		gbc_txtPuntos.gridx = 3;
-		gbc_txtPuntos.gridy = 3;
+		gbc_txtPuntos.gridy = 4;
 		pnlClientes.add(txtPuntos, gbc_txtPuntos);
 		
 		cmbBPreferencias = new JComboBox();
@@ -732,48 +751,54 @@ public class Principal extends JFrame {
 		gbc_cmbBPreferencias.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cmbBPreferencias.insets = new Insets(0, 0, 5, 0);
 		gbc_cmbBPreferencias.gridx = 4;
-		gbc_cmbBPreferencias.gridy = 3;
+		gbc_cmbBPreferencias.gridy = 4;
 		pnlClientes.add(cmbBPreferencias, gbc_cmbBPreferencias);
 		
 		btnAadir = new JButton("Añadir");
 		GridBagConstraints gbc_btnAadir = new GridBagConstraints();
 		gbc_btnAadir.anchor = GridBagConstraints.NORTH;
-		gbc_btnAadir.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAadir.insets = new Insets(0, 0, 0, 5);
 		gbc_btnAadir.gridx = 1;
-		gbc_btnAadir.gridy = 4;
+		gbc_btnAadir.gridy = 5;
 		pnlClientes.add(btnAadir, gbc_btnAadir);
 		
 		btnModificar = new JButton("Modificar");
 		GridBagConstraints gbc_btnModificar = new GridBagConstraints();
 		gbc_btnModificar.anchor = GridBagConstraints.NORTH;
-		gbc_btnModificar.insets = new Insets(0, 0, 5, 5);
+		gbc_btnModificar.insets = new Insets(0, 0, 0, 5);
 		gbc_btnModificar.gridx = 3;
-		gbc_btnModificar.gridy = 4;
+		gbc_btnModificar.gridy = 5;
 		pnlClientes.add(btnModificar, gbc_btnModificar);
 		
 		btnEliminar = new JButton("Eliminar");
 		GridBagConstraints gbc_btnEliminar = new GridBagConstraints();
-		gbc_btnEliminar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnEliminar.anchor = GridBagConstraints.NORTH;
 		gbc_btnEliminar.gridx = 4;
-		gbc_btnEliminar.gridy = 4;
+		gbc_btnEliminar.gridy = 5;
 		pnlClientes.add(btnEliminar, gbc_btnEliminar);
 		
-		tglbtnBuscar = new JToggleButton("Buscar");
-		GridBagConstraints gbc_tglbtnBuscar = new GridBagConstraints();
-		gbc_tglbtnBuscar.insets = new Insets(0, 0, 5, 5);
-		gbc_tglbtnBuscar.gridx = 1;
-		gbc_tglbtnBuscar.gridy = 5;
-		pnlClientes.add(tglbtnBuscar, gbc_tglbtnBuscar);
+		panel_5 = new JPanel();
+		tabPrincipales.addTab("New tab", null, panel_5, null);
 		
-		textArea = new JTextArea();
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.gridwidth = 5;
-		gbc_textArea.insets = new Insets(0, 0, 5, 0);
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.gridx = 0;
-		gbc_textArea.gridy = 6;
-		pnlClientes.add(textArea, gbc_textArea);
+		menuBar = new JMenuBar();
+		menuBar.setAlignmentX(Component.LEFT_ALIGNMENT);
+		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
+		frame.setJMenuBar(menuBar);
+		
+		comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Preferencias", "Tamaño letra", "Algo más"}));
+		menuBar.add(comboBox);
+		
+		comboBox_1 = new JComboBox();
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Help", "Manual ", "Cosa"}));
+		menuBar.add(comboBox_1);
+		
+		comboBox_2 = new JComboBox();
+		comboBox_2.setModel(new DefaultComboBoxModel(new String[] {"Itioma"}));
+		menuBar.add(comboBox_2);
+		
+		btnMenuPerfilUsuario = new JButton("Perfil");
+		menuBar.add(btnMenuPerfilUsuario);
 	}
 
 	private class BtnAñadirProductoActionListener implements ActionListener {

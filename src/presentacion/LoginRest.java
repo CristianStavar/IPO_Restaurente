@@ -29,7 +29,8 @@ import javax.swing.DefaultComboBoxModel;
 
 public class LoginRest {
 
-	protected static final Object password = "ipo";
+	protected static final String password = "ipo";
+	protected static final String usuario="usuario";
 	private JFrame frmRestaurante;
 	private JPanel panel;
 	private JLabel lblUsuario;
@@ -107,6 +108,7 @@ public class LoginRest {
 		pwdfPassword.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				comprobacion();
 			}
 		});
 		pwdfPassword.setEnabled(true);
@@ -115,7 +117,7 @@ public class LoginRest {
 		
 		lblAviso = new JLabel("");
 		lblAviso.setOpaque(true);
-		lblAviso.setBounds(115, 129, 224, 33);
+		lblAviso.setBounds(43, 129, 332, 33);
 		panel.add(lblAviso);
 		
 		btnEntrar = new JButton("Entrar");
@@ -134,22 +136,7 @@ public class LoginRest {
 
 	private class BtnEntrarActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (String.valueOf(pwdfPassword.getPassword()).equals(password)){
-					lblAviso.setBackground(Color.GREEN);
-					lblAviso.setText("Contraseña correcta. Puede entrar");
-					lblAviso.setVisible(true);
-					lblPassword.setEnabled(false);
-					pwdfPassword.setEnabled(false);
-					Principal ventana= new Principal();
-					ventana.getFrame().setVisible(true);
-					LoginRest.dispose();
-				}
-				else {
-					lblAviso.setBackground(Color.RED);
-					lblAviso.setText("Contraseña incorrecta. Vuelva a intentarlo");
-					lblAviso.setVisible(true);
-					pwdfPassword.setText(null);
-				}
+			comprobacion();
 				
 		}
 		
@@ -158,5 +145,24 @@ public class LoginRest {
 	public static void dispose() {
 		// TODO Auto-generated method stub
 		
+	}
+	public void comprobacion() 
+	{
+		if (String.valueOf(pwdfPassword.getPassword()).equals(password) && tfUsuario.getText().equals(usuario)){
+			lblAviso.setForeground(Color.GREEN);
+			lblAviso.setText("Contraseña correcta. Puede entrar");
+			lblAviso.setVisible(true);
+			lblPassword.setEnabled(false);
+			pwdfPassword.setEnabled(false);
+			Principal ventana= new Principal();
+			ventana.getFrame().setVisible(true);
+			LoginRest.dispose();
+		}
+		else {
+			lblAviso.setForeground(Color.RED);
+			lblAviso.setText("Contraseña o usuario incorrecta. Vuelva a intentarlo");
+			lblAviso.setVisible(true);
+			pwdfPassword.setText(null);
+		}
 	}
 }
