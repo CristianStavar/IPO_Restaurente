@@ -22,6 +22,7 @@ public class Producto extends JPanel implements Serializable {
 	private JTextField txtPrecio;
 	private JPanel pnlImagenProducto;
 	private Color color;
+	private String texto;
 
 	/**
 	 * Create the panel.
@@ -45,7 +46,6 @@ public class Producto extends JPanel implements Serializable {
 		add(pnlImagenProducto, gbc_pnlImagenProducto);
 
 		txtNombre = new JTextField();
-		txtNombre.setEditable(false);
 		txtNombre.setText("Nombre");
 		GridBagConstraints gbc_txtNombre = new GridBagConstraints();
 		gbc_txtNombre.insets = new Insets(0, 0, 0, 5);
@@ -80,7 +80,16 @@ public class Producto extends JPanel implements Serializable {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			pnlImagenProducto.requestFocusInWindow();
+			texto = txtNombre.getText();
+			// txtNombre.setText((String) e.getSource());
+			txtPrecio.setText(texto);
+			Principal.setSeleccionado(texto);
 		}
+
+	}
+
+	public String getNombre() {
+		return texto;
+
 	}
 }
