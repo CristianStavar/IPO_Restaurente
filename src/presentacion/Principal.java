@@ -29,6 +29,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import java.awt.GridLayout;
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
@@ -63,6 +65,9 @@ import javax.swing.JMenuBar;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
+import java.awt.Rectangle;
 
 public class Principal extends JFrame {
 
@@ -151,6 +156,11 @@ public class Principal extends JFrame {
 	public static ArrayList<Producto> productos = new ArrayList<Producto>();
 	private static String seleccionado = "";
 	private Iterator<Producto> iterar = productos.iterator();
+
+	private JPanel panel_ticket;
+	public static JTable tblticket;
+	private JPanel pnlClientesVips;
+	private JTable tblClientesVips;
 
 	private JTable tablaPlatosPez;
 	private JTable tablaPlatosPasta;
@@ -390,28 +400,21 @@ public class Principal extends JFrame {
 		scrlpnlticket.setViewportView(panel_4);
 		panel_4.setLayout(new BorderLayout(0, 0));
 
-		table = new JTable();
-		panel_4.add(table, BorderLayout.NORTH);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table.setModel(
-				new DefaultTableModel(
-						new Object[][] { { "ProPatatas", "x6", "34" }, { "fritas", "x4", "12" }, { "postre", "5", "5" },
-								{ "Bacalao rebozato con patatas", null, null }, { "gf", null, null },
-								{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
-								{ null, null, null }, { null, null, null }, { null, null, null }, { null, null, null },
-								{ null, null, null }, { null, null, null }, },
-						new String[] { "Product", "Cantidad", "Precio" }) {
-					boolean[] columnEditables = new boolean[] { false, false, false };
+		panel_ticket = new JPanel();
+		scrlpnlticket.setViewportView(panel_ticket);
+		panel_ticket.setLayout(new BorderLayout(0, 0));
 
-					public boolean isCellEditable(int row, int column) {
-						return columnEditables[column];
-					}
-				});
-		table.getColumnModel().getColumn(0).setPreferredWidth(200);
-		table.getColumnModel().getColumn(0).setMinWidth(20);
-		table.getColumnModel().getColumn(0).setMaxWidth(200);
-		table.getColumnModel().getColumn(1).setMaxWidth(100);
-		table.getColumnModel().getColumn(2).setMaxWidth(100);
+		tblticket = new JTable();
+		tblticket.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		tblticket.setRowSelectionAllowed(false);
+
+		MiTablaTicket Ticket = new MiTablaTicket();
+		tblticket.setModel(Ticket);
+
+		Object[] fila1Ticket = { "Costillas", 12.5, 3, 30.5 };
+		Ticket.aniadeFila(fila1Ticket);
+
+		panel_ticket.add(tblticket);
 
 		scrlpnlTescripcion = new JScrollPane();
 		scrlpnlTescripcion.setPreferredSize(new Dimension(200, 200));
@@ -673,21 +676,26 @@ public class Principal extends JFrame {
 		gbl_pnlClientes.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		pnlClientes.setLayout(gbl_pnlClientes);
 
-		textArea = new JTextArea();
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.gridwidth = 5;
-		gbc_textArea.insets = new Insets(0, 0, 5, 0);
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.gridx = 0;
-		gbc_textArea.gridy = 0;
-		pnlClientes.add(textArea, gbc_textArea);
+		pnlClientesVips = new JPanel();
+		GridBagConstraints gbc_pnlClientesVips = new GridBagConstraints();
+		gbc_pnlClientesVips.gridwidth = 8;
+		gbc_pnlClientesVips.insets = new Insets(0, 0, 5, 0);
+		gbc_pnlClientesVips.fill = GridBagConstraints.BOTH;
+		gbc_pnlClientesVips.gridx = 0;
+		gbc_pnlClientesVips.gridy = 0;
+		pnlClientes.add(pnlClientesVips, gbc_pnlClientesVips);
+		pnlClientesVips.setLayout(new BorderLayout(0, 0));
 
-		btnIdioma_1 = new JButton("Idioma");
-		GridBagConstraints gbc_btnIdioma_1 = new GridBagConstraints();
-		gbc_btnIdioma_1.insets = new Insets(0, 0, 5, 0);
-		gbc_btnIdioma_1.gridx = 4;
-		gbc_btnIdioma_1.gridy = 1;
-		pnlClientes.add(btnIdioma_1, gbc_btnIdioma_1);
+		tblClientesVips = new JTable();
+		tblClientesVips.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		TablaVips TablaClientes = new TablaVips();
+		tblClientesVips.setModel((TableModel) TablaClientes);
+
+		Object[] filas1 = { 111, "Juanjo", "Rodriguez Montalban", "Rialejo 10", 665895475, 19 };
+		TablaClientes.aniadeFila(filas1);
+
+		pnlClientesVips.add(tblClientesVips, BorderLayout.CENTER);
 
 		lblNombre = new JLabel("Nombre:  ");
 		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
@@ -725,14 +733,28 @@ public class Principal extends JFrame {
 		pnlClientes.add(fTxtTelefono, gbc_fTxtTelefono);
 
 		cmbBIntolerancias = new JComboBox();
+		cmbBIntolerancias.setModel(new DefaultComboBoxModel(
+				new String[] { "Intolerancias", "Frutos Secos", "Glúten", "Lactosa", "Marisco" }));
 		cmbBIntolerancias.setToolTipText("Intolerancias");
 		GridBagConstraints gbc_cmbBIntolerancias = new GridBagConstraints();
 		gbc_cmbBIntolerancias.anchor = GridBagConstraints.NORTH;
 		gbc_cmbBIntolerancias.fill = GridBagConstraints.HORIZONTAL;
-		gbc_cmbBIntolerancias.insets = new Insets(0, 0, 5, 0);
-		gbc_cmbBIntolerancias.gridx = 4;
+		gbc_cmbBIntolerancias.insets = new Insets(0, 0, 5, 5);
+		gbc_cmbBIntolerancias.gridx = 5;
 		gbc_cmbBIntolerancias.gridy = 2;
 		pnlClientes.add(cmbBIntolerancias, gbc_cmbBIntolerancias);
+
+		btnAadir = new JButton("Añadir   ");
+		btnAadir.addActionListener(new BtnAadirActionListener());
+		btnAadir.setMinimumSize(new Dimension(75, 20));
+		btnAadir.setMaximumSize(new Dimension(100, 23));
+		btnAadir.setPreferredSize(new Dimension(90, 23));
+		GridBagConstraints gbc_btnAadir = new GridBagConstraints();
+		gbc_btnAadir.gridwidth = 2;
+		gbc_btnAadir.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAadir.gridx = 6;
+		gbc_btnAadir.gridy = 2;
+		pnlClientes.add(btnAadir, gbc_btnAadir);
 
 		lblApellidos = new JLabel("Apellidos:  ");
 		GridBagConstraints gbc_lblApellidos = new GridBagConstraints();
@@ -771,14 +793,24 @@ public class Principal extends JFrame {
 		pnlClientes.add(txtDireccion, gbc_txtDireccion);
 
 		cmbBHistorial = new JComboBox();
+		cmbBHistorial.setModel(new DefaultComboBoxModel(new String[] { "Historial", "Pedido1", "Pedido2", "Pedido3" }));
 		cmbBHistorial.setToolTipText("Historial\r\n");
 		GridBagConstraints gbc_cmbBHistorial = new GridBagConstraints();
 		gbc_cmbBHistorial.anchor = GridBagConstraints.NORTH;
 		gbc_cmbBHistorial.fill = GridBagConstraints.HORIZONTAL;
-		gbc_cmbBHistorial.insets = new Insets(0, 0, 5, 0);
-		gbc_cmbBHistorial.gridx = 4;
+		gbc_cmbBHistorial.insets = new Insets(0, 0, 5, 5);
+		gbc_cmbBHistorial.gridx = 5;
 		gbc_cmbBHistorial.gridy = 3;
 		pnlClientes.add(cmbBHistorial, gbc_cmbBHistorial);
+
+		btnModificar = new JButton("Modificar");
+		GridBagConstraints gbc_btnModificar = new GridBagConstraints();
+		gbc_btnModificar.gridwidth = 2;
+		gbc_btnModificar.insets = new Insets(0, 0, 5, 0);
+		gbc_btnModificar.anchor = GridBagConstraints.NORTH;
+		gbc_btnModificar.gridx = 6;
+		gbc_btnModificar.gridy = 3;
+		pnlClientes.add(btnModificar, gbc_btnModificar);
 
 		lblId = new JLabel("Id:  ");
 		GridBagConstraints gbc_lblId = new GridBagConstraints();
@@ -807,6 +839,7 @@ public class Principal extends JFrame {
 		pnlClientes.add(lblPuntos, gbc_lblPuntos);
 
 		txtPuntos = new JTextField();
+		txtPuntos.setEditable(false);
 		txtPuntos.setColumns(10);
 		GridBagConstraints gbc_txtPuntos = new GridBagConstraints();
 		gbc_txtPuntos.anchor = GridBagConstraints.NORTH;
@@ -817,6 +850,8 @@ public class Principal extends JFrame {
 		pnlClientes.add(txtPuntos, gbc_txtPuntos);
 
 		cmbBPreferencias = new JComboBox();
+		cmbBPreferencias.setModel(new DefaultComboBoxModel(
+				new String[] { "Preferencias", "Azucar", "Canela", "Ketchup", "Mayonesa", "Sacarina", "Sal" }));
 		cmbBPreferencias.setToolTipText("Preferencias");
 		GridBagConstraints gbc_cmbBPreferencias = new GridBagConstraints();
 		gbc_cmbBPreferencias.anchor = GridBagConstraints.NORTH;
@@ -826,27 +861,17 @@ public class Principal extends JFrame {
 		gbc_cmbBPreferencias.gridy = 4;
 		pnlClientes.add(cmbBPreferencias, gbc_cmbBPreferencias);
 
-		btnAadir = new JButton("Añadir");
-		GridBagConstraints gbc_btnAadir = new GridBagConstraints();
-		gbc_btnAadir.anchor = GridBagConstraints.NORTH;
-		gbc_btnAadir.insets = new Insets(0, 0, 0, 5);
-		gbc_btnAadir.gridx = 1;
-		gbc_btnAadir.gridy = 5;
-		pnlClientes.add(btnAadir, gbc_btnAadir);
-
-		btnModificar = new JButton("Modificar");
-		GridBagConstraints gbc_btnModificar = new GridBagConstraints();
-		gbc_btnModificar.anchor = GridBagConstraints.NORTH;
-		gbc_btnModificar.insets = new Insets(0, 0, 0, 5);
-		gbc_btnModificar.gridx = 3;
-		gbc_btnModificar.gridy = 5;
-		pnlClientes.add(btnModificar, gbc_btnModificar);
-
 		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setMinimumSize(new Dimension(75, 20));
+		btnEliminar.setMaximumSize(new Dimension(100, 23));
+		btnEliminar.addActionListener(new BtnEliminarActionListener());
+		btnEliminar.setPreferredSize(new Dimension(90, 23));
 		GridBagConstraints gbc_btnEliminar = new GridBagConstraints();
+		gbc_btnEliminar.gridwidth = 2;
+		gbc_btnEliminar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnEliminar.anchor = GridBagConstraints.NORTH;
-		gbc_btnEliminar.gridx = 4;
-		gbc_btnEliminar.gridy = 5;
+		gbc_btnEliminar.gridx = 6;
+		gbc_btnEliminar.gridy = 4;
 		pnlClientes.add(btnEliminar, gbc_btnEliminar);
 
 		panel_5 = new JPanel();
@@ -866,12 +891,26 @@ public class Principal extends JFrame {
 		menuBar.add(comboBox_1);
 
 		comboBox_2 = new JComboBox();
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] { "Itioma" }));
+		comboBox_2.setModel(new DefaultComboBoxModel(new String[] { "Idioma" }));
 		menuBar.add(comboBox_2);
 
 		btnMenuPerfilUsuario = new JButton("Perfil");
 		btnMenuPerfilUsuario.addMouseListener(new BtnMenuPerfilUsuarioMouseListener());
+		btnMenuPerfilUsuario.setBackground(Color.WHITE);
+		// btnMenuPerfilUsuario.addActionListener(new
+		// BtnMenuPerfilUsuarioActionListener());
 		menuBar.add(btnMenuPerfilUsuario);
+
+		ListSelectionModel rowSMtc = tblClientesVips.getSelectionModel();
+		rowSM.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+				if (!lsm.isSelectionEmpty()) {
+					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
+				}
+			}
+		});
+
 	}
 
 	private class BtnAñadirProductoActionListener implements ActionListener {
@@ -939,6 +978,32 @@ public class Principal extends JFrame {
 			usuario.setVisible(true);
 		}
 
+	}
+
+	private class BtnAadirActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			TablaVips TablaVip = (TablaVips) tblClientesVips.getModel();
+			Object[] nuevaFila = { txtInd.getText(), txtNombre.getText(), txtApellidos.getText(),
+					txtDireccion.getText(), fTxtTelefono.getText(), 0 };
+			TablaVip.aniadeFila(nuevaFila);
+			TablaVip.fireTableDataChanged();
+			txtInd.setText(null);
+			txtNombre.setText(null);
+			txtApellidos.setText(null);
+			txtDireccion.setText(null);
+			fTxtTelefono.setText(null);
+
+		}
+	}
+
+	private class BtnEliminarActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			TablaVips TablaVip = (TablaVips) tblClientesVips.getModel();
+			int n = tblClientesVips.getSelectedRow();
+			if (n != -1)
+				TablaVip.eliminaFila(tblClientesVips.getSelectedRow());
+			TablaVip.fireTableDataChanged();
+		}
 	}
 
 	public JFrame getFrame() {
