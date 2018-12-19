@@ -412,7 +412,11 @@ public class Principal extends JFrame {
 		tblticket.setModel(Ticket);
 
 		Object[] fila1Ticket = { "Costillas", 12.5, 3, 30.5 };
+		Object[] fila2Ticket = { null, null, null, null };
+		Object[] fila3Ticket = { "Entregado", null, null, null };
 		Ticket.aniadeFila(fila1Ticket);
+		Ticket.aniadeFila(fila2Ticket);
+		Ticket.aniadeFila(fila3Ticket);
 
 		panel_ticket.add(tblticket);
 
