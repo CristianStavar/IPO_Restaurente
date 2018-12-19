@@ -17,7 +17,7 @@ import javax.swing.JButton;
 import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 
-public class perfil extends JFrame {
+public class Perfil extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel lblNombre;
@@ -41,7 +41,7 @@ public class perfil extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					perfil frame = new perfil();
+					Perfil frame = new Perfil();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,20 +53,20 @@ public class perfil extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public perfil() {
+	public Perfil() {
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 468, 236);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 564, 285);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[]{31, 122, 22, 116, 122, 27, 0};
-		gbl_contentPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPane.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.columnWidths = new int[] { 31, 122, 22, 116, 122, 27, 0 };
+		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPane.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
-		
+
 		pnlFoto = new JPanel();
 		GridBagConstraints gbc_pnlFoto = new GridBagConstraints();
 		gbc_pnlFoto.gridwidth = 2;
@@ -77,11 +77,11 @@ public class perfil extends JFrame {
 		gbc_pnlFoto.gridy = 1;
 		contentPane.add(pnlFoto, gbc_pnlFoto);
 		pnlFoto.setLayout(new BorderLayout(0, 0));
-		
+
 		Usuario = new JLabel("");
-		Usuario.setIcon(new ImageIcon(perfil.class.getResource("/presentacion/431.png")));
+		Usuario.setIcon(new ImageIcon(Perfil.class.getResource("/presentacion/431.png")));
 		pnlFoto.add(Usuario);
-		
+
 		lblNombre = new JLabel("Nombre:  ");
 		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
 		gbc_lblNombre.anchor = GridBagConstraints.EAST;
@@ -89,7 +89,7 @@ public class perfil extends JFrame {
 		gbc_lblNombre.gridx = 3;
 		gbc_lblNombre.gridy = 1;
 		contentPane.add(lblNombre, gbc_lblNombre);
-		
+
 		textNombre = new JTextField();
 		GridBagConstraints gbc_textNombre = new GridBagConstraints();
 		gbc_textNombre.insets = new Insets(0, 0, 5, 5);
@@ -98,7 +98,7 @@ public class perfil extends JFrame {
 		gbc_textNombre.gridy = 1;
 		contentPane.add(textNombre, gbc_textNombre);
 		textNombre.setColumns(10);
-		
+
 		lblApellidos = new JLabel("Apellidos:  ");
 		GridBagConstraints gbc_lblApellidos = new GridBagConstraints();
 		gbc_lblApellidos.anchor = GridBagConstraints.EAST;
@@ -106,7 +106,7 @@ public class perfil extends JFrame {
 		gbc_lblApellidos.gridx = 3;
 		gbc_lblApellidos.gridy = 2;
 		contentPane.add(lblApellidos, gbc_lblApellidos);
-		
+
 		textApellidos = new JTextField();
 		GridBagConstraints gbc_textApellidos = new GridBagConstraints();
 		gbc_textApellidos.insets = new Insets(0, 0, 5, 5);
@@ -115,7 +115,7 @@ public class perfil extends JFrame {
 		gbc_textApellidos.gridy = 2;
 		contentPane.add(textApellidos, gbc_textApellidos);
 		textApellidos.setColumns(10);
-		
+
 		lblTelefono = new JLabel("Telefono:  ");
 		GridBagConstraints gbc_lblTelefono = new GridBagConstraints();
 		gbc_lblTelefono.anchor = GridBagConstraints.EAST;
@@ -123,7 +123,7 @@ public class perfil extends JFrame {
 		gbc_lblTelefono.gridx = 3;
 		gbc_lblTelefono.gridy = 3;
 		contentPane.add(lblTelefono, gbc_lblTelefono);
-		
+
 		fTxtTlf = new JFormattedTextField();
 		GridBagConstraints gbc_fTxtTlf = new GridBagConstraints();
 		gbc_fTxtTlf.insets = new Insets(0, 0, 5, 5);
@@ -131,7 +131,7 @@ public class perfil extends JFrame {
 		gbc_fTxtTlf.gridx = 4;
 		gbc_fTxtTlf.gridy = 3;
 		contentPane.add(fTxtTlf, gbc_fTxtTlf);
-		
+
 		lblPassword = new JLabel("Password:  ");
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 		gbc_lblPassword.anchor = GridBagConstraints.EAST;
@@ -139,7 +139,7 @@ public class perfil extends JFrame {
 		gbc_lblPassword.gridx = 3;
 		gbc_lblPassword.gridy = 4;
 		contentPane.add(lblPassword, gbc_lblPassword);
-		
+
 		password = new JPasswordField();
 		GridBagConstraints gbc_password = new GridBagConstraints();
 		gbc_password.insets = new Insets(0, 0, 5, 5);
@@ -147,7 +147,7 @@ public class perfil extends JFrame {
 		gbc_password.gridx = 4;
 		gbc_password.gridy = 4;
 		contentPane.add(password, gbc_password);
-		
+
 		lblCiudad = new JLabel("Ciudad:  ");
 		GridBagConstraints gbc_lblCiudad = new GridBagConstraints();
 		gbc_lblCiudad.anchor = GridBagConstraints.EAST;
@@ -155,7 +155,7 @@ public class perfil extends JFrame {
 		gbc_lblCiudad.gridx = 3;
 		gbc_lblCiudad.gridy = 5;
 		contentPane.add(lblCiudad, gbc_lblCiudad);
-		
+
 		textCiudad = new JTextField();
 		GridBagConstraints gbc_textCiudad = new GridBagConstraints();
 		gbc_textCiudad.insets = new Insets(0, 0, 5, 5);
@@ -164,7 +164,7 @@ public class perfil extends JFrame {
 		gbc_textCiudad.gridy = 5;
 		contentPane.add(textCiudad, gbc_textCiudad);
 		textCiudad.setColumns(10);
-		
+
 		btnNuevoEmpleado = new JButton("Nuevo Empleado");
 		btnNuevoEmpleado.setEnabled(false);
 		GridBagConstraints gbc_btnNuevoEmpleado = new GridBagConstraints();
