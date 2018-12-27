@@ -70,6 +70,10 @@ import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
 import java.awt.SystemColor;
+import java.awt.Cursor;
+import java.awt.Toolkit;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.Graphics;
 
 public class Principal extends JFrame {
 
@@ -123,6 +127,7 @@ public class Principal extends JFrame {
 	private JComboBox cmbBIntolerancias;
 	private JComboBox cmbBHistorial;
 	private JComboBox cmbBPreferencias;
+	private JEditorPane edpnlMapa;
 	private JButton btnAadir;
 	private JButton btnModificar;
 	private JButton btnEliminar;
@@ -165,6 +170,30 @@ public class Principal extends JFrame {
 	private JLabel label;
 	private JPanel panel_4;
 	private JButton btnNewButton;
+	
+		private JButton btnLapiz;
+	private JButton btnDestino;
+	private JButton btnCometarios;
+	private MiMapaDibujo miMapaDibujo;
+	private ImageIcon imagen;
+	private JScrollPane scrPnlMapa;
+	private JLabel lblMapa;
+	//Variable que almacena el modo de dibujado seleccionado por el usuario
+	int modo = -1;
+	private final int UBICACION = 1;
+	private final int TEXTO = 2;
+	private final int LAPIZ = 3;
+	//Cursores e imagenes
+	private Toolkit toolkit;
+	private Image imagTexto;
+	private Image imagUbicacion;
+	private Image imagLapiz;
+	private Cursor cursorTexto;
+	private Cursor cursorUbicacion;
+	private Cursor cursorLapiz;
+	private int x, y;
+	private JTextField txtTexto = new JTextField();
+	
 
 	/**
 	 * Launch the application.
@@ -650,9 +679,9 @@ public class Principal extends JFrame {
 		pnlMapa = new JPanel();
 		tabPrincipales.addTab("Mapa", null, pnlMapa, null);
 		GridBagLayout gbl_pnlMapa = new GridBagLayout();
-		gbl_pnlMapa.columnWidths = new int[] { 513, 61, 346, 0 };
-		gbl_pnlMapa.rowHeights = new int[] { 298, 0, 295, 0 };
-		gbl_pnlMapa.columnWeights = new double[] { 1.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_pnlMapa.columnWidths = new int[] { 96, 0, 87, 300, 346, 0 };
+		gbl_pnlMapa.rowHeights = new int[] { 212, 85, 295, 0 };
+		gbl_pnlMapa.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE };
 		gbl_pnlMapa.rowWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		pnlMapa.setLayout(gbl_pnlMapa);
 
@@ -661,7 +690,7 @@ public class Principal extends JFrame {
 		gbc_lstPedidos.anchor = GridBagConstraints.NORTH;
 		gbc_lstPedidos.insets = new Insets(0, 0, 5, 5);
 		gbc_lstPedidos.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lstPedidos.gridx = 0;
+		gbc_lstPedidos.gridx = 2;
 		gbc_lstPedidos.gridy = 0;
 		pnlMapa.add(lstPedidos, gbc_lstPedidos);
 
@@ -673,10 +702,69 @@ public class Principal extends JFrame {
 		gbc_edpnlMapa.gridy = 2;
 		pnlMapa.add(edpnlMapa, gbc_edpnlMapa);
 
+		btnCometarios = new JButton("");
+		btnCometarios.addActionListener(new BtnCometariosActionListener());
+		btnCometarios.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagencomentario.png")));
+		GridBagConstraints gbc_btnCometarios = new GridBagConstraints();
+		gbc_btnCometarios.fill = GridBagConstraints.BOTH;
+		gbc_btnCometarios.insets = new Insets(0, 0, 5, 5);
+		gbc_btnCometarios.gridx = 0;
+		gbc_btnCometarios.gridy = 1;
+		pnlMapa.add(btnCometarios, gbc_btnCometarios);
+		
+		btnDestino = new JButton("");
+		btnDestino.addActionListener(new BtnDestinoActionListener());
+		btnDestino.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagendestino.png")));
+		GridBagConstraints gbc_btnDestino = new GridBagConstraints();
+		gbc_btnDestino.fill = GridBagConstraints.BOTH;
+		gbc_btnDestino.insets = new Insets(0, 0, 5, 5);
+		gbc_btnDestino.gridx = 1;
+		gbc_btnDestino.gridy = 1;
+		pnlMapa.add(btnDestino, gbc_btnDestino);
+		
+		btnLapiz = new JButton("");
+		btnLapiz.addActionListener(new BtnLapizActionListener());
+		btnLapiz.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/lapizruta.png")));
+		GridBagConstraints gbc_btnLapiz = new GridBagConstraints();
+		gbc_btnLapiz.fill = GridBagConstraints.BOTH;
+		gbc_btnLapiz.insets = new Insets(0, 0, 5, 5);
+		gbc_btnLapiz.gridx = 2;
+		gbc_btnLapiz.gridy = 1;
+		pnlMapa.add(btnLapiz, gbc_btnLapiz);
+		
+		scrPnlMapa = new JScrollPane();
+		
+		GridBagConstraints gbc_scrPnlMapa = new GridBagConstraints();
+		gbc_scrPnlMapa.gridwidth = 4;
+		gbc_scrPnlMapa.insets = new Insets(0, 0, 0, 5);
+		gbc_scrPnlMapa.fill = GridBagConstraints.BOTH;
+		gbc_scrPnlMapa.gridx = 0;
+		gbc_scrPnlMapa.gridy = 2;
+		pnlMapa.add(scrPnlMapa, gbc_scrPnlMapa);
+		
+		
+		miMapaDibujo = new MiMapaDibujo();
+		miMapaDibujo.addMouseMotionListener(new MiMapaDibujoMouseMotionListener());
+		miMapaDibujo.addMouseListener(new MiMapaDibujoMouseListener());
+		miMapaDibujo.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png")));
+		imagen= new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png"));
+		
+		toolkit = Toolkit.getDefaultToolkit();
+		imagUbicacion = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/imagendestino.png"));
+		imagLapiz = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/lapizruta.png"));
+		imagTexto = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/imagencomentario.png"));
+		//Creación de los cursores
+		cursorTexto= toolkit.createCustomCursor(imagTexto,new Point(0,0),"CURSOR_TEXTO");
+		cursorUbicacion = toolkit.createCustomCursor(imagUbicacion,new Point(0,0),"CURSOR_UBICACION");
+		cursorLapiz = toolkit.createCustomCursor(imagLapiz,new Point(0,0),"CURSOR_LAPIZ");
+		scrPnlMapa.setViewportView(miMapaDibujo);
+
+		
 		lstRepartidores = new JList();
 		GridBagConstraints gbc_lstRepartidores = new GridBagConstraints();
-		gbc_lstRepartidores.fill = GridBagConstraints.BOTH;
-		gbc_lstRepartidores.gridx = 2;
+		gbc_lstRepartidores.anchor = GridBagConstraints.EAST;
+		gbc_lstRepartidores.fill = GridBagConstraints.VERTICAL;
+		gbc_lstRepartidores.gridx = 4;
 		gbc_lstRepartidores.gridy = 2;
 		pnlMapa.add(lstRepartidores, gbc_lstRepartidores);
 
@@ -988,6 +1076,75 @@ public class Principal extends JFrame {
 				TablaVip.eliminaFila(tblClientesVips.getSelectedRow());
 			TablaVip.fireTableDataChanged();
 		}
+	}
+	
+		private class BtnCometariosActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			modo = TEXTO;
+			frame.setCursor(cursorTexto);
+		}
+	}
+	private class BtnDestinoActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			modo = UBICACION;
+			frame.setCursor(cursorUbicacion);
+		}
+	}
+	private class BtnLapizActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			modo = LAPIZ;
+			frame.setCursor(cursorLapiz);
+		}
+	}
+	
+	private class MiMapaDibujoMouseListener extends MouseAdapter {
+		@Override
+		public void mousePressed(MouseEvent e) {
+			x = e.getX();
+			y = e.getY();
+			toolkit = Toolkit.getDefaultToolkit();
+			if (imagen != null){
+				switch (modo){
+					case TEXTO:
+						txtTexto.setBounds(x, y, 200,30);
+						txtTexto.setVisible(true);
+						txtTexto.requestFocus();
+						txtTexto.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg) {
+									if(!txtTexto.getText().equals(""))
+										miMapaDibujo.addObjetoGrafico(new TextoGrafico(x, y+15, txtTexto.getText(),Color.BLUE));
+									txtTexto.setText("");
+									txtTexto.setVisible(false);
+									miMapaDibujo.repaint();
+							}
+						});
+						miMapaDibujo.add(txtTexto);
+						break;
+					case UBICACION:
+						miMapaDibujo.addObjetoGrafico(new ImagenGrafico(x,y,imagUbicacion));
+						miMapaDibujo.repaint();
+						break;
+					case LAPIZ:
+						miMapaDibujo.addObjetoGrafico(new LineaGrafica(x,y,x,y,Color.RED));
+						break;
+				}
+			}
+		}
+	}
+	private class MiMapaDibujoMouseMotionListener extends MouseMotionAdapter {
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			if (modo == LAPIZ && imagen!=null) {
+				((LineaGrafica)miMapaDibujo.getUltimoObjetoGrafico()).setX1(e.getX());
+				((LineaGrafica)miMapaDibujo.getUltimoObjetoGrafico()).setY1(e.getY());
+				miMapaDibujo.repaint();
+			}
+		}
+	}
+	private double CalculaTotal(JTable Ticket) {
+		double total=0.00;
+		int i;
+		return total;
 	}
 
 	public JFrame getFrame() {
