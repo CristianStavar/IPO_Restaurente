@@ -14,7 +14,6 @@ import javax.swing.BoxLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -32,8 +31,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
 import java.io.EOFException;
@@ -68,12 +67,9 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.ComponentOrientation;
-import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.Graphics;
+import java.awt.SystemColor;
 
 public class Principal extends JFrame {
 
@@ -131,6 +127,7 @@ public class Principal extends JFrame {
 	private JButton btnModificar;
 	private JButton btnEliminar;
 	private JTextArea textArea;
+	private JEditorPane edpnlMapa;
 	private JList lstPedidos;
 	private JList lstRepartidores;
 	private JButton btnIdioma_1;
@@ -149,18 +146,12 @@ public class Principal extends JFrame {
 	private JPanel panel_3;
 	private JLabel lblFechaRecogida;
 	private JFormattedTextField frmtFechaRecogida;
-	private JMenuBar menuBar;
-	private JComboBox comboBox;
-	private JComboBox comboBox_1;
-	private JComboBox comboBox_2;
 	private JButton btnMenuPerfilUsuario;
 	private JLabel lblPetito;
-	private JPanel panel_5;
 	public static ArrayList<Producto> productos = new ArrayList<Producto>();
 	private static String seleccionado = "";
 	private Iterator<Producto> iterar = productos.iterator();
 
-	private JPanel panel_ticket;
 	public static JTable tblticket;
 	private JScrollPane pnlClientesVips;
 	private JTable tblClientesVips;
@@ -170,29 +161,11 @@ public class Principal extends JFrame {
 	private JTable tablaPlatosArroz;
 	private JTable tablaPlatosBocata;
 	private JTable tablaPlatosPostre;
-	private JButton btnLapiz;
-	private JButton btnDestino;
-	private JButton btnCometarios;
-	private MiMapaDibujo miMapaDibujo;
-	private ImageIcon imagen;
-	private JScrollPane scrPnlMapa;
-	private JLabel lblMapa;
-	//Variable que almacena el modo de dibujado seleccionado por el usuario
-	int modo = -1;
-	private final int UBICACION = 1;
-	private final int TEXTO = 2;
-	private final int LAPIZ = 3;
-	//Cursores e imagenes
-	private Toolkit toolkit;
-	private Image imagTexto;
-	private Image imagUbicacion;
-	private Image imagLapiz;
-	private Cursor cursorTexto;
-	private Cursor cursorUbicacion;
-	private Cursor cursorLapiz;
-	private int x, y;
-	private JTextField txtTexto = new JTextField();
-	
+	private JPanel pnlBotonAñatirATicket;
+	private JLabel label;
+	private JPanel panel_4;
+	private JButton btnNewButton;
+
 	/**
 	 * Launch the application.
 	 */
@@ -200,7 +173,9 @@ public class Principal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					// Set System L&F
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
 					Principal window = new Principal();
 					window.getFrame().setVisible(true);
 				} catch (Exception e) {
@@ -225,7 +200,7 @@ public class Principal extends JFrame {
 	 */
 	private void initialize() {
 		setFrame(new JFrame());
-		getFrame().setBounds(100, 100, 1011, 981);
+		getFrame().setBounds(100, 100, 1063, 693);
 		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		tabPrincipales = new JTabbedPane(JTabbedPane.TOP);
@@ -237,9 +212,9 @@ public class Principal extends JFrame {
 		tabPrincipales.addTab("Inicio", null, pnlInicio, null);
 		GridBagLayout gbl_pnlInicio = new GridBagLayout();
 		gbl_pnlInicio.columnWidths = new int[] { 1010, 0, 642, 0 };
-		gbl_pnlInicio.rowHeights = new int[] { 363, 0, 167, 39, 0 };
+		gbl_pnlInicio.rowHeights = new int[] { 363, 0, 53, 167, 39, 0 };
 		gbl_pnlInicio.columnWeights = new double[] { 1.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_pnlInicio.rowWeights = new double[] { 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE };
+		gbl_pnlInicio.rowWeights = new double[] { 1.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
 		pnlInicio.setLayout(gbl_pnlInicio);
 
 		tabInicio = new JTabbedPane(JTabbedPane.TOP);
@@ -404,13 +379,6 @@ public class Principal extends JFrame {
 		pnlOfertas = new JPanel();
 		tabInicio.addTab("Ofertas", null, pnlOfertas, null);
 
-		lblPetito = new JLabel("petito");
-		GridBagConstraints gbc_lblPetito = new GridBagConstraints();
-		gbc_lblPetito.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPetito.gridx = 1;
-		gbc_lblPetito.gridy = 0;
-		pnlInicio.add(lblPetito, gbc_lblPetito);
-
 		scrlpnlticket = new JScrollPane();
 		scrlpnlticket.setMinimumSize(new Dimension(200, 200));
 		scrlpnlticket.setPreferredSize(new Dimension(200, 200));
@@ -423,22 +391,50 @@ public class Principal extends JFrame {
 		pnlInicio.add(scrlpnlticket, gbc_scrlpnlticket);
 
 		tblticket = new JTable();
-		scrlpnlticket.setViewportView(tblticket);
 		tblticket.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		tblticket.setRowSelectionAllowed(false);
 
 		MiTablaTicket Ticket = new MiTablaTicket();
 		tblticket.setModel(Ticket);
+		scrlpnlticket.setViewportView(tblticket);
 
 		Object[] fila1Ticket = { "Costillas", 12.5, 3, 30.5 };
 		Object[] fila2Ticket = { null, null, null, null };
 		Object[] fila3Ticket = { "Entregado", null, null, null };
-		Object[] fila4Ticket = { "Total", null, null, null };
 		Ticket.aniadeFila(fila1Ticket);
 		Ticket.aniadeFila(fila2Ticket);
 		Ticket.aniadeFila(fila3Ticket);
-		Ticket.aniadeFila(fila4Ticket);
+
+		pnlBotonAñatirATicket = new JPanel();
+		GridBagConstraints gbc_pnlBotonAñatirATicket = new GridBagConstraints();
+		gbc_pnlBotonAñatirATicket.insets = new Insets(0, 0, 5, 5);
+		gbc_pnlBotonAñatirATicket.fill = GridBagConstraints.BOTH;
+		gbc_pnlBotonAñatirATicket.gridx = 0;
+		gbc_pnlBotonAñatirATicket.gridy = 1;
+		pnlInicio.add(pnlBotonAñatirATicket, gbc_pnlBotonAñatirATicket);
+		pnlBotonAñatirATicket.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		label = new JLabel("New label");
+		pnlBotonAñatirATicket.add(label);
 		
+		panel_4 = new JPanel();
+		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
+		gbc_panel_4.insets = new Insets(0, 0, 5, 5);
+		gbc_panel_4.fill = GridBagConstraints.BOTH;
+		gbc_panel_4.gridx = 0;
+		gbc_panel_4.gridy = 2;
+		pnlInicio.add(panel_4, gbc_panel_4);
+		
+		btnNewButton = new JButton("New button");
+		panel_4.add(btnNewButton);
+		
+				lblPetito = new JLabel("petito");
+				panel_4.add(lblPetito);
+				
+						btnMenuPerfilUsuario = new JButton("Perfil");
+						panel_4.add(btnMenuPerfilUsuario);
+						btnMenuPerfilUsuario.addMouseListener(new BtnMenuPerfilUsuarioMouseListener());
+						btnMenuPerfilUsuario.setBackground(Color.WHITE);
 
 		scrlpnlTescripcion = new JScrollPane();
 		scrlpnlTescripcion.setPreferredSize(new Dimension(200, 200));
@@ -449,7 +445,7 @@ public class Principal extends JFrame {
 		gbc_scrlpnlTescripcion.insets = new Insets(0, 0, 5, 5);
 		gbc_scrlpnlTescripcion.fill = GridBagConstraints.HORIZONTAL;
 		gbc_scrlpnlTescripcion.gridx = 0;
-		gbc_scrlpnlTescripcion.gridy = 2;
+		gbc_scrlpnlTescripcion.gridy = 3;
 		pnlInicio.add(scrlpnlTescripcion, gbc_scrlpnlTescripcion);
 
 		panel_1 = new JPanel();
@@ -475,6 +471,7 @@ public class Principal extends JFrame {
 		pnlBilletes.setPreferredSize(new Dimension(400, 300));
 		pnlBilletes.setSize(new Dimension(400, 300));
 		GridBagConstraints gbc_pnlBilletes = new GridBagConstraints();
+		gbc_pnlBilletes.gridheight = 2;
 		gbc_pnlBilletes.fill = GridBagConstraints.BOTH;
 		gbc_pnlBilletes.insets = new Insets(0, 0, 5, 0);
 		gbc_pnlBilletes.gridx = 2;
@@ -487,7 +484,7 @@ public class Principal extends JFrame {
 		gbc_pnlCambiosProductos.insets = new Insets(0, 0, 0, 5);
 		gbc_pnlCambiosProductos.fill = GridBagConstraints.BOTH;
 		gbc_pnlCambiosProductos.gridx = 0;
-		gbc_pnlCambiosProductos.gridy = 3;
+		gbc_pnlCambiosProductos.gridy = 4;
 		pnlInicio.add(pnlCambiosProductos, gbc_pnlCambiosProductos);
 
 		btnAñadirProducto = new JButton("Añadir");
@@ -505,7 +502,7 @@ public class Principal extends JFrame {
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 2;
-		gbc_panel.gridy = 3;
+		gbc_panel.gridy = 4;
 		pnlInicio.add(panel, gbc_panel);
 
 		btnCompra = new JButton("Comprar");
@@ -653,96 +650,48 @@ public class Principal extends JFrame {
 		pnlMapa = new JPanel();
 		tabPrincipales.addTab("Mapa", null, pnlMapa, null);
 		GridBagLayout gbl_pnlMapa = new GridBagLayout();
-		gbl_pnlMapa.columnWidths = new int[] { 96, 0, 87, 300, 346, 0 };
-		gbl_pnlMapa.rowHeights = new int[] { 212, 85, 295, 0 };
-		gbl_pnlMapa.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_pnlMapa.columnWidths = new int[] { 513, 61, 346, 0 };
+		gbl_pnlMapa.rowHeights = new int[] { 298, 0, 295, 0 };
+		gbl_pnlMapa.columnWeights = new double[] { 1.0, 0.0, 0.0, Double.MIN_VALUE };
 		gbl_pnlMapa.rowWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		pnlMapa.setLayout(gbl_pnlMapa);
 
 		lstPedidos = new JList();
 		GridBagConstraints gbc_lstPedidos = new GridBagConstraints();
+		gbc_lstPedidos.anchor = GridBagConstraints.NORTH;
 		gbc_lstPedidos.insets = new Insets(0, 0, 5, 5);
-		gbc_lstPedidos.gridx = 2;
+		gbc_lstPedidos.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lstPedidos.gridx = 0;
 		gbc_lstPedidos.gridy = 0;
 		pnlMapa.add(lstPedidos, gbc_lstPedidos);
-		
-		btnCometarios = new JButton("");
-		btnCometarios.addActionListener(new BtnCometariosActionListener());
-		btnCometarios.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagencomentario.png")));
-		GridBagConstraints gbc_btnCometarios = new GridBagConstraints();
-		gbc_btnCometarios.fill = GridBagConstraints.BOTH;
-		gbc_btnCometarios.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCometarios.gridx = 0;
-		gbc_btnCometarios.gridy = 1;
-		pnlMapa.add(btnCometarios, gbc_btnCometarios);
-		
-		btnDestino = new JButton("");
-		btnDestino.addActionListener(new BtnDestinoActionListener());
-		btnDestino.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagendestino.png")));
-		GridBagConstraints gbc_btnDestino = new GridBagConstraints();
-		gbc_btnDestino.fill = GridBagConstraints.BOTH;
-		gbc_btnDestino.insets = new Insets(0, 0, 5, 5);
-		gbc_btnDestino.gridx = 1;
-		gbc_btnDestino.gridy = 1;
-		pnlMapa.add(btnDestino, gbc_btnDestino);
-		
-		btnLapiz = new JButton("");
-		btnLapiz.addActionListener(new BtnLapizActionListener());
-		btnLapiz.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/lapizruta.png")));
-		GridBagConstraints gbc_btnLapiz = new GridBagConstraints();
-		gbc_btnLapiz.fill = GridBagConstraints.BOTH;
-		gbc_btnLapiz.insets = new Insets(0, 0, 5, 5);
-		gbc_btnLapiz.gridx = 2;
-		gbc_btnLapiz.gridy = 1;
-		pnlMapa.add(btnLapiz, gbc_btnLapiz);
-		
-		scrPnlMapa = new JScrollPane();
-		
-		GridBagConstraints gbc_scrPnlMapa = new GridBagConstraints();
-		gbc_scrPnlMapa.gridwidth = 4;
-		gbc_scrPnlMapa.insets = new Insets(0, 0, 0, 5);
-		gbc_scrPnlMapa.fill = GridBagConstraints.BOTH;
-		gbc_scrPnlMapa.gridx = 0;
-		gbc_scrPnlMapa.gridy = 2;
-		pnlMapa.add(scrPnlMapa, gbc_scrPnlMapa);
-		
-		
-		miMapaDibujo = new MiMapaDibujo();
-		miMapaDibujo.addMouseMotionListener(new MiMapaDibujoMouseMotionListener());
-		miMapaDibujo.addMouseListener(new MiMapaDibujoMouseListener());
-		miMapaDibujo.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png")));
-		imagen= new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png"));
-		
-		toolkit = Toolkit.getDefaultToolkit();
-		imagUbicacion = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/imagendestino.png"));
-		imagLapiz = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/lapizruta.png"));
-		imagTexto = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/imagencomentario.png"));
-		//Creación de los cursores
-		cursorTexto= toolkit.createCustomCursor(imagTexto,new Point(0,0),"CURSOR_TEXTO");
-		cursorUbicacion = toolkit.createCustomCursor(imagUbicacion,new Point(0,0),"CURSOR_UBICACION");
-		cursorLapiz = toolkit.createCustomCursor(imagLapiz,new Point(0,0),"CURSOR_LAPIZ");
-		scrPnlMapa.setViewportView(miMapaDibujo);
+
+		edpnlMapa = new JEditorPane();
+		GridBagConstraints gbc_edpnlMapa = new GridBagConstraints();
+		gbc_edpnlMapa.insets = new Insets(0, 0, 0, 5);
+		gbc_edpnlMapa.fill = GridBagConstraints.BOTH;
+		gbc_edpnlMapa.gridx = 0;
+		gbc_edpnlMapa.gridy = 2;
+		pnlMapa.add(edpnlMapa, gbc_edpnlMapa);
 
 		lstRepartidores = new JList();
 		GridBagConstraints gbc_lstRepartidores = new GridBagConstraints();
-		gbc_lstRepartidores.anchor = GridBagConstraints.EAST;
-		gbc_lstRepartidores.fill = GridBagConstraints.VERTICAL;
-		gbc_lstRepartidores.gridx = 4;
+		gbc_lstRepartidores.fill = GridBagConstraints.BOTH;
+		gbc_lstRepartidores.gridx = 2;
 		gbc_lstRepartidores.gridy = 2;
 		pnlMapa.add(lstRepartidores, gbc_lstRepartidores);
 
 		pnlClientes = new JPanel();
 		tabPrincipales.addTab("Clientes", null, pnlClientes, null);
 		GridBagLayout gbl_pnlClientes = new GridBagLayout();
-		gbl_pnlClientes.columnWidths = new int[] { 112, 246, 110, 223, 251 };
+		gbl_pnlClientes.columnWidths = new int[] { 112, 246, 110, 223, 251, 20, 0, -38 };
 		gbl_pnlClientes.rowHeights = new int[] { 47, 30, 20, 20, 20, 43, 0 };
-		gbl_pnlClientes.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0 };
+		gbl_pnlClientes.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 4.9E-324, 0.0, 1.0 };
 		gbl_pnlClientes.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		pnlClientes.setLayout(gbl_pnlClientes);
 
 		pnlClientesVips = new JScrollPane();
 		GridBagConstraints gbc_pnlClientesVips = new GridBagConstraints();
-		gbc_pnlClientesVips.gridwidth = 6;
+		gbc_pnlClientesVips.gridwidth = 9;
 		gbc_pnlClientesVips.insets = new Insets(0, 0, 5, 0);
 		gbc_pnlClientesVips.fill = GridBagConstraints.BOTH;
 		gbc_pnlClientesVips.gridx = 0;
@@ -758,7 +707,6 @@ public class Principal extends JFrame {
 
 		Object[] filas1 = { 111, "Juanjo", "Rodriguez Montalban", "Rialejo 10", 665895475, 19 };
 		TablaClientes.aniadeFila(filas1);
-
 
 		lblNombre = new JLabel("Nombre:  ");
 		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
@@ -797,9 +745,10 @@ public class Principal extends JFrame {
 
 		btnAadir = new JButton("Añadir   ");
 		btnAadir.addActionListener(new BtnAadirActionListener());
-		
+
 		cmbBIntolerancias = new JComboBox();
-		cmbBIntolerancias.setModel(new DefaultComboBoxModel(new String[] { "Intolerancias", "Frutos Secos", "Glúten", "Lactosa", "Marisco" }));
+		cmbBIntolerancias.setModel(new DefaultComboBoxModel(
+				new String[] { "Intolerancias", "Frutos Secos", "Glúten", "Lactosa", "Marisco" }));
 		cmbBIntolerancias.setToolTipText("Intolerancias");
 		GridBagConstraints gbc_cmbBIntolerancias = new GridBagConstraints();
 		gbc_cmbBIntolerancias.anchor = GridBagConstraints.NORTH;
@@ -808,14 +757,13 @@ public class Principal extends JFrame {
 		gbc_cmbBIntolerancias.gridx = 4;
 		gbc_cmbBIntolerancias.gridy = 2;
 		pnlClientes.add(cmbBIntolerancias, gbc_cmbBIntolerancias);
-				
 		btnAadir.setMinimumSize(new Dimension(75, 20));
 		btnAadir.setMaximumSize(new Dimension(100, 23));
 		btnAadir.setPreferredSize(new Dimension(90, 23));
 		GridBagConstraints gbc_btnAadir = new GridBagConstraints();
 		gbc_btnAadir.anchor = GridBagConstraints.WEST;
-		gbc_btnAadir.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAadir.gridx = 5;
+		gbc_btnAadir.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAadir.gridx = 6;
 		gbc_btnAadir.gridy = 2;
 		pnlClientes.add(btnAadir, gbc_btnAadir);
 
@@ -854,7 +802,7 @@ public class Principal extends JFrame {
 		gbc_txtDireccion.gridx = 3;
 		gbc_txtDireccion.gridy = 3;
 		pnlClientes.add(txtDireccion, gbc_txtDireccion);
-		
+
 		cmbBHistorial = new JComboBox();
 		cmbBHistorial.setModel(new DefaultComboBoxModel(new String[] { "Historial", "Pedido1", "Pedido2", "Pedido3" }));
 		cmbBHistorial.setToolTipText("Historial\r\n");
@@ -867,10 +815,12 @@ public class Principal extends JFrame {
 		pnlClientes.add(cmbBHistorial, gbc_cmbBHistorial);
 
 		btnModificar = new JButton("Modificar");
+		btnModificar.setPreferredSize(new Dimension(90, 23));
+		btnModificar.setMaximumSize(new Dimension(100, 23));
 		GridBagConstraints gbc_btnModificar = new GridBagConstraints();
-		gbc_btnModificar.insets = new Insets(0, 0, 5, 0);
+		gbc_btnModificar.insets = new Insets(0, 0, 5, 5);
 		gbc_btnModificar.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnModificar.gridx = 5;
+		gbc_btnModificar.gridx = 6;
 		gbc_btnModificar.gridy = 3;
 		pnlClientes.add(btnModificar, gbc_btnModificar);
 
@@ -929,38 +879,11 @@ public class Principal extends JFrame {
 		btnEliminar.addActionListener(new BtnEliminarActionListener());
 		btnEliminar.setPreferredSize(new Dimension(90, 23));
 		GridBagConstraints gbc_btnEliminar = new GridBagConstraints();
-		gbc_btnEliminar.insets = new Insets(0, 0, 5, 0);
+		gbc_btnEliminar.insets = new Insets(0, 0, 5, 5);
 		gbc_btnEliminar.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnEliminar.gridx = 5;
+		gbc_btnEliminar.gridx = 6;
 		gbc_btnEliminar.gridy = 4;
 		pnlClientes.add(btnEliminar, gbc_btnEliminar);
-
-		panel_5 = new JPanel();
-		tabPrincipales.addTab("New tab", null, panel_5, null);
-
-		menuBar = new JMenuBar();
-		menuBar.setAlignmentX(Component.LEFT_ALIGNMENT);
-		menuBar.setAlignmentY(Component.CENTER_ALIGNMENT);
-		frame.setJMenuBar(menuBar);
-
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] { "Preferencias", "Tamaño letra", "Algo más" }));
-		menuBar.add(comboBox);
-
-		comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] { "Help", "Manual ", "Cosa" }));
-		menuBar.add(comboBox_1);
-
-		comboBox_2 = new JComboBox();
-		comboBox_2.setModel(new DefaultComboBoxModel(new String[] { "Idioma" }));
-		menuBar.add(comboBox_2);
-
-		btnMenuPerfilUsuario = new JButton("Perfil");
-		btnMenuPerfilUsuario.addMouseListener(new BtnMenuPerfilUsuarioMouseListener());
-		btnMenuPerfilUsuario.setBackground(Color.WHITE);
-		// btnMenuPerfilUsuario.addActionListener(new
-		// BtnMenuPerfilUsuarioActionListener());
-		menuBar.add(btnMenuPerfilUsuario);
 
 		ListSelectionModel rowSMtc = tblClientesVips.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -1066,74 +989,6 @@ public class Principal extends JFrame {
 			TablaVip.fireTableDataChanged();
 		}
 	}
-	private class BtnCometariosActionListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			modo = TEXTO;
-			frame.setCursor(cursorTexto);
-		}
-	}
-	private class BtnDestinoActionListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			modo = UBICACION;
-			frame.setCursor(cursorUbicacion);
-		}
-	}
-	private class BtnLapizActionListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			modo = LAPIZ;
-			frame.setCursor(cursorLapiz);
-		}
-	}
-	
-	private class MiMapaDibujoMouseListener extends MouseAdapter {
-		@Override
-		public void mousePressed(MouseEvent e) {
-			x = e.getX();
-			y = e.getY();
-			toolkit = Toolkit.getDefaultToolkit();
-			if (imagen != null){
-				switch (modo){
-					case TEXTO:
-						txtTexto.setBounds(x, y, 200,30);
-						txtTexto.setVisible(true);
-						txtTexto.requestFocus();
-						txtTexto.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg) {
-									if(!txtTexto.getText().equals(""))
-										miMapaDibujo.addObjetoGrafico(new TextoGrafico(x, y+15, txtTexto.getText(),Color.BLUE));
-									txtTexto.setText("");
-									txtTexto.setVisible(false);
-									miMapaDibujo.repaint();
-							}
-						});
-						miMapaDibujo.add(txtTexto);
-						break;
-					case UBICACION:
-						miMapaDibujo.addObjetoGrafico(new ImagenGrafico(x,y,imagUbicacion));
-						miMapaDibujo.repaint();
-						break;
-					case LAPIZ:
-						miMapaDibujo.addObjetoGrafico(new LineaGrafica(x,y,x,y,Color.RED));
-						break;
-				}
-			}
-		}
-	}
-	private class MiMapaDibujoMouseMotionListener extends MouseMotionAdapter {
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			if (modo == LAPIZ && imagen!=null) {
-				((LineaGrafica)miMapaDibujo.getUltimoObjetoGrafico()).setX1(e.getX());
-				((LineaGrafica)miMapaDibujo.getUltimoObjetoGrafico()).setY1(e.getY());
-				miMapaDibujo.repaint();
-			}
-		}
-	}
-	private double CalculaTotal(JTable Ticket) {
-		double total=0.00;
-		int i;
-		return total;
-	}
 
 	public JFrame getFrame() {
 		return frame;
@@ -1141,7 +996,6 @@ public class Principal extends JFrame {
 
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
-		frame.setBackground(new Color(0, 0, 0));
 	}
 
 	public String getSeleccionado() {
