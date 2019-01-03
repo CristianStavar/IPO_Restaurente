@@ -14,6 +14,7 @@ import javax.swing.BoxLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -32,7 +33,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import dominio.Plato;
+
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
 import java.io.EOFException;
@@ -74,6 +78,7 @@ import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.Graphics;
+import javax.swing.JToolBar;
 
 public class Principal extends JFrame {
 
@@ -86,11 +91,13 @@ public class Principal extends JFrame {
 	private JPanel pnlPedidos;
 	private JPanel pnlMapa;
 	private JPanel pnlClientes;
-	private JTabbedPane tabInicio;
-	private JPanel pnlComida;
-	private JPanel pnlBebidas;
-	private JPanel pnlOfertas;
-	private JTabbedPane tabComidas;
+
+	public static JTabbedPane tabInicio;
+	public static JPanel pnlComida;
+	public static JPanel pnlBebidas;
+	public static JPanel pnlOfertas;
+	public static JTabbedPane tabComidas;
+
 	private JLabel lblAquiVamosA;
 	private JScrollPane scrlpnlTescripcion;
 	private JTable table;
@@ -132,7 +139,7 @@ public class Principal extends JFrame {
 	private JButton btnModificar;
 	private JButton btnEliminar;
 	private JTextArea textArea;
-	private JEditorPane edpnlMapa;
+
 	private JList lstPedidos;
 	private JList lstRepartidores;
 	private JButton btnIdioma_1;
@@ -148,7 +155,6 @@ public class Principal extends JFrame {
 	private JFormattedTextField frmtFechaInicio;
 	private JButton btnPagar;
 	private JComboBox cmbTipo;
-	private JPanel panel_3;
 	private JLabel lblFechaRecogida;
 	private JFormattedTextField frmtFechaRecogida;
 	private JButton btnMenuPerfilUsuario;
@@ -161,7 +167,7 @@ public class Principal extends JFrame {
 	private JScrollPane pnlClientesVips;
 	private JTable tblClientesVips;
 
-	private JTable tablaPlatosPez;
+	public static JTable tablaPlatosPez;
 	private JTable tablaPlatosPasta;
 	private JTable tablaPlatosArroz;
 	private JTable tablaPlatosBocata;
@@ -170,20 +176,20 @@ public class Principal extends JFrame {
 	private JLabel label;
 	private JPanel panel_4;
 	private JButton btnNewButton;
-	
-		private JButton btnLapiz;
+
+	private JButton btnLapiz;
 	private JButton btnDestino;
 	private JButton btnCometarios;
 	private MiMapaDibujo miMapaDibujo;
 	private ImageIcon imagen;
 	private JScrollPane scrPnlMapa;
 	private JLabel lblMapa;
-	//Variable que almacena el modo de dibujado seleccionado por el usuario
+	// Variable que almacena el modo de dibujado seleccionado por el usuario
 	int modo = -1;
 	private final int UBICACION = 1;
 	private final int TEXTO = 2;
 	private final int LAPIZ = 3;
-	//Cursores e imagenes
+	// Cursores e imagenes
 	private Toolkit toolkit;
 	private Image imagTexto;
 	private Image imagUbicacion;
@@ -192,8 +198,17 @@ public class Principal extends JFrame {
 	private Cursor cursorUbicacion;
 	private Cursor cursorLapiz;
 	private int x, y;
+
 	private JTextField txtTexto = new JTextField();
-	
+	public static JScrollPane scrollPaneBebidas;
+	public static JScrollPane scrollPaneOfertas;
+	private JTable tablaBebidas;
+	private JTable tablaOfertas;
+
+	public static JScrollPane pestana;
+	private JScrollPane scrollPane;
+	private JTable tablaPedidos;
+	private JButton btnAadirPedido;
 
 	/**
 	 * Launch the application.
@@ -285,6 +300,7 @@ public class Principal extends JFrame {
 			}
 		});
 		tablaPlatosCarne.setModel(tablaCarne);
+		tablaPlatosCarne.setRowHeight(35);
 		Object[] fila1 = { "", "Chuleton Buey", "Chuleton primeras caitates", "8.5" };
 		tablaCarne.aniadeFila(fila1);
 
@@ -308,8 +324,9 @@ public class Principal extends JFrame {
 			}
 		});
 		tablaPlatosPez.setModel(tablaPez);
-		Object[] fila2 = { "", "Merluza", "Merluza Fresca con salsa marisco.\nAlérgenos:\nContiene pescado y mariscos",
-				"9.5" };
+		tablaPlatosPez.setRowHeight(35);
+		Object[] fila2 = { "", "Merluza",
+				"Merluza Fresca con salsa marisco.\n Alérgenos:\n Contiene pescado y mariscos", "9.5" };
 		tablaPez.aniadeFila(fila2);
 		scrollPanePescado.setViewportView(tablaPlatosPez);
 
@@ -332,6 +349,7 @@ public class Principal extends JFrame {
 			}
 		});
 		tablaPlatosPasta.setModel(tablaPasta);
+		tablaPlatosPasta.setRowHeight(35);
 		Object[] fila3 = { "", "macarone", "salsa carbonara", "7" };
 		tablaPasta.aniadeFila(fila3);
 		scrollPanePasta.setViewportView(tablaPlatosPasta);
@@ -354,6 +372,7 @@ public class Principal extends JFrame {
 			}
 		});
 		tablaPlatosArroz.setModel(tablaArroz);
+		tablaPlatosArroz.setRowHeight(35);
 		Object[] fila4 = { "", "paella", "Valenciana", "12" };
 		tablaArroz.aniadeFila(fila4);
 		scrollPaneArroz.setViewportView(tablaPlatosArroz);
@@ -376,6 +395,7 @@ public class Principal extends JFrame {
 			}
 		});
 		tablaPlatosBocata.setModel(tablaBocata);
+		tablaPlatosBocata.setRowHeight(35);
 		Object[] fila5 = { "", "Bocata CAsa", "Los mejroes ingretietnes locale", "6" };
 		tablaBocata.aniadeFila(fila5);
 		scrollPaneBocadillos.setViewportView(tablaPlatosBocata);
@@ -398,15 +418,64 @@ public class Principal extends JFrame {
 			}
 		});
 		tablaPlatosPostre.setModel(tablaPostre);
+		tablaPlatosPostre.setRowHeight(35);
 		Object[] fila6 = { "", "Profiteroles", "Pooostreeee", "4" };
 		tablaPostre.aniadeFila(fila6);
 		scrollPanePostre.setViewportView(tablaPlatosPostre);
 
 		pnlBebidas = new JPanel();
 		tabInicio.addTab("Bebidas", null, pnlBebidas, null);
+		pnlBebidas.setLayout(new BorderLayout(0, 0));
+
+		scrollPaneBebidas = new JScrollPane();
+		pnlBebidas.add(scrollPaneBebidas, BorderLayout.CENTER);
+
+		tablaBebidas = new JTable();
+		tablaBebidas.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		MiTabla tablaBebidasT = new MiTabla();
+		ListSelectionModel rowSMpb = tablaBebidas.getSelectionModel();
+		rowSMpb.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+				if (!lsm.isSelectionEmpty()) {
+					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
+					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+							+ (String) tablaBebidasT.getDescripcion(lsm.getMinSelectionIndex()));
+				}
+			}
+		});
+		tablaBebidas.setModel(tablaBebidasT);
+		tablaBebidas.setRowHeight(35);
+		Object[] fila7 = { "", "ColaCoca", "Refrescante", "1" };
+		tablaBebidasT.aniadeFila(fila7);
+		scrollPaneBebidas.setViewportView(tablaBebidas);
 
 		pnlOfertas = new JPanel();
 		tabInicio.addTab("Ofertas", null, pnlOfertas, null);
+		pnlOfertas.setLayout(new BorderLayout(0, 0));
+
+		scrollPaneOfertas = new JScrollPane();
+		pnlOfertas.add(scrollPaneOfertas, BorderLayout.CENTER);
+
+		tablaOfertas = new JTable();
+		tablaOfertas.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		MiTabla tablaOfertasT = new MiTabla();
+		ListSelectionModel rowSMpO = tablaOfertas.getSelectionModel();
+		rowSMpO.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+				if (!lsm.isSelectionEmpty()) {
+					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
+					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+							+ (String) tablaOfertasT.getDescripcion(lsm.getMinSelectionIndex()));
+				}
+			}
+		});
+		tablaOfertas.setModel(tablaOfertasT);
+		tablaOfertas.setRowHeight(35);
+		Object[] fila8 = { "", "ColaCoca", "Refrescante", "0.5" };
+		tablaOfertasT.aniadeFila(fila8);
+		scrollPaneOfertas.setViewportView(tablaOfertas);
 
 		scrlpnlticket = new JScrollPane();
 		scrlpnlticket.setMinimumSize(new Dimension(200, 200));
@@ -430,9 +499,13 @@ public class Principal extends JFrame {
 		Object[] fila1Ticket = { "Costillas", 12.5, 3, 30.5 };
 		Object[] fila2Ticket = { null, null, null, null };
 		Object[] fila3Ticket = { "Entregado", null, null, null };
+		Object[] fila4Ticket = { "Total", null, null, null };
 		Ticket.aniadeFila(fila1Ticket);
 		Ticket.aniadeFila(fila2Ticket);
 		Ticket.aniadeFila(fila3Ticket);
+		Ticket.aniadeFila(fila4Ticket);
+		CalculaTotal();
+		Ticket.fireTableDataChanged();
 
 		pnlBotonAñatirATicket = new JPanel();
 		GridBagConstraints gbc_pnlBotonAñatirATicket = new GridBagConstraints();
@@ -445,7 +518,7 @@ public class Principal extends JFrame {
 
 		label = new JLabel("New label");
 		pnlBotonAñatirATicket.add(label);
-		
+
 		panel_4 = new JPanel();
 		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
 		gbc_panel_4.insets = new Insets(0, 0, 5, 5);
@@ -453,17 +526,17 @@ public class Principal extends JFrame {
 		gbc_panel_4.gridx = 0;
 		gbc_panel_4.gridy = 2;
 		pnlInicio.add(panel_4, gbc_panel_4);
-		
+
 		btnNewButton = new JButton("New button");
 		panel_4.add(btnNewButton);
-		
-				lblPetito = new JLabel("petito");
-				panel_4.add(lblPetito);
-				
-						btnMenuPerfilUsuario = new JButton("Perfil");
-						panel_4.add(btnMenuPerfilUsuario);
-						btnMenuPerfilUsuario.addMouseListener(new BtnMenuPerfilUsuarioMouseListener());
-						btnMenuPerfilUsuario.setBackground(Color.WHITE);
+
+		lblPetito = new JLabel("petito");
+		panel_4.add(lblPetito);
+
+		btnMenuPerfilUsuario = new JButton("Perfil");
+		panel_4.add(btnMenuPerfilUsuario);
+		btnMenuPerfilUsuario.addMouseListener(new BtnMenuPerfilUsuarioMouseListener());
+		btnMenuPerfilUsuario.setBackground(Color.WHITE);
 
 		scrlpnlTescripcion = new JScrollPane();
 		scrlpnlTescripcion.setPreferredSize(new Dimension(200, 200));
@@ -491,6 +564,8 @@ public class Principal extends JFrame {
 		panel_1.add(lblAquiVamosA);
 
 		textAreaEsc = new JTextArea();
+		textAreaEsc.setLineWrap(true);
+		textAreaEsc.setWrapStyleWord(true);
 		textAreaEsc.setMaximumSize(new Dimension(500, 300));
 		textAreaEsc.setText("Soy la escricion\r\ne\r\nsas\r\nsacosas\r\ngh\r\n\r\nh\r\njh\r\nj");
 		panel_1.add(textAreaEsc);
@@ -521,6 +596,7 @@ public class Principal extends JFrame {
 		pnlCambiosProductos.add(btnAñadirProducto);
 
 		btnModificarProducto = new JButton("Modificar");
+		btnModificarProducto.addActionListener(new BtnModificarProductoActionListener());
 		pnlCambiosProductos.add(btnModificarProducto);
 
 		btnEliminrroducto = new JButton("Eliminar");
@@ -545,9 +621,37 @@ public class Principal extends JFrame {
 		GridBagLayout gbl_pnlPedidos = new GridBagLayout();
 		gbl_pnlPedidos.columnWidths = new int[] { 918, 0 };
 		gbl_pnlPedidos.rowHeights = new int[] { 514, 277, 0 };
-		gbl_pnlPedidos.columnWeights = new double[] { 0.0, Double.MIN_VALUE };
+		gbl_pnlPedidos.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
 		gbl_pnlPedidos.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		pnlPedidos.setLayout(gbl_pnlPedidos);
+
+		scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 0;
+		pnlPedidos.add(scrollPane, gbc_scrollPane);
+
+		tablaPedidos = new JTable();
+		tablaPedidos.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		ListSelectionModel rowSMtP = tablaPedidos.getSelectionModel();
+		MiTablaPedidos tablaPedido = new MiTablaPedidos();
+		rowSMtP.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+				if (!lsm.isSelectionEmpty()) {
+					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
+					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+							+ (String) tablaPedido.getDescripcion(lsm.getMinSelectionIndex()));
+				}
+			}
+		});
+		tablaPedidos.setModel(tablaPedido);
+		tablaPedidos.setRowHeight(25);
+		Object[] filaP = { "1", "Paco García", "Calle Langostinos", "856", "Todooos", "Ayer", "Hoy" };
+		tablaPedido.aniadeFila(filaP);
+		scrollPane.setViewportView(tablaPedidos);
 
 		pnldePedidos = new JPanel();
 		GridBagConstraints gbc_pnldePedidos = new GridBagConstraints();
@@ -563,27 +667,17 @@ public class Principal extends JFrame {
 		pnldePedidos.add(panel_2);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[] { 108, 167, 125, 172, 204, 0 };
-		gbl_panel_2.rowHeights = new int[] { 461, 0, 0, 0, 0, 0 };
+		gbl_panel_2.rowHeights = new int[] { 0, 0, 0, 0, 0 };
 		gbl_panel_2.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
-		gbl_panel_2.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panel_2.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panel_2.setLayout(gbl_panel_2);
-
-		panel_3 = new JPanel();
-		panel_3.setMaximumSize(new Dimension(327, 327));
-		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
-		gbc_panel_3.gridwidth = 5;
-		gbc_panel_3.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_3.fill = GridBagConstraints.BOTH;
-		gbc_panel_3.gridx = 0;
-		gbc_panel_3.gridy = 0;
-		panel_2.add(panel_3, gbc_panel_3);
 
 		lblNombre_1 = new JLabel("Nombre:  ");
 		GridBagConstraints gbc_lblNombre_1 = new GridBagConstraints();
 		gbc_lblNombre_1.anchor = GridBagConstraints.EAST;
 		gbc_lblNombre_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNombre_1.gridx = 0;
-		gbc_lblNombre_1.gridy = 1;
+		gbc_lblNombre_1.gridy = 0;
 		panel_2.add(lblNombre_1, gbc_lblNombre_1);
 
 		txtNombre_1 = new JTextField();
@@ -591,7 +685,7 @@ public class Principal extends JFrame {
 		gbc_txtNombre_1.insets = new Insets(0, 0, 5, 5);
 		gbc_txtNombre_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtNombre_1.gridx = 1;
-		gbc_txtNombre_1.gridy = 1;
+		gbc_txtNombre_1.gridy = 0;
 		panel_2.add(txtNombre_1, gbc_txtNombre_1);
 		txtNombre_1.setColumns(10);
 
@@ -600,7 +694,7 @@ public class Principal extends JFrame {
 		gbc_lblDireccion_1.anchor = GridBagConstraints.EAST;
 		gbc_lblDireccion_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblDireccion_1.gridx = 0;
-		gbc_lblDireccion_1.gridy = 2;
+		gbc_lblDireccion_1.gridy = 1;
 		panel_2.add(lblDireccion_1, gbc_lblDireccion_1);
 
 		txtDireccion_1 = new JTextField();
@@ -608,7 +702,7 @@ public class Principal extends JFrame {
 		gbc_txtDireccion_1.insets = new Insets(0, 0, 5, 5);
 		gbc_txtDireccion_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtDireccion_1.gridx = 1;
-		gbc_txtDireccion_1.gridy = 2;
+		gbc_txtDireccion_1.gridy = 1;
 		panel_2.add(txtDireccion_1, gbc_txtDireccion_1);
 		txtDireccion_1.setColumns(10);
 
@@ -617,14 +711,14 @@ public class Principal extends JFrame {
 		gbc_cmbTipo.insets = new Insets(0, 0, 5, 5);
 		gbc_cmbTipo.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cmbTipo.gridx = 3;
-		gbc_cmbTipo.gridy = 2;
+		gbc_cmbTipo.gridy = 1;
 		panel_2.add(cmbTipo, gbc_cmbTipo);
 
 		btnPagar = new JButton("Pagar");
 		GridBagConstraints gbc_btnPagar = new GridBagConstraints();
 		gbc_btnPagar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnPagar.gridx = 4;
-		gbc_btnPagar.gridy = 2;
+		gbc_btnPagar.gridy = 1;
 		panel_2.add(btnPagar, gbc_btnPagar);
 
 		lblTelefono = new JLabel("Telefono:  ");
@@ -632,7 +726,7 @@ public class Principal extends JFrame {
 		gbc_lblTelefono.anchor = GridBagConstraints.EAST;
 		gbc_lblTelefono.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTelefono.gridx = 0;
-		gbc_lblTelefono.gridy = 3;
+		gbc_lblTelefono.gridy = 2;
 		panel_2.add(lblTelefono, gbc_lblTelefono);
 
 		txtTelefono = new JTextField();
@@ -640,7 +734,7 @@ public class Principal extends JFrame {
 		gbc_txtTelefono.insets = new Insets(0, 0, 5, 5);
 		gbc_txtTelefono.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtTelefono.gridx = 1;
-		gbc_txtTelefono.gridy = 3;
+		gbc_txtTelefono.gridy = 2;
 		panel_2.add(txtTelefono, gbc_txtTelefono);
 		txtTelefono.setColumns(10);
 
@@ -649,7 +743,7 @@ public class Principal extends JFrame {
 		gbc_lblFechaRecogida.anchor = GridBagConstraints.EAST;
 		gbc_lblFechaRecogida.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFechaRecogida.gridx = 2;
-		gbc_lblFechaRecogida.gridy = 3;
+		gbc_lblFechaRecogida.gridy = 2;
 		panel_2.add(lblFechaRecogida, gbc_lblFechaRecogida);
 
 		frmtFechaRecogida = new JFormattedTextField();
@@ -657,7 +751,7 @@ public class Principal extends JFrame {
 		gbc_frmtFechaRecogida.insets = new Insets(0, 0, 5, 5);
 		gbc_frmtFechaRecogida.fill = GridBagConstraints.HORIZONTAL;
 		gbc_frmtFechaRecogida.gridx = 3;
-		gbc_frmtFechaRecogida.gridy = 3;
+		gbc_frmtFechaRecogida.gridy = 2;
 		panel_2.add(frmtFechaRecogida, gbc_frmtFechaRecogida);
 
 		lblFechaInicio = new JLabel("Fecha:  ");
@@ -665,7 +759,7 @@ public class Principal extends JFrame {
 		gbc_lblFechaInicio.anchor = GridBagConstraints.EAST;
 		gbc_lblFechaInicio.insets = new Insets(0, 0, 0, 5);
 		gbc_lblFechaInicio.gridx = 0;
-		gbc_lblFechaInicio.gridy = 4;
+		gbc_lblFechaInicio.gridy = 3;
 		panel_2.add(lblFechaInicio, gbc_lblFechaInicio);
 
 		frmtFechaInicio = new JFormattedTextField();
@@ -673,8 +767,15 @@ public class Principal extends JFrame {
 		gbc_frmtFechaInicio.insets = new Insets(0, 0, 0, 5);
 		gbc_frmtFechaInicio.fill = GridBagConstraints.HORIZONTAL;
 		gbc_frmtFechaInicio.gridx = 1;
-		gbc_frmtFechaInicio.gridy = 4;
+		gbc_frmtFechaInicio.gridy = 3;
 		panel_2.add(frmtFechaInicio, gbc_frmtFechaInicio);
+
+		btnAadirPedido = new JButton("Añadir Pedido");
+		btnAadirPedido.addActionListener(new BtnAadirPedidoActionListener());
+		GridBagConstraints gbc_btnAadirPedido = new GridBagConstraints();
+		gbc_btnAadirPedido.gridx = 4;
+		gbc_btnAadirPedido.gridy = 3;
+		panel_2.add(btnAadirPedido, gbc_btnAadirPedido);
 
 		pnlMapa = new JPanel();
 		tabPrincipales.addTab("Mapa", null, pnlMapa, null);
@@ -711,7 +812,7 @@ public class Principal extends JFrame {
 		gbc_btnCometarios.gridx = 0;
 		gbc_btnCometarios.gridy = 1;
 		pnlMapa.add(btnCometarios, gbc_btnCometarios);
-		
+
 		btnDestino = new JButton("");
 		btnDestino.addActionListener(new BtnDestinoActionListener());
 		btnDestino.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagendestino.png")));
@@ -721,7 +822,7 @@ public class Principal extends JFrame {
 		gbc_btnDestino.gridx = 1;
 		gbc_btnDestino.gridy = 1;
 		pnlMapa.add(btnDestino, gbc_btnDestino);
-		
+
 		btnLapiz = new JButton("");
 		btnLapiz.addActionListener(new BtnLapizActionListener());
 		btnLapiz.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/lapizruta.png")));
@@ -731,9 +832,9 @@ public class Principal extends JFrame {
 		gbc_btnLapiz.gridx = 2;
 		gbc_btnLapiz.gridy = 1;
 		pnlMapa.add(btnLapiz, gbc_btnLapiz);
-		
+
 		scrPnlMapa = new JScrollPane();
-		
+
 		GridBagConstraints gbc_scrPnlMapa = new GridBagConstraints();
 		gbc_scrPnlMapa.gridwidth = 4;
 		gbc_scrPnlMapa.insets = new Insets(0, 0, 0, 5);
@@ -741,25 +842,23 @@ public class Principal extends JFrame {
 		gbc_scrPnlMapa.gridx = 0;
 		gbc_scrPnlMapa.gridy = 2;
 		pnlMapa.add(scrPnlMapa, gbc_scrPnlMapa);
-		
-		
+
 		miMapaDibujo = new MiMapaDibujo();
 		miMapaDibujo.addMouseMotionListener(new MiMapaDibujoMouseMotionListener());
 		miMapaDibujo.addMouseListener(new MiMapaDibujoMouseListener());
 		miMapaDibujo.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png")));
-		imagen= new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png"));
-		
+		imagen = new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png"));
+
 		toolkit = Toolkit.getDefaultToolkit();
 		imagUbicacion = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/imagendestino.png"));
 		imagLapiz = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/lapizruta.png"));
 		imagTexto = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/imagencomentario.png"));
-		//Creación de los cursores
-		cursorTexto= toolkit.createCustomCursor(imagTexto,new Point(0,0),"CURSOR_TEXTO");
-		cursorUbicacion = toolkit.createCustomCursor(imagUbicacion,new Point(0,0),"CURSOR_UBICACION");
-		cursorLapiz = toolkit.createCustomCursor(imagLapiz,new Point(0,0),"CURSOR_LAPIZ");
+		// Creación de los cursores
+		cursorTexto = toolkit.createCustomCursor(imagTexto, new Point(0, 0), "CURSOR_TEXTO");
+		cursorUbicacion = toolkit.createCustomCursor(imagUbicacion, new Point(0, 0), "CURSOR_UBICACION");
+		cursorLapiz = toolkit.createCustomCursor(imagLapiz, new Point(0, 0), "CURSOR_LAPIZ");
 		scrPnlMapa.setViewportView(miMapaDibujo);
 
-		
 		lstRepartidores = new JList();
 		GridBagConstraints gbc_lstRepartidores = new GridBagConstraints();
 		gbc_lstRepartidores.anchor = GridBagConstraints.EAST;
@@ -998,16 +1097,26 @@ public class Principal extends JFrame {
 			 */
 
 			Object[] nuevaFila = { "foto.", "protuct", "tescripcion", "precio" };
-			JScrollPane pestana;
+
 			JTable tabla = new JTable();
 			MiTabla modelo = new MiTabla();
-			pestana = (JScrollPane) tabComidas.getSelectedComponent();
-			tabla = (JTable) pestana.getViewport().getView();
+			if (tabInicio.getSelectedComponent().equals(pnlComida)) {
+				pestana = (JScrollPane) tabComidas.getSelectedComponent();
+				tabla = (JTable) pestana.getViewport().getView();
+			}
+			if (tabInicio.getSelectedComponent().equals(pnlBebidas)) {
+				pestana = (JScrollPane) scrollPaneBebidas;
+				tabla = (JTable) pestana.getViewport().getView();
+			}
+			if (tabInicio.getSelectedComponent().equals(pnlOfertas)) {
+				pestana = (JScrollPane) scrollPaneOfertas;
+				tabla = (JTable) pestana.getViewport().getView();
+			}
 			modelo = (MiTabla) tabla.getModel();
 			modelo.aniadeFila(nuevaFila);
 			modelo.fireTableDataChanged();
 
-		}
+		}//
 	}
 
 	private class BtnEliminrroductoActionListener implements ActionListener {
@@ -1028,7 +1137,7 @@ public class Principal extends JFrame {
 			 * tabla.remove(i); tabla.repaint(); tabla.revalidate(); } }
 			 * 
 			 */
-			JScrollPane pestana;
+
 			JTable tabla = new JTable();
 			MiTabla modelo = new MiTabla();
 			pestana = (JScrollPane) tabComidas.getSelectedComponent();
@@ -1077,74 +1186,120 @@ public class Principal extends JFrame {
 			TablaVip.fireTableDataChanged();
 		}
 	}
-	
-		private class BtnCometariosActionListener implements ActionListener {
+
+	private class BtnCometariosActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			modo = TEXTO;
 			frame.setCursor(cursorTexto);
 		}
 	}
+
 	private class BtnDestinoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			modo = UBICACION;
 			frame.setCursor(cursorUbicacion);
 		}
 	}
+
 	private class BtnLapizActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			modo = LAPIZ;
 			frame.setCursor(cursorLapiz);
 		}
 	}
-	
+
 	private class MiMapaDibujoMouseListener extends MouseAdapter {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			x = e.getX();
 			y = e.getY();
 			toolkit = Toolkit.getDefaultToolkit();
-			if (imagen != null){
-				switch (modo){
-					case TEXTO:
-						txtTexto.setBounds(x, y, 200,30);
-						txtTexto.setVisible(true);
-						txtTexto.requestFocus();
-						txtTexto.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg) {
-									if(!txtTexto.getText().equals(""))
-										miMapaDibujo.addObjetoGrafico(new TextoGrafico(x, y+15, txtTexto.getText(),Color.BLUE));
-									txtTexto.setText("");
-									txtTexto.setVisible(false);
-									miMapaDibujo.repaint();
-							}
-						});
-						miMapaDibujo.add(txtTexto);
-						break;
-					case UBICACION:
-						miMapaDibujo.addObjetoGrafico(new ImagenGrafico(x,y,imagUbicacion));
-						miMapaDibujo.repaint();
-						break;
-					case LAPIZ:
-						miMapaDibujo.addObjetoGrafico(new LineaGrafica(x,y,x,y,Color.RED));
-						break;
+			if (imagen != null) {
+				switch (modo) {
+				case TEXTO:
+					txtTexto.setBounds(x, y, 200, 30);
+					txtTexto.setVisible(true);
+					txtTexto.requestFocus();
+					txtTexto.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent arg) {
+							if (!txtTexto.getText().equals(""))
+								miMapaDibujo
+										.addObjetoGrafico(new TextoGrafico(x, y + 15, txtTexto.getText(), Color.BLUE));
+							txtTexto.setText("");
+							txtTexto.setVisible(false);
+							miMapaDibujo.repaint();
+						}
+					});
+					miMapaDibujo.add(txtTexto);
+					break;
+				case UBICACION:
+					miMapaDibujo.addObjetoGrafico(new ImagenGrafico(x, y, imagUbicacion));
+					miMapaDibujo.repaint();
+					break;
+				case LAPIZ:
+					miMapaDibujo.addObjetoGrafico(new LineaGrafica(x, y, x, y, Color.RED));
+					break;
 				}
 			}
 		}
 	}
+
 	private class MiMapaDibujoMouseMotionListener extends MouseMotionAdapter {
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			if (modo == LAPIZ && imagen!=null) {
-				((LineaGrafica)miMapaDibujo.getUltimoObjetoGrafico()).setX1(e.getX());
-				((LineaGrafica)miMapaDibujo.getUltimoObjetoGrafico()).setY1(e.getY());
+			if (modo == LAPIZ && imagen != null) {
+				((LineaGrafica) miMapaDibujo.getUltimoObjetoGrafico()).setX1(e.getX());
+				((LineaGrafica) miMapaDibujo.getUltimoObjetoGrafico()).setY1(e.getY());
 				miMapaDibujo.repaint();
 			}
 		}
 	}
-	private double CalculaTotal(JTable Ticket) {
-		double total=0.00;
-		int i;
-		return total;
+
+	private class BtnModificarProductoActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			JScrollPane pestana;
+			JTable tabla = new JTable();
+			MiTabla modelo = new MiTabla();
+			if (tabInicio.getSelectedComponent().equals(pnlComida)) {
+				pestana = (JScrollPane) tabComidas.getSelectedComponent();
+				tabla = (JTable) pestana.getViewport().getView();
+			}
+			if (tabInicio.getSelectedComponent().equals(pnlBebidas)) {
+				pestana = (JScrollPane) scrollPaneBebidas;
+				tabla = (JTable) pestana.getViewport().getView();
+			}
+			if (tabInicio.getSelectedComponent().equals(pnlOfertas)) {
+				pestana = (JScrollPane) scrollPaneOfertas;
+				tabla = (JTable) pestana.getViewport().getView();
+			}
+			modelo = (MiTabla) tabla.getModel();
+			int n = tabla.getSelectedRow();
+			if (n != -1) {
+				Plato plato = new Plato((String) tabla.getValueAt(tabla.getSelectedRow(), 0),
+						(String) tabla.getValueAt(tabla.getSelectedRow(), 1),
+						(String) tabla.getValueAt(tabla.getSelectedRow(), 3),
+						(String) tabla.getValueAt(tabla.getSelectedRow(), 2));
+				ModificarPlato modificarPlato = new ModificarPlato(plato, modelo, tabla);
+				modificarPlato.setVisible(true);
+			}
+		}
+	}
+
+	private class BtnAadirPedidoActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+
+		}
+	}
+
+	private void CalculaTotal() {
+		double total = 0;
+		int i = 0;
+		MiTablaTicket TablaTotal = (MiTablaTicket) tblticket.getModel();
+		while (i < TablaTotal.getRowCount() - 3) {
+			total += TablaTotal.getValor(i, 3);
+			i++;
+		}
+		TablaTotal.setValueAt(total, TablaTotal.getRowCount() - 1, 3);
 	}
 
 	public JFrame getFrame() {

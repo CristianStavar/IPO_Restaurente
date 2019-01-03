@@ -1,11 +1,14 @@
 package presentacion;
 
-import java.util.*;
-import javax.swing.table.*;
+import java.util.Vector;
 
-public class MiTablaTicket extends AbstractTableModel {
-	private String[] nombreColumnas = { "Producto", "Precio unid", "Cantidad", "Total" };
+import javax.swing.table.AbstractTableModel;
 
+public class MiTablaPedidos extends AbstractTableModel {
+
+	private String[] nombreColumnas = { "Id", "Cliente", "Dirección", "Telefono", "Platos", "Fecha",
+			"Fecha de recogida" };
+	// Quizas mas cosas en plan precio, lista platos y demás
 	private Vector datos = new Vector();
 
 	public int getColumnCount() {
@@ -23,12 +26,6 @@ public class MiTablaTicket extends AbstractTableModel {
 	public Object getValueAt(int row, int col) {
 		Object[] fila = (Object[]) datos.elementAt(row);
 		return fila[col];
-	}
-
-	public double getValor(int row, int col) {
-		Object[] fila = (Object[]) datos.elementAt(row);
-		double valor = (double) fila[col];
-		return valor;
 	}
 
 	public Class getColumnClass(int c) {
@@ -54,4 +51,12 @@ public class MiTablaTicket extends AbstractTableModel {
 	public void aniadeFila(Object[] row) {
 		datos.add(row);
 	}
+
+	public String getDescripcion(int row) {
+		String descripcion = null;
+		Object[] fila = (Object[]) datos.elementAt(row);
+		descripcion = (String) fila[2];
+		return descripcion;
+	}
+
 }
