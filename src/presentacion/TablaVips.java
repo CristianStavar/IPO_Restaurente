@@ -26,6 +26,12 @@ public class TablaVips extends AbstractTableModel {
 		return fila[col];
 	}
 
+	public String getValor(int row, int col) {
+		Object[] fila = (Object[]) datos.elementAt(row);
+		String valor = (String) fila[col];
+		return valor;
+	}
+
 	public Class getColumnClass(int c) {
 		return getValueAt(0, c).getClass();
 	}

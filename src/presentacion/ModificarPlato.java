@@ -29,6 +29,8 @@ import javax.swing.table.AbstractTableModel;
 
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.MatteBorder;
+import java.awt.Dimension;
 
 public class ModificarPlato extends JFrame {
 
@@ -112,17 +114,22 @@ public class ModificarPlato extends JFrame {
 		pnlInfo.add(txtaTescripcion, gbc_txtaTescripcion);
 
 		pnlFoto = new JPanel();
+		pnlFoto.setPreferredSize(new Dimension(200, 250));
+		pnlFoto.setSize(new Dimension(200, 250));
+		pnlFoto.setMaximumSize(new Dimension(200, 250));
 		GridBagConstraints gbc_pnlFoto = new GridBagConstraints();
 		gbc_pnlFoto.gridwidth = 2;
 		gbc_pnlFoto.gridheight = 2;
 		gbc_pnlFoto.insets = new Insets(0, 0, 5, 0);
-		gbc_pnlFoto.fill = GridBagConstraints.BOTH;
 		gbc_pnlFoto.gridx = 4;
 		gbc_pnlFoto.gridy = 1;
 		pnlInfo.add(pnlFoto, gbc_pnlFoto);
 		pnlFoto.setLayout(new BorderLayout(0, 0));
 
 		lblFotografia = new JLabel("");
+		lblFotografia.setPreferredSize(new Dimension(200, 250));
+		lblFotografia.setMaximumSize(new Dimension(200, 250));
+		lblFotografia.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		pnlFoto.add(lblFotografia, BorderLayout.CENTER);
 
 		btnCambiarFoto = new JButton("Cambiar Foto");
@@ -200,7 +207,7 @@ public class ModificarPlato extends JFrame {
 
 				modelo.fireTableDataChanged();
 				// debido al uso de la orden de arriba imagino, al actualizarse la tabla se
-				// pierde la selecion actual desues de una modificacion.
+				// pierde la selecion actual despues de una modificacion.
 				// Tampoco controlamos que se hagan modificaciones a otra fila que no sea la
 				// seleccionada inicialmente.
 				// se puede cambiar la selecion antes de darle al boton de confirmar y se

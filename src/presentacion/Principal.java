@@ -86,6 +86,7 @@ public class Principal extends JFrame {
 	 * 
 	 */
 	private JFrame frame;
+	private JPanel pnlMenu;
 	private JTabbedPane tabPrincipales;
 	private JPanel pnlInicio;
 	private JPanel pnlPedidos;
@@ -206,9 +207,12 @@ public class Principal extends JFrame {
 	private JTable tablaOfertas;
 
 	public static JScrollPane pestana;
-	private JScrollPane scrollPane;
+	private JScrollPane scrollPanePedidos;
 	private JTable tablaPedidos;
 	private JButton btnAadirPedido;
+	private JComboBox comboBoxPreferencias;
+	private JComboBox comboBoxManual;
+	private JComboBox comboBoxIdioma;
 
 	/**
 	 * Launch the application.
@@ -250,6 +254,28 @@ public class Principal extends JFrame {
 		tabPrincipales = new JTabbedPane(JTabbedPane.TOP);
 		tabPrincipales.setToolTipText("Soy penstañas\r\n");
 		getFrame().getContentPane().add(tabPrincipales, BorderLayout.CENTER);
+
+		pnlMenu = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) pnlMenu.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		getFrame().getContentPane().add(pnlMenu, BorderLayout.NORTH);
+
+		comboBoxPreferencias = new JComboBox();
+		comboBoxPreferencias.setModel(new DefaultComboBoxModel(new String[] { "Preferencias", "Letras" }));
+		pnlMenu.add(comboBoxPreferencias);
+
+		comboBoxManual = new JComboBox();
+		comboBoxManual.setModel(new DefaultComboBoxModel(new String[] { "Manual de usario" }));
+		pnlMenu.add(comboBoxManual);
+
+		comboBoxIdioma = new JComboBox();
+		comboBoxIdioma.setModel(new DefaultComboBoxModel(new String[] { "Idioma", "Español", "Inglés" }));
+		pnlMenu.add(comboBoxIdioma);
+
+		btnMenuPerfilUsuario = new JButton("Perfil");
+		pnlMenu.add(btnMenuPerfilUsuario);
+		btnMenuPerfilUsuario.addMouseListener(new BtnMenuPerfilUsuarioMouseListener());
+		btnMenuPerfilUsuario.setBackground(UIManager.getColor("Button.background"));
 
 		pnlInicio = new JPanel();
 		pnlInicio.setName("");
@@ -533,11 +559,6 @@ public class Principal extends JFrame {
 		lblPetito = new JLabel("petito");
 		panel_4.add(lblPetito);
 
-		btnMenuPerfilUsuario = new JButton("Perfil");
-		panel_4.add(btnMenuPerfilUsuario);
-		btnMenuPerfilUsuario.addMouseListener(new BtnMenuPerfilUsuarioMouseListener());
-		btnMenuPerfilUsuario.setBackground(Color.WHITE);
-
 		scrlpnlTescripcion = new JScrollPane();
 		scrlpnlTescripcion.setPreferredSize(new Dimension(200, 200));
 		scrlpnlTescripcion.setMaximumSize(new Dimension(1000, 1000));
@@ -625,13 +646,13 @@ public class Principal extends JFrame {
 		gbl_pnlPedidos.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		pnlPedidos.setLayout(gbl_pnlPedidos);
 
-		scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 0;
-		pnlPedidos.add(scrollPane, gbc_scrollPane);
+		scrollPanePedidos = new JScrollPane();
+		GridBagConstraints gbc_scrollPanePedidos = new GridBagConstraints();
+		gbc_scrollPanePedidos.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPanePedidos.fill = GridBagConstraints.BOTH;
+		gbc_scrollPanePedidos.gridx = 0;
+		gbc_scrollPanePedidos.gridy = 0;
+		pnlPedidos.add(scrollPanePedidos, gbc_scrollPanePedidos);
 
 		tablaPedidos = new JTable();
 		tablaPedidos.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -642,8 +663,13 @@ public class Principal extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (!lsm.isSelectionEmpty()) {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
-					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
-							+ (String) tablaPedido.getDescripcion(lsm.getMinSelectionIndex()));
+					lblPetito.setText((String) "Pedido:" + tablaPedido.getValueAt(filaSeleccionada - 1, 0) + " de "
+							+ tablaPedido.getValueAt(filaSeleccionada - 1, 1));
+					txtNombre_1.setText((String) tablaPedido.getValueAt(filaSeleccionada - 1, 1));
+					txtDireccion_1.setText((String) tablaPedido.getValueAt(filaSeleccionada - 1, 2));
+					frmtFechaInicio.setText((String) tablaPedido.getValueAt(filaSeleccionada - 1, 5));
+					frmtFechaRecogida.setText((String) tablaPedido.getValueAt(filaSeleccionada - 1, 6));
+					txtTelefono.setText((String) tablaPedido.getValueAt(filaSeleccionada - 1, 3));
 				}
 			}
 		});
@@ -651,7 +677,7 @@ public class Principal extends JFrame {
 		tablaPedidos.setRowHeight(25);
 		Object[] filaP = { "1", "Paco García", "Calle Langostinos", "856", "Todooos", "Ayer", "Hoy" };
 		tablaPedido.aniadeFila(filaP);
-		scrollPane.setViewportView(tablaPedidos);
+		scrollPanePedidos.setViewportView(tablaPedidos);
 
 		pnldePedidos = new JPanel();
 		GridBagConstraints gbc_pnldePedidos = new GridBagConstraints();
@@ -890,6 +916,21 @@ public class Principal extends JFrame {
 		tblClientesVips.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		TablaVips TablaClientes = new TablaVips();
+		ListSelectionModel rowSMTCV = tblClientesVips.getSelectionModel();
+		rowSMTCV.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+				if (!lsm.isSelectionEmpty()) {
+					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
+					txtNombre.setText((String) TablaClientes.getValueAt(filaSeleccionada - 1, 1));
+					txtApellidos.setText((String) TablaClientes.getValueAt(filaSeleccionada - 1, 2));
+					txtDireccion.setText((String) TablaClientes.getValueAt(filaSeleccionada - 1, 3));
+					fTxtTelefono.setValue(TablaClientes.getValueAt(filaSeleccionada - 1, 4));
+					// txtInd.setText(TablaClientes.getValor(filaSeleccionada - 1, 0));
+					txtPuntos.setText(TablaClientes.getValor(filaSeleccionada - 1, 5));
+				}
+			}
+		});
 		tblClientesVips.setModel((TableModel) TablaClientes);
 
 		Object[] filas1 = { 111, "Juanjo", "Rodriguez Montalban", "Rialejo 10", 665895475, 19 };
@@ -1287,6 +1328,18 @@ public class Principal extends JFrame {
 
 	private class BtnAadirPedidoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
+
+			JTable tabla = new JTable();
+			MiTablaPedidos modelo = new MiTablaPedidos();
+
+			pestana = (JScrollPane) scrollPanePedidos;
+			tabla = (JTable) pestana.getViewport().getView();
+			Object[] nuevaFila = { tabla.getRowCount() + 1, "Cliente", "direcion", "Telefono", "latos", "Feha",
+					"Fecha entrega" };
+
+			modelo = (MiTablaPedidos) tabla.getModel();
+			modelo.aniadeFila(nuevaFila);
+			modelo.fireTableDataChanged();
 
 		}
 	}
