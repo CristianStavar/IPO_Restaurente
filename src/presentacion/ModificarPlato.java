@@ -31,6 +31,8 @@ import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.Dimension;
+import java.awt.Component;
+import javax.swing.border.SoftBevelBorder;
 
 public class ModificarPlato extends JFrame {
 
@@ -114,6 +116,7 @@ public class ModificarPlato extends JFrame {
 		pnlInfo.add(txtaTescripcion, gbc_txtaTescripcion);
 
 		pnlFoto = new JPanel();
+		pnlFoto.setBorder(null);
 		pnlFoto.setPreferredSize(new Dimension(200, 250));
 		pnlFoto.setSize(new Dimension(200, 250));
 		pnlFoto.setMaximumSize(new Dimension(200, 250));

@@ -33,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import dominio.Cliente;
 import dominio.Plato;
 
 import java.awt.GridLayout;
@@ -67,6 +68,7 @@ import javax.swing.JToggleButton;
 import javax.swing.JEditorPane;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -211,8 +213,8 @@ public class Principal extends JFrame {
 	private JTable tablaPedidos;
 	private JButton btnAadirPedido;
 	private JComboBox comboBoxPreferencias;
-	private JComboBox comboBoxManual;
 	private JComboBox comboBoxIdioma;
+	private JButton btnManualDeUsuario;
 
 	/**
 	 * Launch the application.
@@ -264,13 +266,12 @@ public class Principal extends JFrame {
 		comboBoxPreferencias.setModel(new DefaultComboBoxModel(new String[] { "Preferencias", "Letras" }));
 		pnlMenu.add(comboBoxPreferencias);
 
-		comboBoxManual = new JComboBox();
-		comboBoxManual.setModel(new DefaultComboBoxModel(new String[] { "Manual de usario" }));
-		pnlMenu.add(comboBoxManual);
-
 		comboBoxIdioma = new JComboBox();
 		comboBoxIdioma.setModel(new DefaultComboBoxModel(new String[] { "Idioma", "Español", "Inglés" }));
 		pnlMenu.add(comboBoxIdioma);
+
+		btnManualDeUsuario = new JButton("Manual de Usuario");
+		pnlMenu.add(btnManualDeUsuario);
 
 		btnMenuPerfilUsuario = new JButton("Perfil");
 		pnlMenu.add(btnMenuPerfilUsuario);
@@ -927,7 +928,7 @@ public class Principal extends JFrame {
 					txtDireccion.setText((String) TablaClientes.getValueAt(filaSeleccionada - 1, 3));
 					fTxtTelefono.setValue(TablaClientes.getValueAt(filaSeleccionada - 1, 4));
 					// txtInd.setText(TablaClientes.getValor(filaSeleccionada - 1, 0));
-					txtPuntos.setText(TablaClientes.getValor(filaSeleccionada - 1, 5));
+					// txtPuntos.setText(TablaClientes.getValor(filaSeleccionada - 1, 5));
 				}
 			}
 		});
@@ -1043,6 +1044,7 @@ public class Principal extends JFrame {
 		pnlClientes.add(cmbBHistorial, gbc_cmbBHistorial);
 
 		btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new BtnModificarActionListener());
 		btnModificar.setPreferredSize(new Dimension(90, 23));
 		btnModificar.setMaximumSize(new Dimension(100, 23));
 		GridBagConstraints gbc_btnModificar = new GridBagConstraints();
@@ -1186,8 +1188,14 @@ public class Principal extends JFrame {
 			modelo = (MiTabla) tabla.getModel();
 			int n = tabla.getSelectedRow();
 			if (n != -1) {
-				modelo.eliminaFila(tabla.getSelectedRow());
-				modelo.fireTableDataChanged();
+
+				int opcion = JOptionPane.showConfirmDialog(null,
+						"Borrar el plato es una operacion irreversible.\nEsta seguro?", "¡Cuidado!",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (opcion == 0) {
+					modelo.eliminaFila(tabla.getSelectedRow());
+					modelo.fireTableDataChanged();
+				}
 			}
 		}
 	}
@@ -1340,6 +1348,30 @@ public class Principal extends JFrame {
 			modelo = (MiTablaPedidos) tabla.getModel();
 			modelo.aniadeFila(nuevaFila);
 			modelo.fireTableDataChanged();
+
+		}
+	}
+
+	private class BtnModificarActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+
+			JTable tabla = new JTable();
+			TablaVips modelo = new TablaVips();
+
+			tabla = (JTable) pnlClientesVips.getViewport().getView();
+
+			modelo = (TablaVips) tabla.getModel();
+			int n = tabla.getSelectedRow();
+			if (n != -1) {
+				Cliente cliente = new Cliente((String) tabla.getValueAt(tabla.getSelectedRow(), 1),
+						(String) tabla.getValueAt(tabla.getSelectedRow(), 2),
+						(String) tabla.getValueAt(tabla.getSelectedRow(), 3),
+						(Integer) tabla.getValueAt(tabla.getSelectedRow(), 4), "",
+						(Integer) tabla.getValueAt(tabla.getSelectedRow(), 5));
+
+				ModificarCliente modificarCliente = new ModificarCliente(cliente);
+				modificarCliente.setVisible(true);
+			}
 
 		}
 	}
