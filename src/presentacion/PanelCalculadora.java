@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 public class PanelCalculadora extends JPanel {
 
 	private JButton[] button = new JButton[11];
-	private double[] dinero = { 5.00, 10.00, 20.00, 50.00, 100.00, 0.10, 0.20, 0.50, 1.00, 2.00 };
+	private double[] dinero = { 5.00, 10.00, 20.00, 50.00, 100.00, 0.10, 0.20, 0.50, 1.00, 2.00, 1.00, -1.00 };
 	private double cambio = 0;
 
 	public PanelCalculadora() {
@@ -48,7 +48,8 @@ public class PanelCalculadora extends JPanel {
 					int celdaRowUlt = TablaCambio.getRowCount();
 					cambio = cambio + dinero[boton];
 
-					TablaCambio.setValueAt(cambio, celdaRowUlt - 1, 3);
+					TablaCambio.setValueAt(cambio, celdaRowUlt - 2, 3);
+					TablaCambio.setValueAt("Entregado", celdaRowUlt - 2, 0);
 					TablaCambio.fireTableDataChanged();
 
 				}

@@ -107,7 +107,7 @@ public class Principal extends JFrame {
 	private JScrollPane scrlpnlticket;
 	private JPanel pnlBilletes;
 	private JPanel panel;
-	private JButton btnCompra;
+	private JButton btnPagar1;
 	private JButton btnBorrar;
 	private JPanel pnlCambiosProductos;
 	private JButton btnAñadirProducto;
@@ -137,14 +137,12 @@ public class Principal extends JFrame {
 	private JComboBox cmbBIntolerancias;
 	private JComboBox cmbBHistorial;
 	private JComboBox cmbBPreferencias;
-	private JEditorPane edpnlMapa;
 	private JButton btnAadir;
 	private JButton btnModificar;
 	private JButton btnEliminar;
 	private JTextArea textArea;
 
 	private JList lstPedidos;
-	private JList lstRepartidores;
 	private JButton btnIdioma_1;
 	private JPanel pnldePedidos;
 	private JPanel panel_2;
@@ -178,7 +176,7 @@ public class Principal extends JFrame {
 	private JPanel pnlBotonAñatirATicket;
 	private JLabel label;
 	private JPanel panel_4;
-	private JButton btnNewButton;
+	private JButton btnComprar;
 
 	private JButton btnLapiz;
 	private JButton btnDestino;
@@ -215,6 +213,13 @@ public class Principal extends JFrame {
 	private JComboBox comboBoxPreferencias;
 	private JComboBox comboBoxIdioma;
 	private JButton btnManualDeUsuario;
+
+	private int celda = 0;
+	private String producto;
+	private double money = 0;
+	private double total;
+	private JScrollPane scrollPane;
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -323,12 +328,14 @@ public class Principal extends JFrame {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
 					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
 							+ (String) tablaCarne.getDescripcion(lsm.getMinSelectionIndex()));
+					producto = tablaCarne.getNombre(lsm.getMinSelectionIndex());
+					money = tablaCarne.getPrecio(lsm.getMinSelectionIndex());
 				}
 			}
 		});
 		tablaPlatosCarne.setModel(tablaCarne);
 		tablaPlatosCarne.setRowHeight(35);
-		Object[] fila1 = { "", "Chuleton Buey", "Chuleton primeras caitates", "8.5" };
+		Object[] fila1 = { "", "Chuleton Buey", "Chuleton primeras caitates", 8.5 };
 		tablaCarne.aniadeFila(fila1);
 
 		scrollPaneCarnes.setViewportView(tablaPlatosCarne);
@@ -347,13 +354,15 @@ public class Principal extends JFrame {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
 					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
 							+ (String) tablaPez.getDescripcion(lsm.getMinSelectionIndex()));
+					producto = tablaPez.getNombre(lsm.getMinSelectionIndex());
+					money = tablaPez.getPrecio(lsm.getMinSelectionIndex());
 				}
 			}
 		});
 		tablaPlatosPez.setModel(tablaPez);
 		tablaPlatosPez.setRowHeight(35);
 		Object[] fila2 = { "", "Merluza",
-				"Merluza Fresca con salsa marisco.\n Alérgenos:\n Contiene pescado y mariscos", "9.5" };
+				"Merluza Fresca con salsa marisco.\n Alérgenos:\n Contiene pescado y mariscos", 9.5 };
 		tablaPez.aniadeFila(fila2);
 		scrollPanePescado.setViewportView(tablaPlatosPez);
 
@@ -372,12 +381,14 @@ public class Principal extends JFrame {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
 					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
 							+ (String) tablaPasta.getDescripcion(lsm.getMinSelectionIndex()));
+					producto = tablaPasta.getNombre(lsm.getMinSelectionIndex());
+					money = tablaPasta.getPrecio(lsm.getMinSelectionIndex());
 				}
 			}
 		});
 		tablaPlatosPasta.setModel(tablaPasta);
 		tablaPlatosPasta.setRowHeight(35);
-		Object[] fila3 = { "", "macarone", "salsa carbonara", "7" };
+		Object[] fila3 = { "", "macarone", "salsa carbonara", 7.0 };
 		tablaPasta.aniadeFila(fila3);
 		scrollPanePasta.setViewportView(tablaPlatosPasta);
 
@@ -395,12 +406,14 @@ public class Principal extends JFrame {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
 					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
 							+ (String) tablaArroz.getDescripcion(lsm.getMinSelectionIndex()));
+					producto = tablaArroz.getNombre(lsm.getMinSelectionIndex());
+					money = tablaArroz.getPrecio(lsm.getMinSelectionIndex());
 				}
 			}
 		});
 		tablaPlatosArroz.setModel(tablaArroz);
 		tablaPlatosArroz.setRowHeight(35);
-		Object[] fila4 = { "", "paella", "Valenciana", "12" };
+		Object[] fila4 = { "", "paella", "Valenciana", 12.0 };
 		tablaArroz.aniadeFila(fila4);
 		scrollPaneArroz.setViewportView(tablaPlatosArroz);
 
@@ -418,12 +431,14 @@ public class Principal extends JFrame {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
 					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
 							+ (String) tablaBocata.getDescripcion(lsm.getMinSelectionIndex()));
+					producto = tablaBocata.getNombre(lsm.getMinSelectionIndex());
+					money = (tablaBocata.getPrecio(lsm.getMinSelectionIndex()));
 				}
 			}
 		});
 		tablaPlatosBocata.setModel(tablaBocata);
 		tablaPlatosBocata.setRowHeight(35);
-		Object[] fila5 = { "", "Bocata CAsa", "Los mejroes ingretietnes locale", "6" };
+		Object[] fila5 = { "", "Bocata CAsa", "Los mejroes ingretietnes locale", 6.0 };
 		tablaBocata.aniadeFila(fila5);
 		scrollPaneBocadillos.setViewportView(tablaPlatosBocata);
 
@@ -441,12 +456,14 @@ public class Principal extends JFrame {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
 					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
 							+ (String) tablaPostre.getDescripcion(lsm.getMinSelectionIndex()));
+					producto = tablaPostre.getNombre(lsm.getMinSelectionIndex());
+					money = tablaPostre.getPrecio(lsm.getMinSelectionIndex());
 				}
 			}
 		});
 		tablaPlatosPostre.setModel(tablaPostre);
 		tablaPlatosPostre.setRowHeight(35);
-		Object[] fila6 = { "", "Profiteroles", "Pooostreeee", "4" };
+		Object[] fila6 = { "", "Profiteroles", "Pooostreeee", 4.0 };
 		tablaPostre.aniadeFila(fila6);
 		scrollPanePostre.setViewportView(tablaPlatosPostre);
 
@@ -473,7 +490,7 @@ public class Principal extends JFrame {
 		});
 		tablaBebidas.setModel(tablaBebidasT);
 		tablaBebidas.setRowHeight(35);
-		Object[] fila7 = { "", "ColaCoca", "Refrescante", "1" };
+		Object[] fila7 = { " ", "ColaCoca", "Refrescante", 1.0 };
 		tablaBebidasT.aniadeFila(fila7);
 		scrollPaneBebidas.setViewportView(tablaBebidas);
 
@@ -500,7 +517,7 @@ public class Principal extends JFrame {
 		});
 		tablaOfertas.setModel(tablaOfertasT);
 		tablaOfertas.setRowHeight(35);
-		Object[] fila8 = { "", "ColaCoca", "Refrescante", "0.5" };
+		Object[] fila8 = { " ", "ColaCoca", "Refrescante", 0.5 };
 		tablaOfertasT.aniadeFila(fila8);
 		scrollPaneOfertas.setViewportView(tablaOfertas);
 
@@ -523,15 +540,10 @@ public class Principal extends JFrame {
 		tblticket.setModel(Ticket);
 		scrlpnlticket.setViewportView(tblticket);
 
-		Object[] fila1Ticket = { "Costillas", 12.5, 3, 30.5 };
-		Object[] fila2Ticket = { null, null, null, null };
-		Object[] fila3Ticket = { "Entregado", null, null, null };
-		Object[] fila4Ticket = { "Total", null, null, null };
+		Object[] fila1Ticket = { "Ticket", 0, 0, 0 };
+		Object[] fila4Ticket = { null, null, null, null };
 		Ticket.aniadeFila(fila1Ticket);
-		Ticket.aniadeFila(fila2Ticket);
-		Ticket.aniadeFila(fila3Ticket);
 		Ticket.aniadeFila(fila4Ticket);
-		CalculaTotal();
 		Ticket.fireTableDataChanged();
 
 		pnlBotonAñatirATicket = new JPanel();
@@ -554,8 +566,9 @@ public class Principal extends JFrame {
 		gbc_panel_4.gridy = 2;
 		pnlInicio.add(panel_4, gbc_panel_4);
 
-		btnNewButton = new JButton("New button");
-		panel_4.add(btnNewButton);
+		btnComprar = new JButton("Comprar Producto");
+		btnComprar.addActionListener(new BtnComprarActionListener());
+		panel_4.add(btnComprar);
 
 		lblPetito = new JLabel("petito");
 		panel_4.add(lblPetito);
@@ -589,7 +602,6 @@ public class Principal extends JFrame {
 		textAreaEsc.setLineWrap(true);
 		textAreaEsc.setWrapStyleWord(true);
 		textAreaEsc.setMaximumSize(new Dimension(500, 300));
-		textAreaEsc.setText("Soy la escricion\r\ne\r\nsas\r\nsacosas\r\ngh\r\n\r\nh\r\njh\r\nj");
 		panel_1.add(textAreaEsc);
 
 		pnlBilletes = new PanelCalculadora();
@@ -632,8 +644,9 @@ public class Principal extends JFrame {
 		gbc_panel.gridy = 4;
 		pnlInicio.add(panel, gbc_panel);
 
-		btnCompra = new JButton("Comprar");
-		panel.add(btnCompra);
+		btnPagar1 = new JButton("Pagar");
+		btnPagar1.addActionListener(new BtnPagar1ActionListener());
+		panel.add(btnPagar1);
 
 		btnBorrar = new JButton("Borrar");
 		panel.add(btnBorrar);
@@ -822,14 +835,6 @@ public class Principal extends JFrame {
 		gbc_lstPedidos.gridy = 0;
 		pnlMapa.add(lstPedidos, gbc_lstPedidos);
 
-		edpnlMapa = new JEditorPane();
-		GridBagConstraints gbc_edpnlMapa = new GridBagConstraints();
-		gbc_edpnlMapa.insets = new Insets(0, 0, 0, 5);
-		gbc_edpnlMapa.fill = GridBagConstraints.BOTH;
-		gbc_edpnlMapa.gridx = 0;
-		gbc_edpnlMapa.gridy = 2;
-		pnlMapa.add(edpnlMapa, gbc_edpnlMapa);
-
 		btnCometarios = new JButton("");
 		btnCometarios.addActionListener(new BtnCometariosActionListener());
 		btnCometarios.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagencomentario.png")));
@@ -885,14 +890,35 @@ public class Principal extends JFrame {
 		cursorUbicacion = toolkit.createCustomCursor(imagUbicacion, new Point(0, 0), "CURSOR_UBICACION");
 		cursorLapiz = toolkit.createCustomCursor(imagLapiz, new Point(0, 0), "CURSOR_LAPIZ");
 		scrPnlMapa.setViewportView(miMapaDibujo);
-
-		lstRepartidores = new JList();
-		GridBagConstraints gbc_lstRepartidores = new GridBagConstraints();
-		gbc_lstRepartidores.anchor = GridBagConstraints.EAST;
-		gbc_lstRepartidores.fill = GridBagConstraints.VERTICAL;
-		gbc_lstRepartidores.gridx = 4;
-		gbc_lstRepartidores.gridy = 2;
-		pnlMapa.add(lstRepartidores, gbc_lstRepartidores);
+		
+		scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 4;
+		gbc_scrollPane.gridy = 2;
+		pnlMapa.add(scrollPane, gbc_scrollPane);
+		
+		table_1 = new JTable();
+		table_1.setModel(new DefaultTableModel(
+			new Object[][] {
+				{"Mariano", Boolean.TRUE},
+				{"Jos\u00E9", null},
+				{null, null},
+				{null, null},
+				{null, null},
+			},
+			new String[] {
+				"Repartidores", "En Reparto"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Object.class, Boolean.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		scrollPane.setViewportView(table_1);
 
 		pnlClientes = new JPanel();
 		tabPrincipales.addTab("Clientes", null, pnlClientes, null);
@@ -1139,7 +1165,7 @@ public class Principal extends JFrame {
 			 * arg0.getSource()); esto te da el boton asiq no // vale
 			 */
 
-			Object[] nuevaFila = { "foto.", "protuct", "tescripcion", "precio" };
+			Object[] nuevaFila = { "foto.", "protuct", "tescripcion", 0.0 };
 
 			JTable tabla = new JTable();
 			MiTabla modelo = new MiTabla();
@@ -1326,7 +1352,7 @@ public class Principal extends JFrame {
 			if (n != -1) {
 				Plato plato = new Plato((String) tabla.getValueAt(tabla.getSelectedRow(), 0),
 						(String) tabla.getValueAt(tabla.getSelectedRow(), 1),
-						(String) tabla.getValueAt(tabla.getSelectedRow(), 3),
+						(String) String.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 3)),
 						(String) tabla.getValueAt(tabla.getSelectedRow(), 2));
 				ModificarPlato modificarPlato = new ModificarPlato(plato, modelo, tabla);
 				modificarPlato.setVisible(true);
@@ -1376,15 +1402,48 @@ public class Principal extends JFrame {
 		}
 	}
 
+	private class BtnPagar1ActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			double entregado, cambio;
+			MiTablaTicket TablaCambio = (MiTablaTicket) tblticket.getModel();
+			entregado = TablaCambio.getValor(TablaCambio.getRowCount() - 2, 3);
+			Object[] Cambio = { "Cambio", null, null, null };
+			TablaCambio.aniadeFila(Cambio);
+			TablaCambio.fireTableDataChanged();
+			cambio = entregado - total;
+			TablaCambio.setValueAt(cambio, TablaCambio.getRowCount() - 1, 3);
+		}
+	}
+
+	private class BtnComprarActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			String cosa = producto;
+			double precio = money;
+			MiTablaTicket TablaCompra = (MiTablaTicket) tblticket.getModel();
+			Object[] fila1 = { null, null, null, null };
+			TablaCompra.aniadeFila(fila1);
+			TablaCompra.setValueAt(cosa, celda, 0);
+			TablaCompra.setValueAt(precio, celda, 1);
+			TablaCompra.setValueAt(1, celda, 2);
+			TablaCompra.setValueAt(precio, celda, 3);
+			TablaCompra.fireTableDataChanged();
+			++celda;
+			CalculaTotal();
+		}
+	}
+
 	private void CalculaTotal() {
-		double total = 0;
+		total = 0;
 		int i = 0;
 		MiTablaTicket TablaTotal = (MiTablaTicket) tblticket.getModel();
-		while (i < TablaTotal.getRowCount() - 3) {
+		while (i < TablaTotal.getRowCount() - 2) {
 			total += TablaTotal.getValor(i, 3);
 			i++;
 		}
 		TablaTotal.setValueAt(total, TablaTotal.getRowCount() - 1, 3);
+		TablaTotal.setValueAt("Total", TablaTotal.getRowCount() - 1, 0);
+		TablaTotal.setValueAt(null, TablaTotal.getRowCount() - 2, 3);
+		TablaTotal.setValueAt(null, TablaTotal.getRowCount() - 2, 0);
 	}
 
 	public JFrame getFrame() {

@@ -25,10 +25,6 @@ public class MiTabla extends AbstractTableModel {
 		return fila[col];
 	}
 
-	public Class getColumnClass(int c) {
-		return getValueAt(0, c).getClass();
-	}
-
 	public boolean isCellEditable(int row, int col) {
 		return true;
 	}
@@ -54,6 +50,22 @@ public class MiTabla extends AbstractTableModel {
 		Object[] fila = (Object[]) datos.elementAt(row);
 		descripcion = (String) fila[2];
 		return descripcion;
+	}
+
+	public double getPrecio(int row) {
+		double precio = 0;
+		String p2 = null;
+		Object[] fila = (Object[]) datos.elementAt(row);
+		precio = (double) fila[3];
+
+		return precio;
+	}
+
+	public String getNombre(int row) {
+		String nombre = null;
+		Object[] fila = (Object[]) datos.elementAt(row);
+		nombre = (String) fila[1];
+		return nombre;
 	}
 
 }

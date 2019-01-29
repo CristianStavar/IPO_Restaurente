@@ -206,7 +206,7 @@ public class ModificarPlato extends JFrame {
 				modelo.setValueAt(lblFotografia.getIcon(), tabla.getSelectedRow(), 0);
 				modelo.setValueAt(txtfNombrePlato.getText(), tabla.getSelectedRow(), 1);
 				modelo.setValueAt(txtaTescripcion.getText(), tabla.getSelectedRow(), 2);
-				modelo.setValueAt(txtfPrecioPlato.getText(), tabla.getSelectedRow(), 3);
+				modelo.setValueAt(Double.valueOf(txtfPrecioPlato.getText()), tabla.getSelectedRow(), 3);
 
 				modelo.fireTableDataChanged();
 				// debido al uso de la orden de arriba imagino, al actualizarse la tabla se
