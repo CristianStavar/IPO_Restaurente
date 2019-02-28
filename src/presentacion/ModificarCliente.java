@@ -5,17 +5,23 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 
 import dominio.Cliente;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ModificarCliente extends JFrame {
 
@@ -62,6 +68,7 @@ public class ModificarCliente extends JFrame {
 		contentPane.add(panelBotones, BorderLayout.SOUTH);
 
 		btnGuardar = new JButton("Guardar");
+		btnGuardar.addActionListener(new BtnGuardarActionListener());
 		panelBotones.add(btnGuardar);
 
 		btnLimiar = new JButton("Limiar");
@@ -226,4 +233,47 @@ public class ModificarCliente extends JFrame {
 		textField_5.setText((String.valueOf(c.getPuntos())));
 	}
 
+	private class BtnGuardarActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+
+			JTable tabla = new JTable();
+			TablaVips modelo = new TablaVips();
+			boolean correctoTlfn = true;
+			boolean correctoPnts = true;
+
+			tabla = (JTable) Principal.pnlClientesVips.getViewport().getView();
+			int n = tabla.getSelectedRow();
+
+			if (n != -1) {
+
+				correctoTlfn = isNumeric(textField_2.getText());
+				correctoPnts = isNumeric(textField_5.getText());
+				if (correctoTlfn && correctoPnts) {
+					modelo = (TablaVips) tabla.getModel();
+					modelo.setValueAt(textField.getText(), tabla.getSelectedRow(), 1);
+					modelo.setValueAt(textField_1.getText(), tabla.getSelectedRow(), 2);
+					modelo.setValueAt(textField_2.getText(), tabla.getSelectedRow(), 4);
+					modelo.setValueAt(textField_3.getText(), tabla.getSelectedRow(), 3);
+					modelo.setValueAt(textField_4.getText(), tabla.getSelectedRow(), 6);
+					modelo.setValueAt(textField_5.getText(), tabla.getSelectedRow(), 5);
+
+					modelo.fireTableDataChanged();
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Los campos no son correctos.\nRecuerde que Telefono y Puntos deben ser numéricos",
+							"Cuidado!", JOptionPane.PLAIN_MESSAGE);
+
+				}
+
+			}
+		}
+	}
+
+	public static boolean isNumeric(String str) {
+		for (char c : str.toCharArray()) {
+			if (!Character.isDigit(c))
+				return false;
+		}
+		return true;
+	}
 }

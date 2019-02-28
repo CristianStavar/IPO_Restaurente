@@ -7,6 +7,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import java.awt.Toolkit;
@@ -30,7 +32,7 @@ import javax.swing.DefaultComboBoxModel;
 public class LoginRest {
 
 	protected static final String password = "ipo";
-	protected static final String usuario="usuario";
+	protected static final String usuario = "usuario";
 	private JFrame frmRestaurante;
 	private JPanel panel;
 	private JLabel lblUsuario;
@@ -48,6 +50,7 @@ public class LoginRest {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 					LoginRest window = new LoginRest();
 					window.frmRestaurante.setVisible(true);
 				} catch (Exception e) {
@@ -74,38 +77,38 @@ public class LoginRest {
 		frmRestaurante.setBounds(100, 100, 431, 257);
 		frmRestaurante.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmRestaurante.getContentPane().setLayout(null);
-		
+
 		panel = new JPanel();
 		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel.setBounds(10, 11, 405, 205);
 		frmRestaurante.getContentPane().add(panel);
 		panel.setLayout(null);
-		
+
 		lblUsuario = new JLabel("Nombre:");
 		lblUsuario.setBounds(104, 67, 59, 14);
 		panel.add(lblUsuario);
-		
+
 		lblPassword = new JLabel("Contraseña:");
-		//lblPassword.setEnabled(false);
+		// lblPassword.setEnabled(false);
 		lblPassword.setBounds(95, 104, 86, 14);
 		panel.add(lblPassword);
-		
+
 		tfUsuario = new JTextField();
 		tfUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//Activamos los de la contraseñalblPassword.
+				// Activamos los de la contraseñalblPassword.
 				lblPassword.setEnabled(true);
 				pwdfPassword.setEnabled(true);
-				//Pasamos el foco (el cursor) al campo de la contraseña
+				// Pasamos el foco (el cursor) al campo de la contraseña
 				pwdfPassword.requestFocus();
 			}
 		});
 		tfUsuario.setBounds(191, 64, 134, 20);
 		panel.add(tfUsuario);
 		tfUsuario.setColumns(10);
-		
+
 		pwdfPassword = new JPasswordField();
-		pwdfPassword.addActionListener(new ActionListener(){
+		pwdfPassword.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				comprobacion();
@@ -114,22 +117,22 @@ public class LoginRest {
 		pwdfPassword.setEnabled(true);
 		pwdfPassword.setBounds(191, 101, 134, 20);
 		panel.add(pwdfPassword);
-		
+
 		lblAviso = new JLabel("");
 		lblAviso.setOpaque(true);
 		lblAviso.setBounds(43, 129, 332, 33);
 		panel.add(lblAviso);
-		
+
 		btnEntrar = new JButton("Entrar");
 		btnEntrar.setEnabled(true);
 		btnEntrar.addActionListener(new BtnEntrarActionListener());
 		btnEntrar.setBounds(171, 173, 89, 23);
 		panel.add(btnEntrar);
-		
+
 		cmbBoxIdioma = new JComboBox();
 		cmbBoxIdioma.setName("Idioma");
 		cmbBoxIdioma.setToolTipText("Idioma\r\n");
-		cmbBoxIdioma.setModel(new DefaultComboBoxModel(new String[] {"Español", "Ingles"}));
+		cmbBoxIdioma.setModel(new DefaultComboBoxModel(new String[] { "Español", "Ingles" }));
 		cmbBoxIdioma.setBounds(311, 11, 77, 20);
 		panel.add(cmbBoxIdioma);
 	}
@@ -137,28 +140,27 @@ public class LoginRest {
 	private class BtnEntrarActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			comprobacion();
-				
+
 		}
-		
-}
+
+	}
 
 	public static void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	public void comprobacion() 
-	{
-		if (String.valueOf(pwdfPassword.getPassword()).equals(password) && tfUsuario.getText().equals(usuario)){
+
+	public void comprobacion() {
+		if (String.valueOf(pwdfPassword.getPassword()).equals(password) && tfUsuario.getText().equals(usuario)) {
 			lblAviso.setForeground(Color.GREEN);
 			lblAviso.setText("Contraseña correcta. Puede entrar");
 			lblAviso.setVisible(true);
 			lblPassword.setEnabled(false);
 			pwdfPassword.setEnabled(false);
-			Principal ventana= new Principal();
+			Principal ventana = new Principal();
 			ventana.getFrame().setVisible(true);
 			LoginRest.dispose();
-		}
-		else {
+		} else {
 			lblAviso.setForeground(Color.RED);
 			lblAviso.setText("Contraseña o usuario incorrecta. Vuelva a intentarlo");
 			lblAviso.setVisible(true);

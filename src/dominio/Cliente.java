@@ -8,7 +8,7 @@ public class Cliente {
 	private String preferencias;
 	private int puntos;
 
-	public Cliente(String apellido, String nombre, String direccion, int telefono, String preferencias, int puntos) {
+	public Cliente(String apellido, String nombre, String direccion, int telefono, int puntos) {
 		super();
 		this.apellido = apellido;
 		this.nombre = nombre;

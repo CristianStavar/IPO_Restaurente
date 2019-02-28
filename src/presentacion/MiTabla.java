@@ -20,6 +20,10 @@ public class MiTabla extends AbstractTableModel {
 		return nombreColumnas[col];
 	}
 
+	public Class getColumnClass(int c) {
+		return getValueAt(0, c).getClass();
+	}
+
 	public Object getValueAt(int row, int col) {
 		Object[] fila = (Object[]) datos.elementAt(row);
 		return fila[col];

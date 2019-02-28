@@ -131,7 +131,6 @@ public class Principal extends JFrame {
 	private JLabel lblTelf;
 	private JLabel lblDireccion;
 	private JLabel lblPuntos;
-	private JFormattedTextField fTxtTelefono;
 	private JTextField txtDireccion;
 	private JTextField txtPuntos;
 	private JComboBox cmbBIntolerancias;
@@ -165,7 +164,7 @@ public class Principal extends JFrame {
 	private Iterator<Producto> iterar = productos.iterator();
 
 	public static JTable tblticket;
-	private JScrollPane pnlClientesVips;
+	public static JScrollPane pnlClientesVips;
 	private JTable tblClientesVips;
 
 	public static JTable tablaPlatosPez;
@@ -174,7 +173,6 @@ public class Principal extends JFrame {
 	private JTable tablaPlatosBocata;
 	private JTable tablaPlatosPostre;
 	private JPanel pnlBotonAñatirATicket;
-	private JLabel label;
 	private JPanel panel_4;
 	private JButton btnComprar;
 
@@ -215,11 +213,16 @@ public class Principal extends JFrame {
 	private JButton btnManualDeUsuario;
 
 	private int celda = 0;
-	private String producto;
+	private String producto = " ";
 	private double money = 0;
 	private double total;
 	private JScrollPane scrollPane;
 	private JTable table_1;
+	private JTextField txtFTelefono;
+
+	private JScrollPane scrollPane_Pedidos;
+	private JTable table_4;
+	private JButton btnEliminarPedido;
 
 	/**
 	 * Launch the application.
@@ -259,7 +262,7 @@ public class Principal extends JFrame {
 		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		tabPrincipales = new JTabbedPane(JTabbedPane.TOP);
-		tabPrincipales.setToolTipText("Soy penstañas\r\n");
+		tabPrincipales.setToolTipText("");
 		getFrame().getContentPane().add(tabPrincipales, BorderLayout.CENTER);
 
 		pnlMenu = new JPanel();
@@ -485,12 +488,15 @@ public class Principal extends JFrame {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
 					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
 							+ (String) tablaBebidasT.getDescripcion(lsm.getMinSelectionIndex()));
+					producto = tablaBebidasT.getNombre(lsm.getMinSelectionIndex());
+					money = tablaBebidasT.getPrecio(lsm.getMinSelectionIndex());
 				}
 			}
 		});
 		tablaBebidas.setModel(tablaBebidasT);
 		tablaBebidas.setRowHeight(35);
-		Object[] fila7 = { " ", "ColaCoca", "Refrescante", 1.0 };
+		Object[] fila7 = { new ImageIcon(Principal.class.getResource("/presentacion/coke.png")), "ColaCoca",
+				"Refrescante", 1.0 };
 		tablaBebidasT.aniadeFila(fila7);
 		scrollPaneBebidas.setViewportView(tablaBebidas);
 
@@ -512,6 +518,8 @@ public class Principal extends JFrame {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
 					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
 							+ (String) tablaOfertasT.getDescripcion(lsm.getMinSelectionIndex()));
+					producto = tablaOfertasT.getNombre(lsm.getMinSelectionIndex());
+					money = tablaOfertasT.getPrecio(lsm.getMinSelectionIndex());
 				}
 			}
 		});
@@ -554,9 +562,6 @@ public class Principal extends JFrame {
 		gbc_pnlBotonAñatirATicket.gridy = 1;
 		pnlInicio.add(pnlBotonAñatirATicket, gbc_pnlBotonAñatirATicket);
 		pnlBotonAñatirATicket.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		label = new JLabel("New label");
-		pnlBotonAñatirATicket.add(label);
 
 		panel_4 = new JPanel();
 		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
@@ -604,7 +609,7 @@ public class Principal extends JFrame {
 		textAreaEsc.setMaximumSize(new Dimension(500, 300));
 		panel_1.add(textAreaEsc);
 
-		pnlBilletes = new PanelCalculadora();
+		pnlBilletes = new PanelCalculadora(0);
 		pnlBilletes.setMaximumSize(new Dimension(500, 350));
 		pnlBilletes.setPreferredSize(new Dimension(400, 300));
 		pnlBilletes.setSize(new Dimension(400, 300));
@@ -648,7 +653,8 @@ public class Principal extends JFrame {
 		btnPagar1.addActionListener(new BtnPagar1ActionListener());
 		panel.add(btnPagar1);
 
-		btnBorrar = new JButton("Borrar");
+		btnBorrar = new JButton("Borrar Ticket");
+		btnBorrar.addActionListener(new BtnBorrarActionListener_1());
 		panel.add(btnBorrar);
 
 		pnlPedidos = new JPanel();
@@ -707,7 +713,7 @@ public class Principal extends JFrame {
 		pnldePedidos.add(panel_2);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
 		gbl_panel_2.columnWidths = new int[] { 108, 167, 125, 172, 204, 0 };
-		gbl_panel_2.rowHeights = new int[] { 0, 0, 0, 0, 0 };
+		gbl_panel_2.rowHeights = new int[] { 10, 0, 0, 0, 0 };
 		gbl_panel_2.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		gbl_panel_2.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panel_2.setLayout(gbl_panel_2);
@@ -755,6 +761,7 @@ public class Principal extends JFrame {
 		panel_2.add(cmbTipo, gbc_cmbTipo);
 
 		btnPagar = new JButton("Pagar");
+		btnPagar.addActionListener(new BtnPagarActionListener());
 		GridBagConstraints gbc_btnPagar = new GridBagConstraints();
 		gbc_btnPagar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnPagar.gridx = 4;
@@ -794,6 +801,15 @@ public class Principal extends JFrame {
 		gbc_frmtFechaRecogida.gridy = 2;
 		panel_2.add(frmtFechaRecogida, gbc_frmtFechaRecogida);
 
+		btnEliminarPedido = new JButton("Eliminar pedido");
+		btnEliminarPedido.addActionListener(new BtnEliminarPedidoActionListener());
+
+		GridBagConstraints gbc_btnEliminarPedido = new GridBagConstraints();
+		gbc_btnEliminarPedido.insets = new Insets(0, 0, 5, 0);
+		gbc_btnEliminarPedido.gridx = 4;
+		gbc_btnEliminarPedido.gridy = 2;
+		panel_2.add(btnEliminarPedido, gbc_btnEliminarPedido);
+
 		lblFechaInicio = new JLabel("Fecha:  ");
 		GridBagConstraints gbc_lblFechaInicio = new GridBagConstraints();
 		gbc_lblFechaInicio.anchor = GridBagConstraints.EAST;
@@ -823,17 +839,23 @@ public class Principal extends JFrame {
 		gbl_pnlMapa.columnWidths = new int[] { 96, 0, 87, 300, 346, 0 };
 		gbl_pnlMapa.rowHeights = new int[] { 212, 85, 295, 0 };
 		gbl_pnlMapa.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE };
-		gbl_pnlMapa.rowWeights = new double[] { 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gbl_pnlMapa.rowWeights = new double[] { 1.0, 0.0, 1.0, Double.MIN_VALUE };
 		pnlMapa.setLayout(gbl_pnlMapa);
 
-		lstPedidos = new JList();
-		GridBagConstraints gbc_lstPedidos = new GridBagConstraints();
-		gbc_lstPedidos.anchor = GridBagConstraints.NORTH;
-		gbc_lstPedidos.insets = new Insets(0, 0, 5, 5);
-		gbc_lstPedidos.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lstPedidos.gridx = 2;
-		gbc_lstPedidos.gridy = 0;
-		pnlMapa.add(lstPedidos, gbc_lstPedidos);
+		JScrollPane scrollPane_Pedidos = new JScrollPane();
+		GridBagConstraints gbc_scrollPane_Pedidos = new GridBagConstraints();
+		gbc_scrollPane_Pedidos.gridwidth = 5;
+		gbc_scrollPane_Pedidos.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane_Pedidos.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane_Pedidos.gridx = 0;
+		gbc_scrollPane_Pedidos.gridy = 0;
+		pnlMapa.add(scrollPane_Pedidos, gbc_scrollPane_Pedidos);
+
+		table_4 = new JTable();
+		tablaPedidos.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		table_4.setModel(tablaPedido);
+		table_4.setRowHeight(25);
+		scrollPane_Pedidos.setViewportView(table_4);
 
 		btnCometarios = new JButton("");
 		btnCometarios.addActionListener(new BtnCometariosActionListener());
@@ -890,30 +912,19 @@ public class Principal extends JFrame {
 		cursorUbicacion = toolkit.createCustomCursor(imagUbicacion, new Point(0, 0), "CURSOR_UBICACION");
 		cursorLapiz = toolkit.createCustomCursor(imagLapiz, new Point(0, 0), "CURSOR_LAPIZ");
 		scrPnlMapa.setViewportView(miMapaDibujo);
-		
+
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 4;
 		gbc_scrollPane.gridy = 2;
 		pnlMapa.add(scrollPane, gbc_scrollPane);
-		
+
 		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"Mariano", Boolean.TRUE},
-				{"Jos\u00E9", null},
-				{null, null},
-				{null, null},
-				{null, null},
-			},
-			new String[] {
-				"Repartidores", "En Reparto"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				Object.class, Boolean.class
-			};
+		table_1.setModel(new DefaultTableModel(new Object[][] { { "Mariano", Boolean.TRUE }, { "Jos\u00E9", null },
+				{ null, null }, { null, null }, { null, null }, }, new String[] { "Repartidores", "En Reparto" }) {
+			Class[] columnTypes = new Class[] { Object.class, Boolean.class };
+
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -925,7 +936,7 @@ public class Principal extends JFrame {
 		GridBagLayout gbl_pnlClientes = new GridBagLayout();
 		gbl_pnlClientes.columnWidths = new int[] { 112, 246, 110, 223, 251, 20, 0, -38 };
 		gbl_pnlClientes.rowHeights = new int[] { 47, 30, 20, 20, 20, 43, 0 };
-		gbl_pnlClientes.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 4.9E-324, 0.0, 1.0 };
+		gbl_pnlClientes.columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0, 0.0, 4.9E-324, 0.0, 1.0 };
 		gbl_pnlClientes.rowWeights = new double[] { 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		pnlClientes.setLayout(gbl_pnlClientes);
 
@@ -952,7 +963,7 @@ public class Principal extends JFrame {
 					txtNombre.setText((String) TablaClientes.getValueAt(filaSeleccionada - 1, 1));
 					txtApellidos.setText((String) TablaClientes.getValueAt(filaSeleccionada - 1, 2));
 					txtDireccion.setText((String) TablaClientes.getValueAt(filaSeleccionada - 1, 3));
-					fTxtTelefono.setValue(TablaClientes.getValueAt(filaSeleccionada - 1, 4));
+					txtFTelefono.setText(String.valueOf(TablaClientes.getValueAt(filaSeleccionada - 1, 4)));
 					// txtInd.setText(TablaClientes.getValor(filaSeleccionada - 1, 0));
 					// txtPuntos.setText(TablaClientes.getValor(filaSeleccionada - 1, 5));
 				}
@@ -960,7 +971,7 @@ public class Principal extends JFrame {
 		});
 		tblClientesVips.setModel((TableModel) TablaClientes);
 
-		Object[] filas1 = { 111, "Juanjo", "Rodriguez Montalban", "Rialejo 10", 665895475, 19 };
+		Object[] filas1 = { 111, "Juanjo", "Rodriguez Montalban", "Rialejo 10", "665895475", 19 };
 		TablaClientes.aniadeFila(filas1);
 
 		lblNombre = new JLabel("Nombre:  ");
@@ -989,17 +1000,18 @@ public class Principal extends JFrame {
 		gbc_lblTelf.gridy = 2;
 		pnlClientes.add(lblTelf, gbc_lblTelf);
 
-		fTxtTelefono = new JFormattedTextField();
-		GridBagConstraints gbc_fTxtTelefono = new GridBagConstraints();
-		gbc_fTxtTelefono.anchor = GridBagConstraints.NORTH;
-		gbc_fTxtTelefono.fill = GridBagConstraints.HORIZONTAL;
-		gbc_fTxtTelefono.insets = new Insets(0, 0, 5, 5);
-		gbc_fTxtTelefono.gridx = 3;
-		gbc_fTxtTelefono.gridy = 2;
-		pnlClientes.add(fTxtTelefono, gbc_fTxtTelefono);
-
 		btnAadir = new JButton("Añadir   ");
 		btnAadir.addActionListener(new BtnAadirActionListener());
+
+		txtFTelefono = new JTextField();
+		GridBagConstraints gbc_txtFTelefono = new GridBagConstraints();
+		gbc_txtFTelefono.anchor = GridBagConstraints.NORTH;
+		gbc_txtFTelefono.insets = new Insets(0, 0, 5, 5);
+		gbc_txtFTelefono.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtFTelefono.gridx = 3;
+		gbc_txtFTelefono.gridy = 2;
+		pnlClientes.add(txtFTelefono, gbc_txtFTelefono);
+		txtFTelefono.setColumns(10);
 
 		cmbBIntolerancias = new JComboBox();
 		cmbBIntolerancias.setModel(new DefaultComboBoxModel(
@@ -1156,16 +1168,7 @@ public class Principal extends JFrame {
 	private class BtnAñadirProductoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 
-			/*
-			 * JScrollPane pestana; JPanel tabla; Producto plato = new Producto();
-			 * 
-			 * pestana = (JScrollPane) tabComidas.getSelectedComponent(); tabla = (JPanel)
-			 * pestana.getViewport().getView(); productos.add(plato); tabla.add(plato);
-			 * tabla.repaint(); tabla.revalidate(); // textAreaEsc.setText((String)
-			 * arg0.getSource()); esto te da el boton asiq no // vale
-			 */
-
-			Object[] nuevaFila = { "foto.", "protuct", "tescripcion", 0.0 };
+			Object[] nuevaFila = { "", "Producto", "Descripción", 0.0 };
 
 			JTable tabla = new JTable();
 			MiTabla modelo = new MiTabla();
@@ -1191,28 +1194,28 @@ public class Principal extends JFrame {
 	private class BtnEliminrroductoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 
-			/*
-			 * JScrollPane pestana; JPanel tabla; int i = 0; Producto elemento = new
-			 * Producto(); pestana = (JScrollPane) tabComidas.getSelectedComponent(); tabla
-			 * = (JPanel) pestana.getViewport().getView();
-			 * 
-			 * /* if (tabla.getComponents().length >= 1) {
-			 * tabla.remove(tabla.getComponents().length - 1); tabla.repaint();
-			 * tabla.revalidate(); }
-			 * 
-			 * 
-			 * while (iterar.hasNext()) { elemento = iterar.next(); i++; if
-			 * (elemento.getNombre().equals(seleccionado)) { iterar.remove();
-			 * tabla.remove(i); tabla.repaint(); tabla.revalidate(); } }
-			 * 
-			 */
-
 			JTable tabla = new JTable();
 			MiTabla modelo = new MiTabla();
-			pestana = (JScrollPane) tabComidas.getSelectedComponent();
-			tabla = (JTable) pestana.getViewport().getView();
-			modelo = (MiTabla) tabla.getModel();
-			int n = tabla.getSelectedRow();
+			int n = -1;
+			if (tabInicio.getSelectedComponent().equals(pnlComida)) {
+				pestana = (JScrollPane) tabComidas.getSelectedComponent();
+				tabla = (JTable) pestana.getViewport().getView();
+				modelo = (MiTabla) tabla.getModel();
+				n = tabla.getSelectedRow();
+			}
+			if (tabInicio.getSelectedComponent().equals(pnlBebidas)) {
+				pestana = (JScrollPane) scrollPaneBebidas;
+				tabla = (JTable) pestana.getViewport().getView();
+				modelo = (MiTabla) tabla.getModel();
+				n = tabla.getSelectedRow();
+			}
+			if (tabInicio.getSelectedComponent().equals(pnlOfertas)) {
+				pestana = (JScrollPane) scrollPaneOfertas;
+				tabla = (JTable) pestana.getViewport().getView();
+				modelo = (MiTabla) tabla.getModel();
+				n = tabla.getSelectedRow();
+			}
+
 			if (n != -1) {
 
 				int opcion = JOptionPane.showConfirmDialog(null,
@@ -1239,15 +1242,17 @@ public class Principal extends JFrame {
 	private class BtnAadirActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			TablaVips TablaVip = (TablaVips) tblClientesVips.getModel();
-			Object[] nuevaFila = { txtInd.getText(), txtNombre.getText(), txtApellidos.getText(),
-					txtDireccion.getText(), fTxtTelefono.getText(), 0 };
-			TablaVip.aniadeFila(nuevaFila);
-			TablaVip.fireTableDataChanged();
-			txtInd.setText(null);
-			txtNombre.setText(null);
-			txtApellidos.setText(null);
-			txtDireccion.setText(null);
-			fTxtTelefono.setText(null);
+			if (txtInd.getText() != null && !txtNombre.getText().equals(null)) {
+				Object[] nuevaFila = { txtInd.getText(), txtNombre.getText(), txtApellidos.getText(),
+						txtDireccion.getText(), txtFTelefono.getText(), 0 };
+				TablaVip.aniadeFila(nuevaFila);
+				TablaVip.fireTableDataChanged();
+				txtInd.setText(null);
+				txtNombre.setText(null);
+				txtApellidos.setText(null);
+				txtDireccion.setText(null);
+				txtFTelefono.setText(null);
+			}
 
 		}
 	}
@@ -1256,9 +1261,17 @@ public class Principal extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			TablaVips TablaVip = (TablaVips) tblClientesVips.getModel();
 			int n = tblClientesVips.getSelectedRow();
-			if (n != -1)
-				TablaVip.eliminaFila(tblClientesVips.getSelectedRow());
-			TablaVip.fireTableDataChanged();
+			if (n != -1) {
+				int opcion = JOptionPane.showConfirmDialog(null,
+						"Borrar el cliente es una operacion irreversible.\nEsta seguro?", "¡Cuidado!",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (opcion == 0) {
+					TablaVip.eliminaFila(tblClientesVips.getSelectedRow());
+					TablaVip.fireTableDataChanged();
+				}
+
+			}
+
 		}
 	}
 
@@ -1349,13 +1362,23 @@ public class Principal extends JFrame {
 			}
 			modelo = (MiTabla) tabla.getModel();
 			int n = tabla.getSelectedRow();
+			ImageIcon compara = new ImageIcon(Principal.class.getResource("/presentacion/coke.png"));
 			if (n != -1) {
-				Plato plato = new Plato((String) tabla.getValueAt(tabla.getSelectedRow(), 0),
-						(String) tabla.getValueAt(tabla.getSelectedRow(), 1),
-						(String) String.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 3)),
-						(String) tabla.getValueAt(tabla.getSelectedRow(), 2));
-				ModificarPlato modificarPlato = new ModificarPlato(plato, modelo, tabla);
-				modificarPlato.setVisible(true);
+				boolean foto = (tabla.getValueAt(tabla.getSelectedRow(), 0).getClass().isInstance(compara));
+				if (foto) {
+					Plato plato = new Plato((String) "", (String) tabla.getValueAt(tabla.getSelectedRow(), 1),
+							(String) String.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 3)),
+							(String) tabla.getValueAt(tabla.getSelectedRow(), 2));
+					ModificarPlato modificarPlato = new ModificarPlato(plato, modelo, tabla);
+					modificarPlato.setVisible(true);
+				} else {
+					Plato plato = new Plato((String) tabla.getValueAt(tabla.getSelectedRow(), 0),
+							(String) tabla.getValueAt(tabla.getSelectedRow(), 1),
+							(String) String.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 3)),
+							(String) tabla.getValueAt(tabla.getSelectedRow(), 2));
+					ModificarPlato modificarPlato = new ModificarPlato(plato, modelo, tabla);
+					modificarPlato.setVisible(true);
+				}
 			}
 		}
 	}
@@ -1389,10 +1412,13 @@ public class Principal extends JFrame {
 			modelo = (TablaVips) tabla.getModel();
 			int n = tabla.getSelectedRow();
 			if (n != -1) {
+				if ((tabla.getValueAt(tabla.getSelectedRow(), 4)).equals("")) {
+					tabla.setValueAt("0", tabla.getSelectedRow(), 4);
+				}
 				Cliente cliente = new Cliente((String) tabla.getValueAt(tabla.getSelectedRow(), 1),
 						(String) tabla.getValueAt(tabla.getSelectedRow(), 2),
 						(String) tabla.getValueAt(tabla.getSelectedRow(), 3),
-						(Integer) tabla.getValueAt(tabla.getSelectedRow(), 4), "",
+						Integer.parseInt((String) tabla.getValueAt(tabla.getSelectedRow(), 4)),
 						(Integer) tabla.getValueAt(tabla.getSelectedRow(), 5));
 
 				ModificarCliente modificarCliente = new ModificarCliente(cliente);
@@ -1404,31 +1430,107 @@ public class Principal extends JFrame {
 
 	private class BtnPagar1ActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
-			double entregado, cambio;
+			double entregado = 0, cambio;
 			MiTablaTicket TablaCambio = (MiTablaTicket) tblticket.getModel();
-			entregado = TablaCambio.getValor(TablaCambio.getRowCount() - 2, 3);
-			Object[] Cambio = { "Cambio", null, null, null };
-			TablaCambio.aniadeFila(Cambio);
-			TablaCambio.fireTableDataChanged();
-			cambio = entregado - total;
-			TablaCambio.setValueAt(cambio, TablaCambio.getRowCount() - 1, 3);
+			try {
+				entregado = TablaCambio.getValor(TablaCambio.getRowCount() - 2, 3);
+				if (entregado >= total) {
+					Object[] Cambio = { "Cambio", null, null, null };
+					TablaCambio.aniadeFila(Cambio);
+					TablaCambio.fireTableDataChanged();
+					cambio = entregado - total;
+					TablaCambio.setValueAt(cambio, TablaCambio.getRowCount() - 1, 3);
+					btnPagar1.setEnabled(false);
+				} else {
+					JOptionPane.showMessageDialog(null, "No ha introducido suficiente dinero.", "Cuidado!",
+							JOptionPane.PLAIN_MESSAGE);
+				}
+			} catch (
+
+			Exception e) {// Al pagar que se bloquee, al borrar volver a activar asi no se puue pagar
+							// multiples veces
+				JOptionPane.showMessageDialog(null, "Antes de poder efectuar el pago debe introducir el dinero!",
+						"Cuidado!", JOptionPane.PLAIN_MESSAGE);
+			}
 		}
 	}
 
 	private class BtnComprarActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			String cosa = producto;
-			double precio = money;
-			MiTablaTicket TablaCompra = (MiTablaTicket) tblticket.getModel();
-			Object[] fila1 = { null, null, null, null };
-			TablaCompra.aniadeFila(fila1);
-			TablaCompra.setValueAt(cosa, celda, 0);
-			TablaCompra.setValueAt(precio, celda, 1);
-			TablaCompra.setValueAt(1, celda, 2);
-			TablaCompra.setValueAt(precio, celda, 3);
-			TablaCompra.fireTableDataChanged();
-			++celda;
-			CalculaTotal();
+			if (!producto.equals(" ")) {
+				String cosa = producto;
+				double precio = money;
+				MiTablaTicket TablaCompra = (MiTablaTicket) tblticket.getModel();
+				Object[] fila1 = { null, null, null, null };
+				TablaCompra.aniadeFila(fila1);
+				TablaCompra.setValueAt(cosa, celda, 0);
+				TablaCompra.setValueAt(precio, celda, 1);
+				TablaCompra.setValueAt(1, celda, 2);
+				TablaCompra.setValueAt(precio, celda, 3);
+				TablaCompra.fireTableDataChanged();
+				++celda;
+				CalculaTotal();
+
+			} else {
+				JOptionPane.showMessageDialog(null, "Primero debe seleccionar un producto.", "Cuidado!",
+						JOptionPane.PLAIN_MESSAGE);
+
+			}
+		}
+	}
+
+	private class BtnPagarActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			tabPrincipales.setSelectedIndex(0);
+
+		}
+	}
+
+	private class BtnBorrarActionListener_1 implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			int opcion = JOptionPane.showConfirmDialog(null,
+					"Borrar el ticket es una operacion irreversible.\nEsta seguro?", "¡Cuidado!",
+					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			if (opcion == 0) {
+				MiTablaTicket TablaBorrado = (MiTablaTicket) tblticket.getModel();
+				while ((TablaBorrado.getRowCount()) > 0) {
+					TablaBorrado.eliminaFila(0);
+				}
+				Object[] fila1Ticket = { "Ticket", 0, 1, 0 };
+				Object[] fila1 = { null, null, null, null };
+				TablaBorrado.aniadeFila(fila1Ticket);
+				TablaBorrado.aniadeFila(fila1);
+				celda = 0;
+				TablaBorrado.fireTableDataChanged();
+				((PanelCalculadora) pnlBilletes).setcambio(0.0);
+				btnPagar1.setEnabled(true);
+			}
+
+		}
+
+	}
+
+	private class BActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+		}
+	}
+
+	private class BtnEliminarPedidoActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+
+			MiTablaPedidos tablaPedido = (MiTablaPedidos) tablaPedidos.getModel();
+			int n = tablaPedidos.getSelectedRow();
+			if (n != -1) {
+				int opcion = JOptionPane.showConfirmDialog(null,
+						"Borrar el pedido es una operacion irreversible.\nEsta seguro?", "¡Cuidado!",
+						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (opcion == 0) {
+					tablaPedido.eliminaFila(tablaPedidos.getSelectedRow());
+					tablaPedido.fireTableDataChanged();
+				}
+
+			}
+
 		}
 	}
 
@@ -1462,19 +1564,4 @@ public class Principal extends JFrame {
 		seleccionado = sele;
 	}
 
-	/*
-	 * public void lectura() { //JScrollPane pestana; JPanel tabla;
-	 * 
-	 * // pestana = tabComidas; tabla = pnlPlatosCarne; try (FileInputStream
-	 * saveFile = new FileInputStream("saveFile.sav"); ObjectInputStream objectInput
-	 * = new ObjectInputStream(saveFile);) {
-	 * 
-	 * while (objectInput.readObject() != null) { Producto leerPlato = (Producto)
-	 * objectInput.readObject(); tabla.add(leerPlato); tabla.repaint();
-	 * tabla.revalidate(); }
-	 * 
-	 * } catch (IOException eof) { System.out.println("Reached end of file"); }
-	 * catch (ClassNotFoundException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); } }
-	 */
 }

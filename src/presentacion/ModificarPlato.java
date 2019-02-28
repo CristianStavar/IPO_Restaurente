@@ -12,11 +12,15 @@ import javax.swing.border.EmptyBorder;
 import dominio.Plato;
 
 import java.awt.GridBagLayout;
+import java.awt.Image;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextArea;
@@ -51,6 +55,8 @@ public class ModificarPlato extends JFrame {
 	private JTextField txtfPrecioPlato;
 	private JButton btnCambiarFoto;
 	private JLabel lblFotografia;
+	private int anchura = 230;
+	private int altura = 230;
 
 	/**
 	 * Launch the application.
@@ -62,7 +68,7 @@ public class ModificarPlato extends JFrame {
 	public ModificarPlato(Plato p, MiTabla m, JTable t) {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 733, 462);
+		setBounds(100, 100, 744, 468);
 		pnlPrincipal = new JPanel();
 		pnlPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(pnlPrincipal);
@@ -82,8 +88,8 @@ public class ModificarPlato extends JFrame {
 		pnlInfo = new JPanel();
 		pnlPrincipal.add(pnlInfo, BorderLayout.CENTER);
 		GridBagLayout gbl_pnlInfo = new GridBagLayout();
-		gbl_pnlInfo.columnWidths = new int[] { 90, 298, 106, 39, 149, 17, 0 };
-		gbl_pnlInfo.rowHeights = new int[] { 33, 0, 158, 60, 33, 33, 0 };
+		gbl_pnlInfo.columnWidths = new int[] { 90, 278, 86, 39, 149, 17, 0 };
+		gbl_pnlInfo.rowHeights = new int[] { 33, 0, 139, 60, 33, 33, 0 };
 		gbl_pnlInfo.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gbl_pnlInfo.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		pnlInfo.setLayout(gbl_pnlInfo);
@@ -202,19 +208,27 @@ public class ModificarPlato extends JFrame {
 			}
 			int n = tabla.getSelectedRow();
 			if (n != -1) {
-				modelo = (MiTabla) tabla.getModel();
-				modelo.setValueAt(lblFotografia.getIcon(), tabla.getSelectedRow(), 0);
-				modelo.setValueAt(txtfNombrePlato.getText(), tabla.getSelectedRow(), 1);
-				modelo.setValueAt(txtaTescripcion.getText(), tabla.getSelectedRow(), 2);
-				modelo.setValueAt(Double.valueOf(txtfPrecioPlato.getText()), tabla.getSelectedRow(), 3);
+				try {
+					ImageIcon icono = (ImageIcon) lblFotografia.getIcon();
+					Image imagen = icono.getImage().getScaledInstance(anchura, altura, Image.SCALE_SMOOTH);
+					modelo = (MiTabla) tabla.getModel();
+					modelo.setValueAt((ImageIcon) icono, tabla.getSelectedRow(), 0);
+					modelo.setValueAt(txtfNombrePlato.getText(), tabla.getSelectedRow(), 1);
+					modelo.setValueAt(txtaTescripcion.getText(), tabla.getSelectedRow(), 2);
+					modelo.setValueAt(Double.valueOf(txtfPrecioPlato.getText()), tabla.getSelectedRow(), 3);
 
-				modelo.fireTableDataChanged();
-				// debido al uso de la orden de arriba imagino, al actualizarse la tabla se
-				// pierde la selecion actual despues de una modificacion.
-				// Tampoco controlamos que se hagan modificaciones a otra fila que no sea la
-				// seleccionada inicialmente.
-				// se puede cambiar la selecion antes de darle al boton de confirmar y se
-				// cambiara la ultima fila selecionada, no la inicial.
+					modelo.fireTableDataChanged();
+					// debido al uso de la orden de arriba imagino, al actualizarse la tabla se
+					// pierde la selecion actual despues de una modificacion.
+					// Tampoco controlamos que se hagan modificaciones a otra fila que no sea la
+					// seleccionada inicialmente.
+					// se puede cambiar la selecion antes de darle al boton de confirmar y se
+					// cambiara la ultima fila selecionada, no la inicial.
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null,
+							"Los campos no son correctos.\nRecuerde que el precio debe ser un número con decimal.",
+							"Cuidado!", JOptionPane.PLAIN_MESSAGE);
+				}
 			}
 
 		}
@@ -222,17 +236,21 @@ public class ModificarPlato extends JFrame {
 
 	private class BtncambiarFotoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
+
 			JFileChooser fcAbrir = new JFileChooser();
 			int valor = fcAbrir.showDialog(btnCambiarFoto, "Cargar Foto");
 			if (valor == JFileChooser.APPROVE_OPTION) {
 				File file = fcAbrir.getSelectedFile();
-				cambiarFoto(new ImageIcon(file.getAbsolutePath()));
+				ImageIcon raw = new ImageIcon(file.getAbsolutePath());
+				Image imagen = raw.getImage().getScaledInstance(anchura, altura, Image.SCALE_SMOOTH);
+				cambiarFoto(imagen);
 			}
 		}
 
-		private void cambiarFoto(ImageIcon image) {
-			if (image != null) {
-				lblFotografia.setIcon(image);
+		private void cambiarFoto(Image imagen) {
+			if (imagen != null) {
+				ImageIcon icono = new ImageIcon(imagen);
+				lblFotografia.setIcon(icono);
 			}
 
 		}
