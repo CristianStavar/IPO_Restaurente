@@ -8,9 +8,13 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JList;
+import javax.swing.JMenu;
+
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -21,6 +25,7 @@ import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFormattedTextField;
 import javax.swing.JRadioButton;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -74,6 +79,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Cursor;
@@ -88,7 +94,6 @@ public class Principal extends JFrame {
 	 * 
 	 */
 	private JFrame frame;
-	private JPanel pnlMenu;
 	private JTabbedPane tabPrincipales;
 	private JPanel pnlInicio;
 	private JPanel pnlPedidos;
@@ -188,6 +193,7 @@ public class Principal extends JFrame {
 	private final int UBICACION = 1;
 	private final int TEXTO = 2;
 	private final int LAPIZ = 3;
+	private final int PUNTERO = 4;
 	// Cursores e imagenes
 	private Toolkit toolkit;
 	private Image imagTexto;
@@ -208,9 +214,6 @@ public class Principal extends JFrame {
 	private JScrollPane scrollPanePedidos;
 	private JTable tablaPedidos;
 	private JButton btnAadirPedido;
-	private JComboBox comboBoxPreferencias;
-	private JComboBox comboBoxIdioma;
-	private JButton btnManualDeUsuario;
 
 	private int celda = 0;
 	private String producto = " ";
@@ -223,6 +226,19 @@ public class Principal extends JFrame {
 	private JScrollPane scrollPane_Pedidos;
 	private JTable table_4;
 	private JButton btnEliminarPedido;
+
+	private JMenuBar menuBar;
+	private JMenu mnPreferencias;
+	private JButton btnIdioma;
+	private JButton btnManual;
+	private JRadioButtonMenuItem miPequena;
+	private JRadioButtonMenuItem miMediana;
+	private JRadioButtonMenuItem miGrande;
+	private JRadioButtonMenuItem rdbtnmntmGrande;
+	private JRadioButtonMenuItem rdbtnmntmMediana;
+	private JRadioButtonMenuItem rdbtnmntmPequea;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JButton btnPuntero;
 
 	/**
 	 * Launch the application.
@@ -264,27 +280,6 @@ public class Principal extends JFrame {
 		tabPrincipales = new JTabbedPane(JTabbedPane.TOP);
 		tabPrincipales.setToolTipText("");
 		getFrame().getContentPane().add(tabPrincipales, BorderLayout.CENTER);
-
-		pnlMenu = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) pnlMenu.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		getFrame().getContentPane().add(pnlMenu, BorderLayout.NORTH);
-
-		comboBoxPreferencias = new JComboBox();
-		comboBoxPreferencias.setModel(new DefaultComboBoxModel(new String[] { "Preferencias", "Letras" }));
-		pnlMenu.add(comboBoxPreferencias);
-
-		comboBoxIdioma = new JComboBox();
-		comboBoxIdioma.setModel(new DefaultComboBoxModel(new String[] { "Idioma", "Español", "Inglés" }));
-		pnlMenu.add(comboBoxIdioma);
-
-		btnManualDeUsuario = new JButton("Manual de Usuario");
-		pnlMenu.add(btnManualDeUsuario);
-
-		btnMenuPerfilUsuario = new JButton("Perfil");
-		pnlMenu.add(btnMenuPerfilUsuario);
-		btnMenuPerfilUsuario.addMouseListener(new BtnMenuPerfilUsuarioMouseListener());
-		btnMenuPerfilUsuario.setBackground(UIManager.getColor("Button.background"));
 
 		pnlInicio = new JPanel();
 		pnlInicio.setName("");
@@ -887,6 +882,16 @@ public class Principal extends JFrame {
 		gbc_btnLapiz.gridy = 1;
 		pnlMapa.add(btnLapiz, gbc_btnLapiz);
 
+		btnPuntero = new JButton(MessagesRestaurante.getString("Principal.btnPuntero.text")); //$NON-NLS-1$
+		btnPuntero.addActionListener(new BtnPunteroActionListener());
+		btnPuntero.setIcon(new ImageIcon(Principal.class.getResource(MessagesRestaurante.getString("Principal.66")))); //$NON-NLS-1$
+		GridBagConstraints gbc_btnPuntero = new GridBagConstraints();
+		gbc_btnPuntero.fill = GridBagConstraints.BOTH;
+		gbc_btnPuntero.insets = new Insets(0, 0, 5, 5);
+		gbc_btnPuntero.gridx = 3;
+		gbc_btnPuntero.gridy = 1;
+		pnlMapa.add(btnPuntero, gbc_btnPuntero);
+
 		scrPnlMapa = new JScrollPane();
 
 		GridBagConstraints gbc_scrPnlMapa = new GridBagConstraints();
@@ -1153,6 +1158,39 @@ public class Principal extends JFrame {
 		gbc_btnEliminar.gridy = 4;
 		pnlClientes.add(btnEliminar, gbc_btnEliminar);
 
+		menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+
+		mnPreferencias = new JMenu(MessagesRestaurante.getString("Principal.mnPreferencias.text")); //$NON-NLS-1$
+		menuBar.add(mnPreferencias);
+
+		miPequena = new JRadioButtonMenuItem(MessagesRestaurante.getString("Principal.miPequena.text")); //$NON-NLS-1$
+		miPequena.addActionListener(new MiPequenaActionListener());
+		buttonGroup.add(miPequena);
+		mnPreferencias.add(miPequena);
+
+		miMediana = new JRadioButtonMenuItem(MessagesRestaurante.getString("Principal.miMediana.text")); //$NON-NLS-1$
+		miMediana.setSelected(true);
+		miMediana.addActionListener(new MiMedianaActionListener());
+		buttonGroup.add(miMediana);
+		mnPreferencias.add(miMediana);
+
+		miGrande = new JRadioButtonMenuItem(MessagesRestaurante.getString("Principal.miGrande.text")); //$NON-NLS-1$
+		miGrande.addActionListener(new MiGrandeActionListener());
+		buttonGroup.add(miGrande);
+		mnPreferencias.add(miGrande);
+
+		btnIdioma = new JButton(MessagesRestaurante.getString("Principal.btnIdioma.text")); //$NON-NLS-1$
+		menuBar.add(btnIdioma);
+
+		btnManual = new JButton(MessagesRestaurante.getString("Principal.btnManual.text")); //$NON-NLS-1$
+		menuBar.add(btnManual);
+
+		btnMenuPerfilUsuario = new JButton(MessagesRestaurante.getString("Principal.btnMenuPerfilUsuario.text")); //$NON-NLS-1$
+		menuBar.add(btnMenuPerfilUsuario);
+		btnMenuPerfilUsuario.addMouseListener(new BtnMenuPerfilUsuarioMouseListener());
+		btnMenuPerfilUsuario.setBackground(UIManager.getColor(MessagesRestaurante.getString("Principal.101"))); //$NON-NLS-1$
+
 		ListSelectionModel rowSMtc = tblClientesVips.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -1293,6 +1331,13 @@ public class Principal extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			modo = LAPIZ;
 			frame.setCursor(cursorLapiz);
+		}
+	}
+
+	private class BtnPunteroActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			modo = PUNTERO;
+			frame.setCursor(Cursor.getDefaultCursor());
 		}
 	}
 
@@ -1562,6 +1607,86 @@ public class Principal extends JFrame {
 
 	public static void setSeleccionado(String sele) {
 		seleccionado = sele;
+	}
+
+	private class MiPequenaActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			textAreaEsc.setFont(new Font(textAreaEsc.getFont().getFontName(), textAreaEsc.getFont().getStyle(), 8));
+			tblticket.setFont(new Font(tblticket.getFont().getFontName(), tblticket.getFont().getStyle(), 8));
+			tablaPedidos.setFont(new Font(tablaPedidos.getFont().getFontName(), tablaPedidos.getFont().getStyle(), 8));
+			table_4.setFont(new Font(table_4.getFont().getFontName(), table_4.getFont().getStyle(), 8));
+			table_1.setFont(new Font(table_1.getFont().getFontName(), table_1.getFont().getStyle(), 8));
+			tblClientesVips.setFont(
+					new Font(tblClientesVips.getFont().getFontName(), tblClientesVips.getFont().getStyle(), 8));
+			tablaPlatosArroz.setFont(
+					new Font(tablaPlatosArroz.getFont().getFontName(), tablaPlatosArroz.getFont().getStyle(), 8));
+			tablaPlatosPostre.setFont(
+					new Font(tablaPlatosPostre.getFont().getFontName(), tablaPlatosPostre.getFont().getStyle(), 8));
+			tablaBebidas.setFont(new Font(tablaBebidas.getFont().getFontName(), tablaBebidas.getFont().getStyle(), 8));
+			tablaOfertas.setFont(new Font(tablaOfertas.getFont().getFontName(), tablaOfertas.getFont().getStyle(), 8));
+			tablaPlatosCarne.setFont(
+					new Font(tablaPlatosCarne.getFont().getFontName(), tablaPlatosCarne.getFont().getStyle(), 8));
+			tablaPlatosPez
+					.setFont(new Font(tablaPlatosPez.getFont().getFontName(), tablaPlatosPez.getFont().getStyle(), 8));
+			tablaPlatosPasta.setFont(
+					new Font(tablaPlatosPasta.getFont().getFontName(), tablaPlatosPasta.getFont().getStyle(), 8));
+			tablaPlatosBocata.setFont(
+					new Font(tablaPlatosBocata.getFont().getFontName(), tablaPlatosBocata.getFont().getStyle(), 8));
+		}
+	}
+
+	private class MiMedianaActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			textAreaEsc.setFont(new Font(textAreaEsc.getFont().getFontName(), textAreaEsc.getFont().getStyle(), 11));
+			tblticket.setFont(new Font(tblticket.getFont().getFontName(), tblticket.getFont().getStyle(), 11));
+			tablaPedidos.setFont(new Font(tablaPedidos.getFont().getFontName(), tablaPedidos.getFont().getStyle(), 11));
+			table_4.setFont(new Font(table_4.getFont().getFontName(), table_4.getFont().getStyle(), 11));
+			table_1.setFont(new Font(table_1.getFont().getFontName(), table_1.getFont().getStyle(), 11));
+			tblClientesVips.setFont(
+					new Font(tblClientesVips.getFont().getFontName(), tblClientesVips.getFont().getStyle(), 11));
+			tablaPlatosArroz.setFont(
+					new Font(tablaPlatosArroz.getFont().getFontName(), tablaPlatosArroz.getFont().getStyle(), 11));
+			tablaPlatosPostre.setFont(
+					new Font(tablaPlatosPostre.getFont().getFontName(), tablaPlatosPostre.getFont().getStyle(), 11));
+			tablaBebidas.setFont(new Font(tablaBebidas.getFont().getFontName(), tablaBebidas.getFont().getStyle(), 11));
+			tablaOfertas.setFont(new Font(tablaOfertas.getFont().getFontName(), tablaOfertas.getFont().getStyle(), 11));
+			tablaPlatosCarne.setFont(
+					new Font(tablaPlatosCarne.getFont().getFontName(), tablaPlatosCarne.getFont().getStyle(), 11));
+			tablaPlatosPez
+					.setFont(new Font(tablaPlatosPez.getFont().getFontName(), tablaPlatosPez.getFont().getStyle(), 11));
+			tablaPlatosPasta.setFont(
+					new Font(tablaPlatosPasta.getFont().getFontName(), tablaPlatosPasta.getFont().getStyle(), 11));
+			tablaPlatosBocata.setFont(
+					new Font(tablaPlatosBocata.getFont().getFontName(), tablaPlatosBocata.getFont().getStyle(), 11));
+
+		}
+	}
+
+	private class MiGrandeActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			textAreaEsc.setFont(new Font(textAreaEsc.getFont().getFontName(), textAreaEsc.getFont().getStyle(), 18));
+			tblticket.setFont(new Font(tblticket.getFont().getFontName(), tblticket.getFont().getStyle(), 18));
+			tablaPedidos.setFont(new Font(tablaPedidos.getFont().getFontName(), tablaPedidos.getFont().getStyle(), 18));
+			table_4.setFont(new Font(table_4.getFont().getFontName(), table_4.getFont().getStyle(), 18));
+			table_1.setFont(new Font(table_1.getFont().getFontName(), table_1.getFont().getStyle(), 18));
+			tblClientesVips.setFont(
+					new Font(tblClientesVips.getFont().getFontName(), tblClientesVips.getFont().getStyle(), 18));
+			tablaPlatosArroz.setFont(
+					new Font(tablaPlatosArroz.getFont().getFontName(), tablaPlatosArroz.getFont().getStyle(), 18));
+			tablaPlatosPostre.setFont(
+					new Font(tablaPlatosPostre.getFont().getFontName(), tablaPlatosPostre.getFont().getStyle(), 18));
+			tablaBebidas.setFont(new Font(tablaBebidas.getFont().getFontName(), tablaBebidas.getFont().getStyle(), 18));
+			tablaOfertas.setFont(new Font(tablaOfertas.getFont().getFontName(), tablaOfertas.getFont().getStyle(), 18));
+			tablaPlatosCarne.setFont(
+					new Font(tablaPlatosCarne.getFont().getFontName(), tablaPlatosCarne.getFont().getStyle(), 18));
+			tablaPlatosPez
+					.setFont(new Font(tablaPlatosPez.getFont().getFontName(), tablaPlatosPez.getFont().getStyle(), 18));
+			tablaPlatosPasta.setFont(
+					new Font(tablaPlatosPasta.getFont().getFontName(), tablaPlatosPasta.getFont().getStyle(), 18));
+			tablaPlatosBocata.setFont(
+					new Font(tablaPlatosBocata.getFont().getFontName(), tablaPlatosBocata.getFont().getStyle(), 18));
+
+		}
 	}
 
 }
