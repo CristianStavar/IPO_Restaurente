@@ -165,7 +165,7 @@ public class Principal extends JFrame {
 	private JButton btnMenuPerfilUsuario;
 	private JLabel lblPetito;
 	public static ArrayList<Producto> productos = new ArrayList<Producto>();
-	private static String seleccionado = "";
+	private static String seleccionado = ""; //$NON-NLS-1$
 	private Iterator<Producto> iterar = productos.iterator();
 
 	public static JTable tblticket;
@@ -199,9 +199,12 @@ public class Principal extends JFrame {
 	private Image imagTexto;
 	private Image imagUbicacion;
 	private Image imagLapiz;
+	private Image imagPuntero;
 	private Cursor cursorTexto;
 	private Cursor cursorUbicacion;
 	private Cursor cursorLapiz;
+	private Cursor cursorPuntero;
+	private Cursor normal;
 	private int x, y;
 
 	private JTextField txtTexto = new JTextField();
@@ -216,7 +219,7 @@ public class Principal extends JFrame {
 	private JButton btnAadirPedido;
 
 	private int celda = 0;
-	private String producto = " ";
+	private String producto = " "; //$NON-NLS-1$
 	private double money = 0;
 	private double total;
 	private JScrollPane scrollPane;
@@ -278,12 +281,12 @@ public class Principal extends JFrame {
 		getFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		tabPrincipales = new JTabbedPane(JTabbedPane.TOP);
-		tabPrincipales.setToolTipText("");
+		tabPrincipales.setToolTipText(""); //$NON-NLS-1$
 		getFrame().getContentPane().add(tabPrincipales, BorderLayout.CENTER);
 
 		pnlInicio = new JPanel();
-		pnlInicio.setName("");
-		tabPrincipales.addTab("Inicio", null, pnlInicio, null);
+		pnlInicio.setName(""); //$NON-NLS-1$
+		tabPrincipales.addTab("Inicio", null, pnlInicio, null); //$NON-NLS-1$
 		GridBagLayout gbl_pnlInicio = new GridBagLayout();
 		gbl_pnlInicio.columnWidths = new int[] { 1010, 0, 642, 0 };
 		gbl_pnlInicio.rowHeights = new int[] { 363, 0, 53, 167, 39, 0 };
@@ -301,11 +304,11 @@ public class Principal extends JFrame {
 
 		pnlComida = new JPanel();
 		pnlComida.setMinimumSize(new Dimension(500, 350));
-		tabInicio.addTab("Platos", null, pnlComida, null);
+		tabInicio.addTab("Platos", null, pnlComida, null); //$NON-NLS-1$
 		pnlComida.setLayout(new BorderLayout(0, 0));
 
 		tabComidas = new JTabbedPane(JTabbedPane.LEFT);
-		tabComidas.setName("");
+		tabComidas.setName(MessagesRestaurante.getString("Principal.124")); //$NON-NLS-1$
 		tabComidas.setPreferredSize(new Dimension(600, 350));
 		tabComidas.setMinimumSize(new Dimension(500, 350));
 		tabComidas.setOpaque(true);
@@ -313,7 +316,7 @@ public class Principal extends JFrame {
 		pnlComida.add(tabComidas);
 
 		scrollPaneCarnes = new JScrollPane();
-		tabComidas.addTab("Carne", null, scrollPaneCarnes, null);
+		tabComidas.addTab("Carne", null, scrollPaneCarnes, null); //$NON-NLS-1$
 
 		tablaPlatosCarne = new JTable();
 		tablaPlatosCarne.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -324,7 +327,8 @@ public class Principal extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (!lsm.isSelectionEmpty()) {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
-					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+					textAreaEsc.setText(MessagesRestaurante.getString("Principal.126") + filaSeleccionada //$NON-NLS-1$
+							+ MessagesRestaurante.getString("Principal.127") //$NON-NLS-1$
 							+ (String) tablaCarne.getDescripcion(lsm.getMinSelectionIndex()));
 					producto = tablaCarne.getNombre(lsm.getMinSelectionIndex());
 					money = tablaCarne.getPrecio(lsm.getMinSelectionIndex());
@@ -333,13 +337,14 @@ public class Principal extends JFrame {
 		});
 		tablaPlatosCarne.setModel(tablaCarne);
 		tablaPlatosCarne.setRowHeight(35);
-		Object[] fila1 = { "", "Chuleton Buey", "Chuleton primeras caitates", 8.5 };
+		Object[] fila1 = { MessagesRestaurante.getString("Principal.128"), "Chuleton Buey", //$NON-NLS-1$ //$NON-NLS-2$
+				"Chuleton primeras caitates", 8.5 }; //$NON-NLS-1$
 		tablaCarne.aniadeFila(fila1);
 
 		scrollPaneCarnes.setViewportView(tablaPlatosCarne);
 
 		scrollPanePescado = new JScrollPane();
-		tabComidas.addTab("Pescado", null, scrollPanePescado, null);
+		tabComidas.addTab("Pescado", null, scrollPanePescado, null); //$NON-NLS-1$
 
 		tablaPlatosPez = new JTable();
 		tablaPlatosPez.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -350,7 +355,7 @@ public class Principal extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (!lsm.isSelectionEmpty()) {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
-					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+					textAreaEsc.setText("Fila " + filaSeleccionada + MessagesRestaurante.getString("Principal.133") //$NON-NLS-1$ //$NON-NLS-2$
 							+ (String) tablaPez.getDescripcion(lsm.getMinSelectionIndex()));
 					producto = tablaPez.getNombre(lsm.getMinSelectionIndex());
 					money = tablaPez.getPrecio(lsm.getMinSelectionIndex());
@@ -359,13 +364,14 @@ public class Principal extends JFrame {
 		});
 		tablaPlatosPez.setModel(tablaPez);
 		tablaPlatosPez.setRowHeight(35);
-		Object[] fila2 = { "", "Merluza",
-				"Merluza Fresca con salsa marisco.\n Alérgenos:\n Contiene pescado y mariscos", 9.5 };
+		Object[] fila2 = { MessagesRestaurante.getString("Principal.134"), //$NON-NLS-1$
+				MessagesRestaurante.getString("Principal.135"), //$NON-NLS-1$
+				MessagesRestaurante.getString("Principal.136"), 9.5 }; //$NON-NLS-1$
 		tablaPez.aniadeFila(fila2);
 		scrollPanePescado.setViewportView(tablaPlatosPez);
 
 		scrollPanePasta = new JScrollPane();
-		tabComidas.addTab("Pasta", null, scrollPanePasta, null);
+		tabComidas.addTab(MessagesRestaurante.getString("Principal.137"), null, scrollPanePasta, null); //$NON-NLS-1$
 
 		tablaPlatosPasta = new JTable();
 		tablaPlatosPasta.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -377,7 +383,8 @@ public class Principal extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (!lsm.isSelectionEmpty()) {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
-					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+					textAreaEsc.setText(MessagesRestaurante.getString("Principal.138") + filaSeleccionada //$NON-NLS-1$
+							+ MessagesRestaurante.getString("Principal.139") //$NON-NLS-1$
 							+ (String) tablaPasta.getDescripcion(lsm.getMinSelectionIndex()));
 					producto = tablaPasta.getNombre(lsm.getMinSelectionIndex());
 					money = tablaPasta.getPrecio(lsm.getMinSelectionIndex());
@@ -386,12 +393,13 @@ public class Principal extends JFrame {
 		});
 		tablaPlatosPasta.setModel(tablaPasta);
 		tablaPlatosPasta.setRowHeight(35);
-		Object[] fila3 = { "", "macarone", "salsa carbonara", 7.0 };
+		Object[] fila3 = { MessagesRestaurante.getString("Principal.140"), //$NON-NLS-1$
+				MessagesRestaurante.getString("Principal.141"), MessagesRestaurante.getString("Principal.142"), 7.0 }; //$NON-NLS-1$ //$NON-NLS-2$
 		tablaPasta.aniadeFila(fila3);
 		scrollPanePasta.setViewportView(tablaPlatosPasta);
 
 		scrollPaneArroz = new JScrollPane();
-		tabComidas.addTab("Arroz", null, scrollPaneArroz, null);
+		tabComidas.addTab(MessagesRestaurante.getString("Principal.143"), null, scrollPaneArroz, null); //$NON-NLS-1$
 
 		tablaPlatosArroz = new JTable();
 		tablaPlatosArroz.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -402,7 +410,8 @@ public class Principal extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (!lsm.isSelectionEmpty()) {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
-					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+					textAreaEsc.setText(MessagesRestaurante.getString("Principal.144") + filaSeleccionada //$NON-NLS-1$
+							+ MessagesRestaurante.getString("Principal.145") //$NON-NLS-1$
 							+ (String) tablaArroz.getDescripcion(lsm.getMinSelectionIndex()));
 					producto = tablaArroz.getNombre(lsm.getMinSelectionIndex());
 					money = tablaArroz.getPrecio(lsm.getMinSelectionIndex());
@@ -411,12 +420,12 @@ public class Principal extends JFrame {
 		});
 		tablaPlatosArroz.setModel(tablaArroz);
 		tablaPlatosArroz.setRowHeight(35);
-		Object[] fila4 = { "", "paella", "Valenciana", 12.0 };
+		Object[] fila4 = { MessagesRestaurante.getString("Principal.146"), "paella", "Valenciana", 12.0 }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tablaArroz.aniadeFila(fila4);
 		scrollPaneArroz.setViewportView(tablaPlatosArroz);
 
 		scrollPaneBocadillos = new JScrollPane();
-		tabComidas.addTab("Bocadillos", null, scrollPaneBocadillos, null);
+		tabComidas.addTab("Bocadillos", null, scrollPaneBocadillos, null); //$NON-NLS-1$
 
 		tablaPlatosBocata = new JTable();
 		tablaPlatosBocata.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -427,7 +436,7 @@ public class Principal extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (!lsm.isSelectionEmpty()) {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
-					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n" //$NON-NLS-1$ //$NON-NLS-2$
 							+ (String) tablaBocata.getDescripcion(lsm.getMinSelectionIndex()));
 					producto = tablaBocata.getNombre(lsm.getMinSelectionIndex());
 					money = (tablaBocata.getPrecio(lsm.getMinSelectionIndex()));
@@ -436,12 +445,13 @@ public class Principal extends JFrame {
 		});
 		tablaPlatosBocata.setModel(tablaBocata);
 		tablaPlatosBocata.setRowHeight(35);
-		Object[] fila5 = { "", "Bocata CAsa", "Los mejroes ingretietnes locale", 6.0 };
+		Object[] fila5 = { MessagesRestaurante.getString("Principal.152"), //$NON-NLS-1$
+				"Bocata CAsa", "Los mejroes ingretietnes locale", 6.0 }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tablaBocata.aniadeFila(fila5);
 		scrollPaneBocadillos.setViewportView(tablaPlatosBocata);
 
 		scrollPanePostre = new JScrollPane();
-		tabComidas.addTab("Postres", null, scrollPanePostre, null);
+		tabComidas.addTab("Postres", null, scrollPanePostre, null); //$NON-NLS-1$
 
 		tablaPlatosPostre = new JTable();
 		tablaPlatosPostre.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -452,7 +462,7 @@ public class Principal extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (!lsm.isSelectionEmpty()) {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
-					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n" //$NON-NLS-1$ //$NON-NLS-2$
 							+ (String) tablaPostre.getDescripcion(lsm.getMinSelectionIndex()));
 					producto = tablaPostre.getNombre(lsm.getMinSelectionIndex());
 					money = tablaPostre.getPrecio(lsm.getMinSelectionIndex());
@@ -461,12 +471,12 @@ public class Principal extends JFrame {
 		});
 		tablaPlatosPostre.setModel(tablaPostre);
 		tablaPlatosPostre.setRowHeight(35);
-		Object[] fila6 = { "", "Profiteroles", "Pooostreeee", 4.0 };
+		Object[] fila6 = { "", "Profiteroles", "Pooostreeee", 4.0 }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tablaPostre.aniadeFila(fila6);
 		scrollPanePostre.setViewportView(tablaPlatosPostre);
 
 		pnlBebidas = new JPanel();
-		tabInicio.addTab("Bebidas", null, pnlBebidas, null);
+		tabInicio.addTab(MessagesRestaurante.getString("Principal.161"), null, pnlBebidas, null); //$NON-NLS-1$
 		pnlBebidas.setLayout(new BorderLayout(0, 0));
 
 		scrollPaneBebidas = new JScrollPane();
@@ -481,7 +491,7 @@ public class Principal extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (!lsm.isSelectionEmpty()) {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
-					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n" //$NON-NLS-1$ //$NON-NLS-2$
 							+ (String) tablaBebidasT.getDescripcion(lsm.getMinSelectionIndex()));
 					producto = tablaBebidasT.getNombre(lsm.getMinSelectionIndex());
 					money = tablaBebidasT.getPrecio(lsm.getMinSelectionIndex());
@@ -490,13 +500,13 @@ public class Principal extends JFrame {
 		});
 		tablaBebidas.setModel(tablaBebidasT);
 		tablaBebidas.setRowHeight(35);
-		Object[] fila7 = { new ImageIcon(Principal.class.getResource("/presentacion/coke.png")), "ColaCoca",
-				"Refrescante", 1.0 };
+		Object[] fila7 = { new ImageIcon(Principal.class.getResource("/presentacion/coke.png")), "ColaCoca", //$NON-NLS-1$ //$NON-NLS-2$
+				"Refrescante", 1.0 }; //$NON-NLS-1$
 		tablaBebidasT.aniadeFila(fila7);
 		scrollPaneBebidas.setViewportView(tablaBebidas);
 
 		pnlOfertas = new JPanel();
-		tabInicio.addTab("Ofertas", null, pnlOfertas, null);
+		tabInicio.addTab(MessagesRestaurante.getString("Principal.167"), null, pnlOfertas, null); //$NON-NLS-1$
 		pnlOfertas.setLayout(new BorderLayout(0, 0));
 
 		scrollPaneOfertas = new JScrollPane();
@@ -511,7 +521,7 @@ public class Principal extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (!lsm.isSelectionEmpty()) {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
-					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n"
+					textAreaEsc.setText("Fila " + filaSeleccionada + " seleccionada.\n" //$NON-NLS-1$ //$NON-NLS-2$
 							+ (String) tablaOfertasT.getDescripcion(lsm.getMinSelectionIndex()));
 					producto = tablaOfertasT.getNombre(lsm.getMinSelectionIndex());
 					money = tablaOfertasT.getPrecio(lsm.getMinSelectionIndex());
@@ -520,7 +530,7 @@ public class Principal extends JFrame {
 		});
 		tablaOfertas.setModel(tablaOfertasT);
 		tablaOfertas.setRowHeight(35);
-		Object[] fila8 = { " ", "ColaCoca", "Refrescante", 0.5 };
+		Object[] fila8 = { " ", "ColaCoca", "Refrescante", 0.5 }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tablaOfertasT.aniadeFila(fila8);
 		scrollPaneOfertas.setViewportView(tablaOfertas);
 
@@ -543,7 +553,7 @@ public class Principal extends JFrame {
 		tblticket.setModel(Ticket);
 		scrlpnlticket.setViewportView(tblticket);
 
-		Object[] fila1Ticket = { "Ticket", 0, 0, 0 };
+		Object[] fila1Ticket = { "Ticket", 0, 0, 0 }; //$NON-NLS-1$
 		Object[] fila4Ticket = { null, null, null, null };
 		Ticket.aniadeFila(fila1Ticket);
 		Ticket.aniadeFila(fila4Ticket);
@@ -566,11 +576,11 @@ public class Principal extends JFrame {
 		gbc_panel_4.gridy = 2;
 		pnlInicio.add(panel_4, gbc_panel_4);
 
-		btnComprar = new JButton("Comprar Producto");
+		btnComprar = new JButton(MessagesRestaurante.getString("Principal.174")); //$NON-NLS-1$
 		btnComprar.addActionListener(new BtnComprarActionListener());
 		panel_4.add(btnComprar);
 
-		lblPetito = new JLabel("petito");
+		lblPetito = new JLabel(MessagesRestaurante.getString("Principal.175")); //$NON-NLS-1$
 		panel_4.add(lblPetito);
 
 		scrlpnlTescripcion = new JScrollPane();
@@ -594,7 +604,7 @@ public class Principal extends JFrame {
 		panel_1.setLayout(new BorderLayout(0, 0));
 
 		lblAquiVamosA = new JLabel(
-				"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tamaño.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n");
+				"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tamaño.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n"); //$NON-NLS-1$
 		lblAquiVamosA.setOpaque(true);
 		panel_1.add(lblAquiVamosA);
 
@@ -625,15 +635,15 @@ public class Principal extends JFrame {
 		gbc_pnlCambiosProductos.gridy = 4;
 		pnlInicio.add(pnlCambiosProductos, gbc_pnlCambiosProductos);
 
-		btnAñadirProducto = new JButton("Añadir");
+		btnAñadirProducto = new JButton(MessagesRestaurante.getString("Principal.177")); //$NON-NLS-1$
 		btnAñadirProducto.addActionListener(new BtnAñadirProductoActionListener());
 		pnlCambiosProductos.add(btnAñadirProducto);
 
-		btnModificarProducto = new JButton("Modificar");
+		btnModificarProducto = new JButton(MessagesRestaurante.getString("Principal.178")); //$NON-NLS-1$
 		btnModificarProducto.addActionListener(new BtnModificarProductoActionListener());
 		pnlCambiosProductos.add(btnModificarProducto);
 
-		btnEliminrroducto = new JButton("Eliminar");
+		btnEliminrroducto = new JButton(MessagesRestaurante.getString("Principal.179")); //$NON-NLS-1$
 		btnEliminrroducto.addActionListener(new BtnEliminrroductoActionListener());
 		pnlCambiosProductos.add(btnEliminrroducto);
 
@@ -644,16 +654,16 @@ public class Principal extends JFrame {
 		gbc_panel.gridy = 4;
 		pnlInicio.add(panel, gbc_panel);
 
-		btnPagar1 = new JButton("Pagar");
+		btnPagar1 = new JButton(MessagesRestaurante.getString("Principal.180")); //$NON-NLS-1$
 		btnPagar1.addActionListener(new BtnPagar1ActionListener());
 		panel.add(btnPagar1);
 
-		btnBorrar = new JButton("Borrar Ticket");
+		btnBorrar = new JButton(MessagesRestaurante.getString("Principal.181")); //$NON-NLS-1$
 		btnBorrar.addActionListener(new BtnBorrarActionListener_1());
 		panel.add(btnBorrar);
 
 		pnlPedidos = new JPanel();
-		tabPrincipales.addTab("Pedidos", null, pnlPedidos, null);
+		tabPrincipales.addTab(MessagesRestaurante.getString("Principal.182"), null, pnlPedidos, null); //$NON-NLS-1$
 		GridBagLayout gbl_pnlPedidos = new GridBagLayout();
 		gbl_pnlPedidos.columnWidths = new int[] { 918, 0 };
 		gbl_pnlPedidos.rowHeights = new int[] { 514, 277, 0 };
@@ -678,7 +688,8 @@ public class Principal extends JFrame {
 				ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (!lsm.isSelectionEmpty()) {
 					int filaSeleccionada = lsm.getMinSelectionIndex() + 1;
-					lblPetito.setText((String) "Pedido:" + tablaPedido.getValueAt(filaSeleccionada - 1, 0) + " de "
+					lblPetito.setText((String) MessagesRestaurante.getString("Principal.183") //$NON-NLS-1$
+							+ tablaPedido.getValueAt(filaSeleccionada - 1, 0) + " de " //$NON-NLS-1$
 							+ tablaPedido.getValueAt(filaSeleccionada - 1, 1));
 					txtNombre_1.setText((String) tablaPedido.getValueAt(filaSeleccionada - 1, 1));
 					txtDireccion_1.setText((String) tablaPedido.getValueAt(filaSeleccionada - 1, 2));
@@ -690,7 +701,7 @@ public class Principal extends JFrame {
 		});
 		tablaPedidos.setModel(tablaPedido);
 		tablaPedidos.setRowHeight(25);
-		Object[] filaP = { "1", "Paco García", "Calle Langostinos", "856", "Todooos", "Ayer", "Hoy" };
+		Object[] filaP = { "1", "Paco García", "Calle Langostinos", "856", "Todooos", "Ayer", "Hoy" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		tablaPedido.aniadeFila(filaP);
 		scrollPanePedidos.setViewportView(tablaPedidos);
 
@@ -713,7 +724,7 @@ public class Principal extends JFrame {
 		gbl_panel_2.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		panel_2.setLayout(gbl_panel_2);
 
-		lblNombre_1 = new JLabel("Nombre:  ");
+		lblNombre_1 = new JLabel(MessagesRestaurante.getString("Principal.192")); //$NON-NLS-1$
 		GridBagConstraints gbc_lblNombre_1 = new GridBagConstraints();
 		gbc_lblNombre_1.anchor = GridBagConstraints.EAST;
 		gbc_lblNombre_1.insets = new Insets(0, 0, 5, 5);
@@ -730,7 +741,7 @@ public class Principal extends JFrame {
 		panel_2.add(txtNombre_1, gbc_txtNombre_1);
 		txtNombre_1.setColumns(10);
 
-		lblDireccion_1 = new JLabel("Direccion:  ");
+		lblDireccion_1 = new JLabel(MessagesRestaurante.getString("Principal.193")); //$NON-NLS-1$
 		GridBagConstraints gbc_lblDireccion_1 = new GridBagConstraints();
 		gbc_lblDireccion_1.anchor = GridBagConstraints.EAST;
 		gbc_lblDireccion_1.insets = new Insets(0, 0, 5, 5);
@@ -755,7 +766,7 @@ public class Principal extends JFrame {
 		gbc_cmbTipo.gridy = 1;
 		panel_2.add(cmbTipo, gbc_cmbTipo);
 
-		btnPagar = new JButton("Pagar");
+		btnPagar = new JButton(MessagesRestaurante.getString("Principal.194")); //$NON-NLS-1$
 		btnPagar.addActionListener(new BtnPagarActionListener());
 		GridBagConstraints gbc_btnPagar = new GridBagConstraints();
 		gbc_btnPagar.insets = new Insets(0, 0, 5, 0);
@@ -763,7 +774,7 @@ public class Principal extends JFrame {
 		gbc_btnPagar.gridy = 1;
 		panel_2.add(btnPagar, gbc_btnPagar);
 
-		lblTelefono = new JLabel("Telefono:  ");
+		lblTelefono = new JLabel(MessagesRestaurante.getString("Principal.195")); //$NON-NLS-1$
 		GridBagConstraints gbc_lblTelefono = new GridBagConstraints();
 		gbc_lblTelefono.anchor = GridBagConstraints.EAST;
 		gbc_lblTelefono.insets = new Insets(0, 0, 5, 5);
@@ -780,7 +791,7 @@ public class Principal extends JFrame {
 		panel_2.add(txtTelefono, gbc_txtTelefono);
 		txtTelefono.setColumns(10);
 
-		lblFechaRecogida = new JLabel("Fecha Recogida:  ");
+		lblFechaRecogida = new JLabel(MessagesRestaurante.getString("Principal.196")); //$NON-NLS-1$
 		GridBagConstraints gbc_lblFechaRecogida = new GridBagConstraints();
 		gbc_lblFechaRecogida.anchor = GridBagConstraints.EAST;
 		gbc_lblFechaRecogida.insets = new Insets(0, 0, 5, 5);
@@ -796,7 +807,7 @@ public class Principal extends JFrame {
 		gbc_frmtFechaRecogida.gridy = 2;
 		panel_2.add(frmtFechaRecogida, gbc_frmtFechaRecogida);
 
-		btnEliminarPedido = new JButton("Eliminar pedido");
+		btnEliminarPedido = new JButton(MessagesRestaurante.getString("Principal.197")); //$NON-NLS-1$
 		btnEliminarPedido.addActionListener(new BtnEliminarPedidoActionListener());
 
 		GridBagConstraints gbc_btnEliminarPedido = new GridBagConstraints();
@@ -805,7 +816,7 @@ public class Principal extends JFrame {
 		gbc_btnEliminarPedido.gridy = 2;
 		panel_2.add(btnEliminarPedido, gbc_btnEliminarPedido);
 
-		lblFechaInicio = new JLabel("Fecha:  ");
+		lblFechaInicio = new JLabel(MessagesRestaurante.getString("Principal.198")); //$NON-NLS-1$
 		GridBagConstraints gbc_lblFechaInicio = new GridBagConstraints();
 		gbc_lblFechaInicio.anchor = GridBagConstraints.EAST;
 		gbc_lblFechaInicio.insets = new Insets(0, 0, 0, 5);
@@ -821,7 +832,7 @@ public class Principal extends JFrame {
 		gbc_frmtFechaInicio.gridy = 3;
 		panel_2.add(frmtFechaInicio, gbc_frmtFechaInicio);
 
-		btnAadirPedido = new JButton("Añadir Pedido");
+		btnAadirPedido = new JButton(MessagesRestaurante.getString("Principal.199")); //$NON-NLS-1$
 		btnAadirPedido.addActionListener(new BtnAadirPedidoActionListener());
 		GridBagConstraints gbc_btnAadirPedido = new GridBagConstraints();
 		gbc_btnAadirPedido.gridx = 4;
@@ -829,7 +840,7 @@ public class Principal extends JFrame {
 		panel_2.add(btnAadirPedido, gbc_btnAadirPedido);
 
 		pnlMapa = new JPanel();
-		tabPrincipales.addTab("Mapa", null, pnlMapa, null);
+		tabPrincipales.addTab(MessagesRestaurante.getString("Principal.200"), null, pnlMapa, null); //$NON-NLS-1$
 		GridBagLayout gbl_pnlMapa = new GridBagLayout();
 		gbl_pnlMapa.columnWidths = new int[] { 96, 0, 87, 300, 346, 0 };
 		gbl_pnlMapa.rowHeights = new int[] { 212, 85, 295, 0 };
@@ -852,9 +863,9 @@ public class Principal extends JFrame {
 		table_4.setRowHeight(25);
 		scrollPane_Pedidos.setViewportView(table_4);
 
-		btnCometarios = new JButton("");
+		btnCometarios = new JButton(MessagesRestaurante.getString("Principal.201")); //$NON-NLS-1$
 		btnCometarios.addActionListener(new BtnCometariosActionListener());
-		btnCometarios.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagencomentario.png")));
+		btnCometarios.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagencomentario.png"))); //$NON-NLS-1$
 		GridBagConstraints gbc_btnCometarios = new GridBagConstraints();
 		gbc_btnCometarios.fill = GridBagConstraints.BOTH;
 		gbc_btnCometarios.insets = new Insets(0, 0, 5, 5);
@@ -862,9 +873,9 @@ public class Principal extends JFrame {
 		gbc_btnCometarios.gridy = 1;
 		pnlMapa.add(btnCometarios, gbc_btnCometarios);
 
-		btnDestino = new JButton("");
+		btnDestino = new JButton(""); //$NON-NLS-1$
 		btnDestino.addActionListener(new BtnDestinoActionListener());
-		btnDestino.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagendestino.png")));
+		btnDestino.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagendestino.png"))); //$NON-NLS-1$
 		GridBagConstraints gbc_btnDestino = new GridBagConstraints();
 		gbc_btnDestino.fill = GridBagConstraints.BOTH;
 		gbc_btnDestino.insets = new Insets(0, 0, 5, 5);
@@ -872,9 +883,9 @@ public class Principal extends JFrame {
 		gbc_btnDestino.gridy = 1;
 		pnlMapa.add(btnDestino, gbc_btnDestino);
 
-		btnLapiz = new JButton("");
+		btnLapiz = new JButton(""); //$NON-NLS-1$
 		btnLapiz.addActionListener(new BtnLapizActionListener());
-		btnLapiz.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/lapizruta.png")));
+		btnLapiz.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/lapizruta.png"))); //$NON-NLS-1$
 		GridBagConstraints gbc_btnLapiz = new GridBagConstraints();
 		gbc_btnLapiz.fill = GridBagConstraints.BOTH;
 		gbc_btnLapiz.insets = new Insets(0, 0, 5, 5);
@@ -882,9 +893,9 @@ public class Principal extends JFrame {
 		gbc_btnLapiz.gridy = 1;
 		pnlMapa.add(btnLapiz, gbc_btnLapiz);
 
-		btnPuntero = new JButton(MessagesRestaurante.getString("Principal.btnPuntero.text")); //$NON-NLS-1$
+		btnPuntero = new JButton(""); //$NON-NLS-1$
 		btnPuntero.addActionListener(new BtnPunteroActionListener());
-		btnPuntero.setIcon(new ImageIcon(Principal.class.getResource(MessagesRestaurante.getString("Principal.66")))); //$NON-NLS-1$
+		btnPuntero.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/puntero.png"))); //$NON-NLS-1$
 		GridBagConstraints gbc_btnPuntero = new GridBagConstraints();
 		gbc_btnPuntero.fill = GridBagConstraints.BOTH;
 		gbc_btnPuntero.insets = new Insets(0, 0, 5, 5);
@@ -905,17 +916,17 @@ public class Principal extends JFrame {
 		miMapaDibujo = new MiMapaDibujo();
 		miMapaDibujo.addMouseMotionListener(new MiMapaDibujoMouseMotionListener());
 		miMapaDibujo.addMouseListener(new MiMapaDibujoMouseListener());
-		miMapaDibujo.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png")));
-		imagen = new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png"));
+		miMapaDibujo.setIcon(new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png"))); //$NON-NLS-1$
+		imagen = new ImageIcon(Principal.class.getResource("/presentacion/imagenmapa.png")); //$NON-NLS-1$
 
 		toolkit = Toolkit.getDefaultToolkit();
-		imagUbicacion = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/imagendestino.png"));
-		imagLapiz = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/lapizruta.png"));
-		imagTexto = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/imagencomentario.png"));
+		imagUbicacion = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/imagendestino.png")); //$NON-NLS-1$
+		imagLapiz = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/lapizruta.png")); //$NON-NLS-1$
+		imagTexto = toolkit.getImage(getClass().getClassLoader().getResource("presentacion/imagencomentario.png")); //$NON-NLS-1$
 		// Creación de los cursores
-		cursorTexto = toolkit.createCustomCursor(imagTexto, new Point(0, 0), "CURSOR_TEXTO");
-		cursorUbicacion = toolkit.createCustomCursor(imagUbicacion, new Point(0, 0), "CURSOR_UBICACION");
-		cursorLapiz = toolkit.createCustomCursor(imagLapiz, new Point(0, 0), "CURSOR_LAPIZ");
+		cursorTexto = toolkit.createCustomCursor(imagTexto, new Point(0, 0), "CURSOR_TEXTO"); //$NON-NLS-1$
+		cursorUbicacion = toolkit.createCustomCursor(imagUbicacion, new Point(0, 0), "CURSOR_UBICACION"); //$NON-NLS-1$
+		cursorLapiz = toolkit.createCustomCursor(imagLapiz, new Point(0, 0), "CURSOR_LAPIZ"); //$NON-NLS-1$
 		scrPnlMapa.setViewportView(miMapaDibujo);
 
 		scrollPane = new JScrollPane();
@@ -926,8 +937,10 @@ public class Principal extends JFrame {
 		pnlMapa.add(scrollPane, gbc_scrollPane);
 
 		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(new Object[][] { { "Mariano", Boolean.TRUE }, { "Jos\u00E9", null },
-				{ null, null }, { null, null }, { null, null }, }, new String[] { "Repartidores", "En Reparto" }) {
+		table_1.setModel(new DefaultTableModel(new Object[][] { { "Mariano", Boolean.TRUE }, { "José", null }, //$NON-NLS-1$ //$NON-NLS-2$
+				{ null, null }, { null, null }, { null, null }, },
+				new String[] { MessagesRestaurante.getString("Principal.217"), //$NON-NLS-1$
+						MessagesRestaurante.getString("Principal.218") }) { //$NON-NLS-1$
 			Class[] columnTypes = new Class[] { Object.class, Boolean.class };
 
 			public Class getColumnClass(int columnIndex) {
@@ -937,7 +950,7 @@ public class Principal extends JFrame {
 		scrollPane.setViewportView(table_1);
 
 		pnlClientes = new JPanel();
-		tabPrincipales.addTab("Clientes", null, pnlClientes, null);
+		tabPrincipales.addTab(MessagesRestaurante.getString("Principal.219"), null, pnlClientes, null); //$NON-NLS-1$
 		GridBagLayout gbl_pnlClientes = new GridBagLayout();
 		gbl_pnlClientes.columnWidths = new int[] { 112, 246, 110, 223, 251, 20, 0, -38 };
 		gbl_pnlClientes.rowHeights = new int[] { 47, 30, 20, 20, 20, 43, 0 };
@@ -976,10 +989,10 @@ public class Principal extends JFrame {
 		});
 		tblClientesVips.setModel((TableModel) TablaClientes);
 
-		Object[] filas1 = { 111, "Juanjo", "Rodriguez Montalban", "Rialejo 10", "665895475", 19 };
+		Object[] filas1 = { 111, "Juanjo", "Rodriguez Montalban", "Rialejo 10", "665895475", 19 }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		TablaClientes.aniadeFila(filas1);
 
-		lblNombre = new JLabel("Nombre:  ");
+		lblNombre = new JLabel("Nombre:  "); //$NON-NLS-1$
 		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
 		gbc_lblNombre.anchor = GridBagConstraints.EAST;
 		gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
@@ -997,7 +1010,7 @@ public class Principal extends JFrame {
 		gbc_txtNombre.gridy = 2;
 		pnlClientes.add(txtNombre, gbc_txtNombre);
 
-		lblTelf = new JLabel("Telefono:  ");
+		lblTelf = new JLabel("Telefono:  "); //$NON-NLS-1$
 		GridBagConstraints gbc_lblTelf = new GridBagConstraints();
 		gbc_lblTelf.anchor = GridBagConstraints.EAST;
 		gbc_lblTelf.insets = new Insets(0, 0, 5, 5);
@@ -1005,7 +1018,7 @@ public class Principal extends JFrame {
 		gbc_lblTelf.gridy = 2;
 		pnlClientes.add(lblTelf, gbc_lblTelf);
 
-		btnAadir = new JButton("Añadir   ");
+		btnAadir = new JButton(MessagesRestaurante.getString("Principal.226")); //$NON-NLS-1$
 		btnAadir.addActionListener(new BtnAadirActionListener());
 
 		txtFTelefono = new JTextField();
@@ -1019,9 +1032,11 @@ public class Principal extends JFrame {
 		txtFTelefono.setColumns(10);
 
 		cmbBIntolerancias = new JComboBox();
-		cmbBIntolerancias.setModel(new DefaultComboBoxModel(
-				new String[] { "Intolerancias", "Frutos Secos", "Glúten", "Lactosa", "Marisco" }));
-		cmbBIntolerancias.setToolTipText("Intolerancias");
+		cmbBIntolerancias.setModel(new DefaultComboBoxModel(new String[] {
+				MessagesRestaurante.getString("Principal.227"), MessagesRestaurante.getString("Principal.228"), //$NON-NLS-1$ //$NON-NLS-2$
+				MessagesRestaurante.getString("Principal.229"), MessagesRestaurante.getString("Principal.230"), //$NON-NLS-1$ //$NON-NLS-2$
+				MessagesRestaurante.getString("Principal.231") })); //$NON-NLS-1$
+		cmbBIntolerancias.setToolTipText(MessagesRestaurante.getString("Principal.232")); //$NON-NLS-1$
 		GridBagConstraints gbc_cmbBIntolerancias = new GridBagConstraints();
 		gbc_cmbBIntolerancias.anchor = GridBagConstraints.NORTH;
 		gbc_cmbBIntolerancias.fill = GridBagConstraints.HORIZONTAL;
@@ -1039,7 +1054,7 @@ public class Principal extends JFrame {
 		gbc_btnAadir.gridy = 2;
 		pnlClientes.add(btnAadir, gbc_btnAadir);
 
-		lblApellidos = new JLabel("Apellidos:  ");
+		lblApellidos = new JLabel(MessagesRestaurante.getString("Principal.233")); //$NON-NLS-1$
 		GridBagConstraints gbc_lblApellidos = new GridBagConstraints();
 		gbc_lblApellidos.anchor = GridBagConstraints.EAST;
 		gbc_lblApellidos.insets = new Insets(0, 0, 5, 5);
@@ -1057,7 +1072,7 @@ public class Principal extends JFrame {
 		gbc_txtApellidos.gridy = 3;
 		pnlClientes.add(txtApellidos, gbc_txtApellidos);
 
-		lblDireccion = new JLabel("Direccion:  ");
+		lblDireccion = new JLabel(MessagesRestaurante.getString("Principal.234")); //$NON-NLS-1$
 		GridBagConstraints gbc_lblDireccion = new GridBagConstraints();
 		gbc_lblDireccion.anchor = GridBagConstraints.EAST;
 		gbc_lblDireccion.insets = new Insets(0, 0, 5, 5);
@@ -1076,8 +1091,10 @@ public class Principal extends JFrame {
 		pnlClientes.add(txtDireccion, gbc_txtDireccion);
 
 		cmbBHistorial = new JComboBox();
-		cmbBHistorial.setModel(new DefaultComboBoxModel(new String[] { "Historial", "Pedido1", "Pedido2", "Pedido3" }));
-		cmbBHistorial.setToolTipText("Historial\r\n");
+		cmbBHistorial.setModel(new DefaultComboBoxModel(new String[] { MessagesRestaurante.getString("Principal.235"), //$NON-NLS-1$
+				MessagesRestaurante.getString("Principal.236"), MessagesRestaurante.getString("Principal.237"), //$NON-NLS-1$ //$NON-NLS-2$
+				MessagesRestaurante.getString("Principal.238") })); //$NON-NLS-1$
+		cmbBHistorial.setToolTipText(MessagesRestaurante.getString("Principal.239")); //$NON-NLS-1$
 		GridBagConstraints gbc_cmbBHistorial = new GridBagConstraints();
 		gbc_cmbBHistorial.anchor = GridBagConstraints.NORTH;
 		gbc_cmbBHistorial.fill = GridBagConstraints.HORIZONTAL;
@@ -1086,7 +1103,7 @@ public class Principal extends JFrame {
 		gbc_cmbBHistorial.gridy = 3;
 		pnlClientes.add(cmbBHistorial, gbc_cmbBHistorial);
 
-		btnModificar = new JButton("Modificar");
+		btnModificar = new JButton(MessagesRestaurante.getString("Principal.240")); //$NON-NLS-1$
 		btnModificar.addActionListener(new BtnModificarActionListener());
 		btnModificar.setPreferredSize(new Dimension(90, 23));
 		btnModificar.setMaximumSize(new Dimension(100, 23));
@@ -1097,7 +1114,7 @@ public class Principal extends JFrame {
 		gbc_btnModificar.gridy = 3;
 		pnlClientes.add(btnModificar, gbc_btnModificar);
 
-		lblId = new JLabel("Id:  ");
+		lblId = new JLabel(MessagesRestaurante.getString("Principal.241")); //$NON-NLS-1$
 		GridBagConstraints gbc_lblId = new GridBagConstraints();
 		gbc_lblId.anchor = GridBagConstraints.EAST;
 		gbc_lblId.insets = new Insets(0, 0, 5, 5);
@@ -1115,7 +1132,7 @@ public class Principal extends JFrame {
 		gbc_txtInd.gridy = 4;
 		pnlClientes.add(txtInd, gbc_txtInd);
 
-		lblPuntos = new JLabel("Puntos:  ");
+		lblPuntos = new JLabel(MessagesRestaurante.getString("Principal.242")); //$NON-NLS-1$
 		GridBagConstraints gbc_lblPuntos = new GridBagConstraints();
 		gbc_lblPuntos.anchor = GridBagConstraints.EAST;
 		gbc_lblPuntos.insets = new Insets(0, 0, 5, 5);
@@ -1135,9 +1152,12 @@ public class Principal extends JFrame {
 		pnlClientes.add(txtPuntos, gbc_txtPuntos);
 
 		cmbBPreferencias = new JComboBox();
-		cmbBPreferencias.setModel(new DefaultComboBoxModel(
-				new String[] { "Preferencias", "Azucar", "Canela", "Ketchup", "Mayonesa", "Sacarina", "Sal" }));
-		cmbBPreferencias.setToolTipText("Preferencias");
+		cmbBPreferencias.setModel(new DefaultComboBoxModel(new String[] {
+				MessagesRestaurante.getString("Principal.243"), MessagesRestaurante.getString("Principal.244"), //$NON-NLS-1$ //$NON-NLS-2$
+				MessagesRestaurante.getString("Principal.245"), MessagesRestaurante.getString("Principal.246"), //$NON-NLS-1$ //$NON-NLS-2$
+				MessagesRestaurante.getString("Principal.247"), MessagesRestaurante.getString("Principal.248"), //$NON-NLS-1$ //$NON-NLS-2$
+				MessagesRestaurante.getString("Principal.249") })); //$NON-NLS-1$
+		cmbBPreferencias.setToolTipText(MessagesRestaurante.getString("Principal.250")); //$NON-NLS-1$
 		GridBagConstraints gbc_cmbBPreferencias = new GridBagConstraints();
 		gbc_cmbBPreferencias.anchor = GridBagConstraints.NORTH;
 		gbc_cmbBPreferencias.fill = GridBagConstraints.HORIZONTAL;
@@ -1146,7 +1166,7 @@ public class Principal extends JFrame {
 		gbc_cmbBPreferencias.gridy = 4;
 		pnlClientes.add(cmbBPreferencias, gbc_cmbBPreferencias);
 
-		btnEliminar = new JButton("Eliminar");
+		btnEliminar = new JButton(MessagesRestaurante.getString("Principal.251")); //$NON-NLS-1$
 		btnEliminar.setMinimumSize(new Dimension(75, 20));
 		btnEliminar.setMaximumSize(new Dimension(100, 23));
 		btnEliminar.addActionListener(new BtnEliminarActionListener());
@@ -1187,9 +1207,10 @@ public class Principal extends JFrame {
 		menuBar.add(btnManual);
 
 		btnMenuPerfilUsuario = new JButton(MessagesRestaurante.getString("Principal.btnMenuPerfilUsuario.text")); //$NON-NLS-1$
+		btnMenuPerfilUsuario.addActionListener(new BtnMenuPerfilUsuarioActionListener());
 		menuBar.add(btnMenuPerfilUsuario);
 		btnMenuPerfilUsuario.addMouseListener(new BtnMenuPerfilUsuarioMouseListener());
-		btnMenuPerfilUsuario.setBackground(UIManager.getColor(MessagesRestaurante.getString("Principal.101"))); //$NON-NLS-1$
+		btnMenuPerfilUsuario.setBackground(UIManager.getColor("Button.background")); //$NON-NLS-1$
 
 		ListSelectionModel rowSMtc = tblClientesVips.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
@@ -1206,7 +1227,8 @@ public class Principal extends JFrame {
 	private class BtnAñadirProductoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 
-			Object[] nuevaFila = { "", "Producto", "Descripción", 0.0 };
+			Object[] nuevaFila = { "", MessagesRestaurante.getString("Principal.253"), //$NON-NLS-1$ //$NON-NLS-2$
+					MessagesRestaurante.getString("Principal.254"), 0.0 }; //$NON-NLS-1$
 
 			JTable tabla = new JTable();
 			MiTabla modelo = new MiTabla();
@@ -1256,8 +1278,8 @@ public class Principal extends JFrame {
 
 			if (n != -1) {
 
-				int opcion = JOptionPane.showConfirmDialog(null,
-						"Borrar el plato es una operacion irreversible.\nEsta seguro?", "¡Cuidado!",
+				int opcion = JOptionPane.showConfirmDialog(null, MessagesRestaurante.getString("Principal.255"), //$NON-NLS-1$
+						MessagesRestaurante.getString("Principal.256"), //$NON-NLS-1$
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (opcion == 0) {
 					modelo.eliminaFila(tabla.getSelectedRow());
@@ -1300,8 +1322,8 @@ public class Principal extends JFrame {
 			TablaVips TablaVip = (TablaVips) tblClientesVips.getModel();
 			int n = tblClientesVips.getSelectedRow();
 			if (n != -1) {
-				int opcion = JOptionPane.showConfirmDialog(null,
-						"Borrar el cliente es una operacion irreversible.\nEsta seguro?", "¡Cuidado!",
+				int opcion = JOptionPane.showConfirmDialog(null, MessagesRestaurante.getString("Principal.257"), //$NON-NLS-1$
+						MessagesRestaurante.getString("Principal.258"), //$NON-NLS-1$
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (opcion == 0) {
 					TablaVip.eliminaFila(tblClientesVips.getSelectedRow());
@@ -1355,10 +1377,10 @@ public class Principal extends JFrame {
 					txtTexto.requestFocus();
 					txtTexto.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent arg) {
-							if (!txtTexto.getText().equals(""))
+							if (!txtTexto.getText().equals("")) //$NON-NLS-1$
 								miMapaDibujo
 										.addObjetoGrafico(new TextoGrafico(x, y + 15, txtTexto.getText(), Color.BLUE));
-							txtTexto.setText("");
+							txtTexto.setText(""); //$NON-NLS-1$
 							txtTexto.setVisible(false);
 							miMapaDibujo.repaint();
 						}
@@ -1407,11 +1429,11 @@ public class Principal extends JFrame {
 			}
 			modelo = (MiTabla) tabla.getModel();
 			int n = tabla.getSelectedRow();
-			ImageIcon compara = new ImageIcon(Principal.class.getResource("/presentacion/coke.png"));
+			ImageIcon compara = new ImageIcon(Principal.class.getResource("/presentacion/coke.png")); //$NON-NLS-1$
 			if (n != -1) {
 				boolean foto = (tabla.getValueAt(tabla.getSelectedRow(), 0).getClass().isInstance(compara));
 				if (foto) {
-					Plato plato = new Plato((String) "", (String) tabla.getValueAt(tabla.getSelectedRow(), 1),
+					Plato plato = new Plato((String) "", (String) tabla.getValueAt(tabla.getSelectedRow(), 1), //$NON-NLS-1$
 							(String) String.valueOf(tabla.getValueAt(tabla.getSelectedRow(), 3)),
 							(String) tabla.getValueAt(tabla.getSelectedRow(), 2));
 					ModificarPlato modificarPlato = new ModificarPlato(plato, modelo, tabla);
@@ -1436,8 +1458,10 @@ public class Principal extends JFrame {
 
 			pestana = (JScrollPane) scrollPanePedidos;
 			tabla = (JTable) pestana.getViewport().getView();
-			Object[] nuevaFila = { tabla.getRowCount() + 1, "Cliente", "direcion", "Telefono", "latos", "Feha",
-					"Fecha entrega" };
+			Object[] nuevaFila = { tabla.getRowCount() + 1, MessagesRestaurante.getString("Principal.263"), //$NON-NLS-1$
+					MessagesRestaurante.getString("Principal.264"), MessagesRestaurante.getString("Principal.265"), //$NON-NLS-1$ //$NON-NLS-2$
+					MessagesRestaurante.getString("Principal.266"), MessagesRestaurante.getString("Principal.267"), //$NON-NLS-1$ //$NON-NLS-2$
+					MessagesRestaurante.getString("Principal.268") }; //$NON-NLS-1$
 
 			modelo = (MiTablaPedidos) tabla.getModel();
 			modelo.aniadeFila(nuevaFila);
@@ -1457,8 +1481,8 @@ public class Principal extends JFrame {
 			modelo = (TablaVips) tabla.getModel();
 			int n = tabla.getSelectedRow();
 			if (n != -1) {
-				if ((tabla.getValueAt(tabla.getSelectedRow(), 4)).equals("")) {
-					tabla.setValueAt("0", tabla.getSelectedRow(), 4);
+				if ((tabla.getValueAt(tabla.getSelectedRow(), 4)).equals("")) { //$NON-NLS-1$
+					tabla.setValueAt("0", tabla.getSelectedRow(), 4); //$NON-NLS-1$
 				}
 				Cliente cliente = new Cliente((String) tabla.getValueAt(tabla.getSelectedRow(), 1),
 						(String) tabla.getValueAt(tabla.getSelectedRow(), 2),
@@ -1480,29 +1504,30 @@ public class Principal extends JFrame {
 			try {
 				entregado = TablaCambio.getValor(TablaCambio.getRowCount() - 2, 3);
 				if (entregado >= total) {
-					Object[] Cambio = { "Cambio", null, null, null };
+					Object[] Cambio = { MessagesRestaurante.getString("Principal.271"), null, null, null }; //$NON-NLS-1$
 					TablaCambio.aniadeFila(Cambio);
 					TablaCambio.fireTableDataChanged();
 					cambio = entregado - total;
 					TablaCambio.setValueAt(cambio, TablaCambio.getRowCount() - 1, 3);
 					btnPagar1.setEnabled(false);
 				} else {
-					JOptionPane.showMessageDialog(null, "No ha introducido suficiente dinero.", "Cuidado!",
+					JOptionPane.showMessageDialog(null, MessagesRestaurante.getString("Principal.272"), //$NON-NLS-1$
+							MessagesRestaurante.getString("Principal.273"), //$NON-NLS-1$
 							JOptionPane.PLAIN_MESSAGE);
 				}
 			} catch (
 
 			Exception e) {// Al pagar que se bloquee, al borrar volver a activar asi no se puue pagar
 							// multiples veces
-				JOptionPane.showMessageDialog(null, "Antes de poder efectuar el pago debe introducir el dinero!",
-						"Cuidado!", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null, MessagesRestaurante.getString("Principal.274"), //$NON-NLS-1$
+						MessagesRestaurante.getString("Principal.275"), JOptionPane.PLAIN_MESSAGE); //$NON-NLS-1$
 			}
 		}
 	}
 
 	private class BtnComprarActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if (!producto.equals(" ")) {
+			if (!producto.equals(" ")) { //$NON-NLS-1$
 				String cosa = producto;
 				double precio = money;
 				MiTablaTicket TablaCompra = (MiTablaTicket) tblticket.getModel();
@@ -1517,7 +1542,8 @@ public class Principal extends JFrame {
 				CalculaTotal();
 
 			} else {
-				JOptionPane.showMessageDialog(null, "Primero debe seleccionar un producto.", "Cuidado!",
+				JOptionPane.showMessageDialog(null, MessagesRestaurante.getString("Principal.277"), //$NON-NLS-1$
+						MessagesRestaurante.getString("Principal.278"), //$NON-NLS-1$
 						JOptionPane.PLAIN_MESSAGE);
 
 			}
@@ -1533,15 +1559,15 @@ public class Principal extends JFrame {
 
 	private class BtnBorrarActionListener_1 implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			int opcion = JOptionPane.showConfirmDialog(null,
-					"Borrar el ticket es una operacion irreversible.\nEsta seguro?", "¡Cuidado!",
+			int opcion = JOptionPane.showConfirmDialog(null, MessagesRestaurante.getString("Principal.279"), //$NON-NLS-1$
+					MessagesRestaurante.getString("Principal.280"), //$NON-NLS-1$
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (opcion == 0) {
 				MiTablaTicket TablaBorrado = (MiTablaTicket) tblticket.getModel();
 				while ((TablaBorrado.getRowCount()) > 0) {
 					TablaBorrado.eliminaFila(0);
 				}
-				Object[] fila1Ticket = { "Ticket", 0, 1, 0 };
+				Object[] fila1Ticket = { MessagesRestaurante.getString("Principal.281"), 0, 1, 0 }; //$NON-NLS-1$
 				Object[] fila1 = { null, null, null, null };
 				TablaBorrado.aniadeFila(fila1Ticket);
 				TablaBorrado.aniadeFila(fila1);
@@ -1566,8 +1592,8 @@ public class Principal extends JFrame {
 			MiTablaPedidos tablaPedido = (MiTablaPedidos) tablaPedidos.getModel();
 			int n = tablaPedidos.getSelectedRow();
 			if (n != -1) {
-				int opcion = JOptionPane.showConfirmDialog(null,
-						"Borrar el pedido es una operacion irreversible.\nEsta seguro?", "¡Cuidado!",
+				int opcion = JOptionPane.showConfirmDialog(null, MessagesRestaurante.getString("Principal.282"), //$NON-NLS-1$
+						MessagesRestaurante.getString("Principal.283"), //$NON-NLS-1$
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 				if (opcion == 0) {
 					tablaPedido.eliminaFila(tablaPedidos.getSelectedRow());
@@ -1588,7 +1614,7 @@ public class Principal extends JFrame {
 			i++;
 		}
 		TablaTotal.setValueAt(total, TablaTotal.getRowCount() - 1, 3);
-		TablaTotal.setValueAt("Total", TablaTotal.getRowCount() - 1, 0);
+		TablaTotal.setValueAt(MessagesRestaurante.getString("Principal.284"), TablaTotal.getRowCount() - 1, 0); //$NON-NLS-1$
 		TablaTotal.setValueAt(null, TablaTotal.getRowCount() - 2, 3);
 		TablaTotal.setValueAt(null, TablaTotal.getRowCount() - 2, 0);
 	}
@@ -1686,6 +1712,11 @@ public class Principal extends JFrame {
 			tablaPlatosBocata.setFont(
 					new Font(tablaPlatosBocata.getFont().getFontName(), tablaPlatosBocata.getFont().getStyle(), 18));
 
+		}
+	}
+
+	private class BtnMenuPerfilUsuarioActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
 		}
 	}
 
