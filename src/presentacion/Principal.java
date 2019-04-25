@@ -115,7 +115,7 @@ public class Principal extends JFrame {
 	private JButton btnPagar1;
 	private JButton btnBorrar;
 	private JPanel pnlCambiosProductos;
-	private JButton btnAñadirProducto;
+	private JButton btnAnadirProducto;
 	private JButton btnEliminrroducto;
 	private JButton btnModificarProducto;
 	private JScrollPane scrollPaneBocadillos;
@@ -177,7 +177,7 @@ public class Principal extends JFrame {
 	private JTable tablaPlatosArroz;
 	private JTable tablaPlatosBocata;
 	private JTable tablaPlatosPostre;
-	private JPanel pnlBotonAñatirATicket;
+	private JPanel pnlBotonAnatirATicket;
 	private JPanel panel_4;
 	private JButton btnComprar;
 
@@ -337,9 +337,12 @@ public class Principal extends JFrame {
 		});
 		tablaPlatosCarne.setModel(tablaCarne);
 		tablaPlatosCarne.setRowHeight(35);
-		Object[] fila1 = { MessagesRestaurante.getString("Principal.128"), "Chuleton Buey", //$NON-NLS-1$ //$NON-NLS-2$
-				"Chuleton primeras caitates", 8.5 }; //$NON-NLS-1$
-		tablaCarne.aniadeFila(fila1);
+		Object[] fila1c = { MessagesRestaurante.getString("Principal.128"), "Chuletón Buey", //$NON-NLS-1$ //$NON-NLS-2$
+				"Chuletón de primeras calidades", 8.5 }; //$NON-NLS-1$
+		Object[] fila2c = { new ImageIcon(Principal.class.getResource("/presentacion/Cochinillo.jpg")), "Cochinillo asado", //$NON-NLS-1$ //$NON-NLS-2$
+				"El mejor lechal", 1.0 };
+		tablaCarne.aniadeFila(fila1c);
+		tablaCarne.aniadeFila(fila2c);
 
 		scrollPaneCarnes.setViewportView(tablaPlatosCarne);
 
@@ -471,8 +474,10 @@ public class Principal extends JFrame {
 		});
 		tablaPlatosPostre.setModel(tablaPostre);
 		tablaPlatosPostre.setRowHeight(35);
-		Object[] fila6 = { "", "Profiteroles", "Pooostreeee", 4.0 }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		Object[] fila6 = { new ImageIcon(Principal.class.getResource("/presentacion/Esprite.png")), "Profiteroles", "Pooostreeee", 4.0 }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		Object[] fila2p = {  new ImageIcon(Principal.class.getResource("/presentacion/Bacalao.jpg")), "bacalaoo", "Pooostreeee", 4.0 };
 		tablaPostre.aniadeFila(fila6);
+		tablaPostre.aniadeFila(fila2p);
 		scrollPanePostre.setViewportView(tablaPlatosPostre);
 
 		pnlBebidas = new JPanel();
@@ -500,9 +505,12 @@ public class Principal extends JFrame {
 		});
 		tablaBebidas.setModel(tablaBebidasT);
 		tablaBebidas.setRowHeight(35);
-		Object[] fila7 = { new ImageIcon(Principal.class.getResource("/presentacion/coke.png")), "ColaCoca", //$NON-NLS-1$ //$NON-NLS-2$
+		Object[] fila7 = { new ImageIcon(Principal.class.getResource("/presentacion/Bacalao.jpg")), "ColaCoca", //$NON-NLS-1$ //$NON-NLS-2$
 				"Refrescante", 1.0 }; //$NON-NLS-1$
+		Object[] fila2b = { new ImageIcon(Principal.class.getResource("/presentacion/Esprite.png")), "Sprite", //$NON-NLS-1$ //$NON-NLS-2$
+				"El mejor lechal", 1.0 };
 		tablaBebidasT.aniadeFila(fila7);
+		tablaBebidasT.aniadeFila(fila2b);
 		scrollPaneBebidas.setViewportView(tablaBebidas);
 
 		pnlOfertas = new JPanel();
@@ -530,8 +538,11 @@ public class Principal extends JFrame {
 		});
 		tablaOfertas.setModel(tablaOfertasT);
 		tablaOfertas.setRowHeight(35);
-		Object[] fila8 = { " ", "ColaCoca", "Refrescante", 0.5 }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		Object[] fila8 = {new ImageIcon(Principal.class.getResource("/presentacion/sepia.png")), "ColaCoca", "Refrescante", 0.5 }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		Object[] fila2o = { new ImageIcon(Principal.class.getResource("/presentacion/Esprite.png")), "Tarta Red Velvet", //$NON-NLS-1$ //$NON-NLS-2$
+				"El mejor lechal", 1.0 };
 		tablaOfertasT.aniadeFila(fila8);
+		tablaOfertasT.aniadeFila(fila2o);
 		scrollPaneOfertas.setViewportView(tablaOfertas);
 
 		scrlpnlticket = new JScrollPane();
@@ -559,14 +570,14 @@ public class Principal extends JFrame {
 		Ticket.aniadeFila(fila4Ticket);
 		Ticket.fireTableDataChanged();
 
-		pnlBotonAñatirATicket = new JPanel();
-		GridBagConstraints gbc_pnlBotonAñatirATicket = new GridBagConstraints();
-		gbc_pnlBotonAñatirATicket.insets = new Insets(0, 0, 5, 5);
-		gbc_pnlBotonAñatirATicket.fill = GridBagConstraints.BOTH;
-		gbc_pnlBotonAñatirATicket.gridx = 0;
-		gbc_pnlBotonAñatirATicket.gridy = 1;
-		pnlInicio.add(pnlBotonAñatirATicket, gbc_pnlBotonAñatirATicket);
-		pnlBotonAñatirATicket.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		pnlBotonAnatirATicket = new JPanel();
+		GridBagConstraints gbc_pnlBotonAnatirATicket = new GridBagConstraints();
+		gbc_pnlBotonAnatirATicket.insets = new Insets(0, 0, 5, 5);
+		gbc_pnlBotonAnatirATicket.fill = GridBagConstraints.BOTH;
+		gbc_pnlBotonAnatirATicket.gridx = 0;
+		gbc_pnlBotonAnatirATicket.gridy = 1;
+		pnlInicio.add(pnlBotonAnatirATicket, gbc_pnlBotonAnatirATicket);
+		pnlBotonAnatirATicket.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		panel_4 = new JPanel();
 		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
@@ -604,7 +615,7 @@ public class Principal extends JFrame {
 		panel_1.setLayout(new BorderLayout(0, 0));
 
 		lblAquiVamosA = new JLabel(
-				"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tamaño.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n"); //$NON-NLS-1$
+				"escalao imagenes.Hay que usar objetos Image, no icon-ImageIO.reat lee la cosa , luego con getscaletInstance cambia el tama�o.Hacer cambio te image a icon para poter establecerlo como icono te algo.\r\n"); //$NON-NLS-1$
 		lblAquiVamosA.setOpaque(true);
 		panel_1.add(lblAquiVamosA);
 
@@ -635,9 +646,9 @@ public class Principal extends JFrame {
 		gbc_pnlCambiosProductos.gridy = 4;
 		pnlInicio.add(pnlCambiosProductos, gbc_pnlCambiosProductos);
 
-		btnAñadirProducto = new JButton(MessagesRestaurante.getString("Principal.177")); //$NON-NLS-1$
-		btnAñadirProducto.addActionListener(new BtnAñadirProductoActionListener());
-		pnlCambiosProductos.add(btnAñadirProducto);
+		btnAnadirProducto = new JButton(MessagesRestaurante.getString("Principal.177")); //$NON-NLS-1$
+		btnAnadirProducto.addActionListener(new BtnAnadirProductoActionListener());
+		pnlCambiosProductos.add(btnAnadirProducto);
 
 		btnModificarProducto = new JButton(MessagesRestaurante.getString("Principal.178")); //$NON-NLS-1$
 		btnModificarProducto.addActionListener(new BtnModificarProductoActionListener());
@@ -940,13 +951,11 @@ public class Principal extends JFrame {
 		table_1.setModel(new DefaultTableModel(new Object[][] { { "Mariano", Boolean.TRUE }, { "José", null }, //$NON-NLS-1$ //$NON-NLS-2$
 				{ null, null }, { null, null }, { null, null }, },
 				new String[] { MessagesRestaurante.getString("Principal.217"), //$NON-NLS-1$
-						MessagesRestaurante.getString("Principal.218") }) { //$NON-NLS-1$
-			Class[] columnTypes = new Class[] { Object.class, Boolean.class };
+						MessagesRestaurante.getString("Principal.218") }));  //$NON-NLS-1$
+		//	Class[] columnTypes = new Class[] { Object.class, Boolean.class; }
 
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
+			
+		
 		scrollPane.setViewportView(table_1);
 
 		pnlClientes = new JPanel();
@@ -1224,7 +1233,7 @@ public class Principal extends JFrame {
 
 	}
 
-	private class BtnAñadirProductoActionListener implements ActionListener {
+	private class BtnAnadirProductoActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 
 			Object[] nuevaFila = { "", MessagesRestaurante.getString("Principal.253"), //$NON-NLS-1$ //$NON-NLS-2$
